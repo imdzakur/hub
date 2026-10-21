@@ -16,8 +16,6 @@ function navItem(item, current) {
 
 function renderSidebar(sidebar) {
   const current = normalize(location.pathname);
-  const sectionActive = (section) => section.items.some((i) => normalize(i.href) === current);
-  const anyActive = NAV.some(sectionActive);
 
   const header = el("div", { class: "sidebar-header" },
     el("a", { class: "sidebar-title", href: "/" },
@@ -26,10 +24,9 @@ function renderSidebar(sidebar) {
 
   const nav = el("nav", { class: "sidebar-nav", "aria-label": "Main navigation" },
     el("ul", { class: "nav-list nav-primary", role: "list" }, ...PRIMARY.map((item) => navItem(item, current))),
-    ...NAV.map((section, index) => {
-      // The section holding the current page is open. Elsewhere, the first section is open.
-      const open = sectionActive(section) || (!anyActive && index === 0);
-      return el("details", { class: "nav-section", name: "nav", open },
+    // Every section starts open, so every page is one click away; each can still be folded on its own
+    ...NAV.map((section) => {
+      return el("details", { class: "nav-section", open: true },
         el("summary", {}, el("span", {}, section.label), icon("chevron-right", "icon-sm nav-chevron")),
         el("ul", { class: "nav-list", role: "list" }, ...section.items.map((item) => navItem(item, current))));
     }));
