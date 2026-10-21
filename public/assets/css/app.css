@@ -35,6 +35,5 @@
 @import url("pages/integration-map.css") layer(pages);
 @import url("pages/finance-management.css") layer(pages);
 @import url("pages/report.css") layer(pages);
-@import url("pages/materials.css") layer(pages);
 
 @import url("utilities.css") layer(utilities);
