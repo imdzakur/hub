@@ -1,0 +1,19 @@
+/* Laptop-only notice. On phones and tablets the page is hidden right away (before any script runs),
+   and device-gate.js adds the notice on top. */
+.device-gate { display: none; }
+@media screen and (width < 48rem), screen and (hover: none) and (pointer: coarse) {
+  html, body { overflow: hidden; height: 100%; }
+  body > :not(.device-gate) { display: none !important; }
+  .device-gate:not([hidden]) {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: var(--space-6);
+    text-align: center;
+  }
+  .device-gate-box { display: grid; justify-items: center; gap: var(--space-3); max-width: 22rem; }
+  .device-gate-art { width: 7.5rem; height: auto; margin-block: var(--space-2); fill: var(--color-tertiary-system-fill); stroke: var(--color-secondary-label); stroke-width: 2; stroke-linejoin: round; }
+  .device-gate-art .screen { fill: var(--color-secondary-system-grouped-background); stroke: none; }
+}

@@ -1,0 +1,43 @@
+.field { display: grid; gap: var(--space-2); }
+
+.field-label {
+  font-size: var(--text-subheadline-size);
+  line-height: var(--text-subheadline-line);
+  font-weight: var(--weight-semibold);
+}
+
+.field-input {
+  width: 100%;
+  min-height: var(--control-height-md);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-md);
+  background: var(--color-tertiary-system-fill);
+  color: var(--color-label);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-line);
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+.field-input::placeholder { color: var(--color-placeholder-text); }
+/* iPhone Safari zooms into fields under 16px, so touch screens keep 16px */
+@media (pointer: coarse) {
+  .field-input { font-size: max(var(--text-body-size), 16px); }
+}
+.field-input:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 1px;
+  border-color: var(--color-tint);
+}
+.field-input[aria-invalid="true"] { border-color: var(--color-error); }
+.field-input:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.field-help,
+.field-error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-footnote-size);
+  line-height: var(--text-footnote-line);
+}
+.field-help { color: var(--color-secondary-label); }
+.field-error { color: var(--color-error-text); }

@@ -1,0 +1,36 @@
+/* Badge shows information; chip is a pressable badge for filters */
+.badge,
+.chip {
+  --badge-fg: var(--color-label);
+  --badge-bg: var(--color-tertiary-system-fill);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--badge-bg);
+  color: var(--badge-fg);
+  font-size: var(--text-caption-1-size);
+  line-height: var(--text-caption-1-line);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+}
+.badge { min-height: 1.375rem; }
+
+.chip {
+  min-height: var(--control-height-sm);
+  padding: 0 var(--space-3);
+  font-size: var(--text-footnote-size);
+  line-height: var(--text-footnote-line);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    scale var(--spring-snappy-duration-sm) var(--spring-snappy);
+}
+.chip:active { scale: 0.96; }
+.chip[aria-pressed="true"] { --badge-fg: var(--color-tint-text); --badge-bg: var(--color-tint-soft); font-weight: var(--weight-semibold); }
+@media (hover: hover) {
+  .chip:hover { --badge-bg: var(--color-secondary-system-fill); }
+  .chip[aria-pressed="true"]:hover { --badge-bg: var(--color-tint-soft); }
+}

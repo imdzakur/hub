@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Finance Management - Hub</title>
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script type="module" src="/assets/js/device-gate.js"></script>
+  <script type="module" src="/assets/js/sidebar.js"></script>
+  <script type="module" src="/finance-management/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <svg class="fm-sprite" id="fm-sprite" aria-hidden="true" focusable="false"></svg>
+  <div class="app">
+    <aside class="sidebar material material-thick" id="sidebar"></aside>
+    <main class="app-main" id="main" tabindex="-1">
+      <header class="toolbar material material-thick">
+        <button class="icon-btn nav-toggle" type="button" data-action="toggle-nav"
+                aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">
+          <svg class="icon icon-md" aria-hidden="true"><use href="/assets/icons/sprite.svg#panel-left"></use></svg>
+        </button>
+        <div class="toolbar-title">
+          <h1 class="text-headline">Finance Management</h1>
+          <p class="text-footnote text-secondary" id="mg-sub"></p>
+        </div>
+        <div class="toolbar-actions mg-period" role="group" aria-label="Budget period">
+          <button class="icon-btn" type="button" id="mg-prev" aria-label="Previous period">
+            <svg class="icon icon-md" aria-hidden="true"><use href="#i-prev"></use></svg>
+          </button>
+          <button class="btn btn-plain btn-sm mg-period-label" type="button" id="mg-now" title="Back to the current period"><span id="mg-period-label"></span></button>
+          <button class="icon-btn" type="button" id="mg-next" aria-label="Next period">
+            <svg class="icon icon-md" aria-hidden="true"><use href="#i-next"></use></svg>
+          </button>
+          <button class="btn btn-filled btn-sm mg-add-today" type="button" id="mg-add-today">
+            <svg class="icon icon-sm" aria-hidden="true"><use href="#i-plus"></use></svg><span>Add entry</span>
+          </button>
+          <button class="btn btn-gray btn-sm mg-report-btn" type="button" id="mg-report-open">
+            <svg class="icon icon-sm" aria-hidden="true"><use href="#i-file"></use></svg><span>Report</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="page mg-page">
+        <hr class="mg-sep">
+        <div class="mg-tabs-bar material material-regular">
+          <div class="tabs" id="mg-tabs" role="tablist" aria-label="Finance Management sections"></div>
+          <div class="mg-tabs-tools">
+            <span id="mg-updated" aria-live="polite"></span>
+            <button class="icon-btn" type="button" id="mg-refresh" aria-label="Refresh from the database" title="Refresh">
+              <svg class="icon icon-sm" aria-hidden="true"><use href="#i-refresh"></use></svg>
+            </button>
+          </div>
+        </div>
+        <p class="mg-banner" id="mg-banner" role="status" hidden>
+          <svg class="icon icon-sm" aria-hidden="true"><use href="/assets/icons/sprite.svg#circle-x"></use></svg><span></span>
+        </p>
+        <div class="mg-view" id="mg-view" role="tabpanel" aria-live="polite"></div>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="dialog dialog-alert material material-thick mg-report-dialog" id="mg-report" aria-labelledby="rp-title">
+    <form class="dialog-body" method="dialog">
+      <div class="dialog-alert-text">
+        <h2 class="text-headline" id="rp-title">Make a PDF report</h2>
+        <p class="text-subheadline text-secondary">Opens a printable report. Pick "Save as PDF" in the print window.</p>
+      </div>
+      <fieldset class="mg-report-options">
+        <legend class="visually-hidden">Report covers</legend>
+        <label class="mg-report-option"><input type="radio" name="rp-kind" value="day" checked>
+          <span><b>One day</b><input class="field-input" id="rp-day" type="date" aria-label="Day"></span></label>
+        <label class="mg-report-option"><input type="radio" name="rp-kind" value="period">
+          <span><b>Whole period</b><small id="rp-period-label"></small></span></label>
+      </fieldset>
+      <footer class="dialog-footer">
+        <button class="btn btn-gray" type="submit" value="cancel">Cancel</button>
+        <button class="btn btn-filled" type="submit" value="open">Open report</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog class="dialog dialog-alert material material-thick" id="mg-del" role="alertdialog" aria-labelledby="mg-del-title" aria-describedby="mg-del-desc">
+    <form class="dialog-body" method="dialog">
+      <div class="dialog-alert-text">
+        <h2 class="text-headline" id="mg-del-title">Delete this entry?</h2>
+        <p class="text-subheadline text-secondary" id="mg-del-desc"></p>
+      </div>
+      <footer class="dialog-footer">
+        <button class="btn btn-gray" type="submit" value="cancel" autofocus>Cancel</button>
+        <button class="btn btn-destructive" type="submit" value="delete">Delete</button>
+      </footer>
+    </form>
+  </dialog>
+</body>
+</html>

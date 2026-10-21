@@ -1,0 +1,46 @@
+:root {
+  --space-0: 0;
+  --space-0-5: 0.125rem;  /* 2px, fine adjustments only */
+  --space-1: 0.25rem;     /* 4px */
+  --space-1-5: 0.375rem;  /* 6px, dense rows */
+  --space-2: 0.5rem;      /* 8px */
+  --space-3: 0.75rem;     /* 12px */
+  --space-4: 1rem;        /* 16px */
+  --space-5: 1.25rem;     /* 20px */
+  --space-6: 1.5rem;      /* 24px */
+  --space-8: 2rem;        /* 32px */
+  --space-10: 2.5rem;     /* 40px */
+  --space-12: 3rem;       /* 48px */
+  --space-16: 4rem;       /* 64px */
+
+  /* Layout */
+  --page-padding: var(--space-6);
+  --sidebar-width: 16.5rem;    /* 264px */
+  --toolbar-height: 3.5rem;    /* 56px */
+  --inspector-width: 22rem;    /* 352px */
+  --readable-width: 42rem;     /* 672px */
+  --content-max: 80rem;        /* 1280px */
+
+  /* Control sizes */
+  --control-height-sm: 1.75rem;  /* 28px */
+  --control-height-md: 2.25rem;  /* 36px */
+  --control-height-lg: 2.75rem;  /* 44px */
+  --row-height: 2.75rem;         /* list row */
+  --row-height-dense: 2.25rem;   /* table row */
+  --nav-item-height: 2.5rem;     /* sidebar item, 40px */
+  --nav-section-height: 2rem;    /* sidebar section title, 32px */
+}
+
+/* Touch screens: every target at least 44px, as Apple requires, even on the compact scale */
+@media (pointer: coarse) {
+  :root {
+    --control-height-sm: max(2.75rem, 44px);
+    --control-height-md: max(2.75rem, 44px);
+    --row-height-dense: max(2.75rem, 44px);
+    --nav-item-height: max(2.75rem, 44px);
+  }
+}
+
+@media (width < 48rem) {
+  :root { --page-padding: var(--space-4); }
+}

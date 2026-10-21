@@ -1,0 +1,435 @@
+/* Finance Management (monochrome like the rest of Hub; banks and bills wear their brand colors) */
+.mg-page {
+  --mg-sticky-top: calc(var(--toolbar-height) + var(--space-4));
+  display: grid;
+  gap: var(--space-4);
+  padding-top: var(--space-2);
+}
+.mg-page > * { min-width: 0; }
+
+/* Brand colors, sampled from each logo. Bills use their company's color too. */
+[data-brand] { --brand: var(--color-label); }
+[data-brand="bsi"] { --brand: #00a39d; }
+[data-brand="seabank"] { --brand: #eb5e00; }
+[data-brand="bca"] { --brand: #0060af; }
+[data-brand="jago"] { --brand: #f5a623; }
+[data-brand="telkomsel"] { --brand: #d81e24; }
+[data-brand="pln"] { --brand: #0097d8; }
+[data-brand="indihome"] { --brand: #e4002b; }
+[data-brand="claude"] { --brand: #d97757; }
+[data-brand="food"] { --brand: #f08a00; }
+[data-brand="rent"] { --brand: #8e6e53; }
+[data-brand="ink"] { --brand: var(--color-label); }
+
+.mg-period { display: flex; align-items: center; gap: var(--space-1); }
+.mg-period-label { min-width: 11rem; text-align: center; font-size: var(--text-subheadline-size); font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; }
+.mg-period .icon-btn:disabled { opacity: 0.3; }
+.mg-report-btn { margin-inline-start: var(--space-2); }
+
+/* A gray line between the toolbar and the tabs */
+.mg-sep { margin: 0; border: 0; border-top: 1px solid var(--color-separator); }
+
+/* Tabs: each one its own small box, like the system maps */
+.mg-tabs-bar { position: sticky; top: var(--mg-sticky-top); z-index: var(--z-sticky); border-radius: var(--radius-lg); padding: var(--space-1-5); }
+.mg-tabs-bar > .tabs { gap: var(--space-1-5); background: transparent; padding: 0; border-radius: 0; }
+.mg-tabs-bar .tab {
+  flex: 1 1 0;
+  justify-content: center;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-secondary-system-grouped-background) 55%, transparent);
+}
+@media (hover: hover) {
+  .mg-tabs-bar .tab:hover { background: var(--color-secondary-system-grouped-background); }
+}
+.mg-tabs-bar .tab[aria-selected="true"] { background: var(--color-selected-glass); box-shadow: var(--shadow-selected); }
+
+.mg-view { display: grid; gap: var(--space-4); }
+.mg-view > * { min-width: 0; }
+.mg-section { margin-top: var(--space-3); font-size: var(--text-title-3-size); line-height: var(--text-title-3-line); font-weight: var(--weight-bold); }
+.mg-section:first-child { margin-top: 0; }
+
+/* Section headings inside a card */
+.mg-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+.mg-card-head h2, .mg-card-head h3 { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); font-size: var(--text-headline-size); line-height: var(--text-headline-line); font-weight: var(--weight-semibold); }
+.mg-card-head p { font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
+
+/* KPI tiles */
+.mg-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr)); gap: var(--space-3); }
+.mg-kpi { gap: var(--space-1); }
+.mg-kpi-label { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-footnote-size); line-height: var(--text-footnote-line); font-weight: var(--weight-semibold); color: var(--color-secondary-label); }
+.mg-kpi-value { font-size: var(--text-title-2-size); line-height: var(--text-title-2-line); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.mg-kpi-sub { font-size: var(--text-footnote-size); line-height: var(--text-footnote-line); color: var(--color-secondary-label); }
+.mg-kpi.is-hero { background: var(--color-label); color: var(--color-system-background); }
+.mg-kpi.is-hero .mg-kpi-label, .mg-kpi.is-hero .mg-kpi-sub { color: rgb(255 255 255 / 0.72); }
+
+.mg-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(26rem, 100%), 1fr)); gap: var(--space-4); align-items: start; }
+
+/* Logos are just the picture: no tile, no border. Every icon sits in the same 1.25rem square so rows line up. */
+.mg-logo { display: inline-grid; place-items: center; flex: none; width: 1.25rem; height: 1.25rem; }
+.mg-logo img { width: 100%; height: 100%; object-fit: contain; }
+.mg-logo.is-full { width: auto; height: 1.75rem; justify-items: start; }
+.mg-logo.is-full img { width: auto; height: 1.75rem; max-width: 7rem; object-fit: contain; object-position: left center; }
+
+/* Glyphs: a plain gray mark in the same square as the logos */
+.mg-glyph { display: inline-grid; place-items: center; flex: none; width: 1.25rem; height: 1.25rem; color: var(--color-secondary-label); }
+.mg-glyph .icon { --icon-size: 1rem; --icon-stroke: 1.9; }
+.mg-glyph.is-sm .icon { --icon-size: 0.95rem; }
+
+/* A node with its picture: bank logo or brand glyph, then the name */
+.mg-party { display: inline-flex; align-items: center; gap: var(--space-1-5); white-space: nowrap; }
+.mg-party .mg-logo, .mg-party .mg-glyph { width: 1.125rem; height: 1.125rem; }
+.mg-party .mg-glyph .icon { --icon-size: 0.85rem; }
+.mg-flow { display: inline-flex; align-items: center; gap: var(--space-1-5); white-space: nowrap; }
+.mg-flow > .icon { --icon-size: 0.75rem; color: var(--color-tertiary-label); }
+
+/* Bars: planned (gray track) with actual on top, in the bank's color when it is one */
+.mg-bars { display: grid; gap: var(--space-2); }
+.mg-bar {
+  display: grid;
+  grid-template-columns: minmax(7rem, 11rem) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-subheadline-size);
+  line-height: var(--text-subheadline-line);
+}
+.mg-bar-label { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+.mg-bar-label > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mg-bar-track { position: relative; height: 0.5rem; border-radius: var(--radius-full); }
+.mg-bar-plan, .mg-bar-actual { position: absolute; inset-block: 0; left: 0; border-radius: var(--radius-full); }
+.mg-bar-plan { background: var(--color-system-fill); }
+.mg-bar-actual { background: var(--color-label); }
+.mg-bar[data-brand] .mg-bar-plan { background: color-mix(in srgb, var(--brand) 18%, transparent); }
+.mg-bar[data-brand] .mg-bar-actual { background: var(--brand); }
+.mg-bar-value { font-variant-numeric: tabular-nums; text-align: end; white-space: nowrap; }
+.mg-bar-value small { display: block; font-size: var(--text-caption-1-size); color: var(--color-secondary-label); }
+.mg-legend { display: flex; flex-wrap: wrap; gap: var(--space-4); font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
+.mg-legend span { display: inline-flex; align-items: center; gap: var(--space-1-5); }
+.mg-swatch { width: 0.875rem; height: 0.5rem; border-radius: var(--radius-full); }
+.mg-swatch.is-plan { background: var(--color-system-fill); }
+.mg-swatch.is-actual { background: var(--color-label); }
+.mg-swatch.is-target { height: 0; border-top: 1.5px dashed var(--color-secondary-label); border-radius: 0; }
+
+/* Rows */
+.mg-row-text { display: grid; flex: 1; min-width: 0; }
+.mg-row-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mg-row-sub { font-size: var(--text-footnote-size); line-height: var(--text-footnote-line); color: var(--color-secondary-label); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mg-amount { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: var(--weight-semibold); }
+.mg-cat { display: inline-flex; align-items: center; gap: var(--space-2); white-space: nowrap; }
+.mg-row-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-0-5); white-space: nowrap; }
+.mg-row-actions .icon-btn { width: 2rem; height: 2rem; color: var(--color-secondary-label); }
+.mg-row-actions .icon-btn:hover { color: var(--color-label); }
+
+/* Status: done, planned, or overdue */
+.mg-status { display: inline-flex; align-items: center; gap: var(--space-1); white-space: nowrap; }
+.mg-status .icon { --icon-size: 0.75rem; }
+.mg-status.is-done { --badge-bg: color-mix(in srgb, var(--color-app-green) 16%, transparent); --badge-fg: color-mix(in srgb, var(--color-app-green), black 30%); }
+.mg-status.is-late { --badge-bg: color-mix(in srgb, var(--color-app-red) 14%, transparent); --badge-fg: color-mix(in srgb, var(--color-app-red), black 15%); }
+
+/* Ledger filters */
+.mg-filters { display: flex; flex-wrap: wrap; align-items: end; gap: var(--space-3); }
+.mg-filters .field { gap: var(--space-1); }
+.mg-filters .field-label { font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
+.mg-select { min-width: 10rem; }
+.mg-filters .search { width: min(18rem, 100%); }
+.mg-ledger-total { margin-inline-start: auto; text-align: end; font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
+.mg-ledger-total b { display: block; font-size: var(--text-headline-size); color: var(--color-label); font-variant-numeric: tabular-nums; }
+.mg-day-row td { background: var(--color-tertiary-system-grouped-background); font-size: var(--text-footnote-size); font-weight: var(--weight-semibold); color: var(--color-secondary-label); padding-block: var(--space-1); }
+
+/* Bank tiles (overview and accounts): name, balance, one line. The bank's mark lies tilted and gray in the
+   background; on hover the tile takes a light tint of the brand and the mark turns upright in full color. */
+.mg-banks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
+@media (width < 64rem) { .mg-banks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (width < 36rem) { .mg-banks { grid-template-columns: minmax(0, 1fr); } }
+.mg-bank {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--space-1);
+  min-height: 8.5rem;
+  padding: var(--space-4);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-secondary-system-grouped-background);
+  box-shadow: var(--shadow-card, 0 1px 2px rgb(0 0 0 / 0.06));
+  isolation: isolate;
+  transition: background-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+}
+.mg-bank-mark {
+  position: absolute;
+  z-index: -1;
+  right: -0.75rem;
+  bottom: -1rem;
+  width: 6.5rem;
+  height: 6.5rem;
+  object-fit: contain;
+  opacity: 0.1;
+  filter: grayscale(1);
+  rotate: -16deg;
+  transition: rotate var(--spring-smooth-duration, 0.45s) var(--spring-smooth, ease-out), opacity var(--duration-fast) var(--ease-out), filter var(--duration-fast) var(--ease-out), scale var(--spring-smooth-duration, 0.45s) var(--spring-smooth, ease-out);
+}
+@media (hover: hover) {
+  .mg-bank:hover { background: color-mix(in srgb, var(--brand) 7%, var(--color-secondary-system-grouped-background)); box-shadow: var(--shadow-selected); }
+  .mg-bank:hover .mg-bank-mark { opacity: 0.32; filter: none; rotate: 0deg; scale: 1.06; }
+}
+@media (prefers-reduced-motion: reduce) { .mg-bank-mark { transition: none; } }
+.mg-bank-name { font-size: var(--text-subheadline-size); font-weight: var(--weight-semibold); color: var(--color-secondary-label); }
+.mg-bank-balance { font-size: var(--text-title-3-size); line-height: var(--text-title-3-line); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; }
+.mg-bank-role { font-size: var(--text-footnote-size); line-height: var(--text-footnote-line); color: var(--color-secondary-label); }
+.mg-bank-meter { display: grid; gap: var(--space-1); margin-top: auto; padding-top: var(--space-2); font-size: var(--text-caption-1-size); color: var(--color-secondary-label); font-variant-numeric: tabular-nums; }
+.mg-bank-meter .mg-progress-track { height: 0.3rem; background: var(--color-system-fill); }
+.mg-bank-meter .mg-progress-fill { background: var(--color-label); }
+.mg-pockets-card .mg-card-head h2 .mg-logo { width: 1.375rem; height: 1.375rem; }
+.mg-pockets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
+@media (width < 64rem) { .mg-pockets { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.mg-pocket-card { display: grid; align-content: start; gap: var(--space-1); padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-tertiary-system-grouped-background); cursor: default; }
+.mg-pocket-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.mg-pocket-name { font-size: var(--text-subheadline-size); font-weight: var(--weight-semibold); }
+.mg-pocket-balance { font-size: var(--text-headline-size); line-height: var(--text-headline-line); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; }
+.mg-pocket-card .mg-progress-track { height: 0.3rem; margin-top: var(--space-1); }
+.mg-pocket-card .mg-progress-fill { background: var(--color-label); }
+.mg-pocket-note { font-size: var(--text-caption-1-size); line-height: var(--text-caption-1-line); color: var(--color-secondary-label); font-variant-numeric: tabular-nums; }
+.mg-pocket-card .mg-row-sub { white-space: normal; overflow: visible; }
+
+
+/* Payday steps */
+.mg-form { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr)); gap: var(--space-3); }
+.mg-form .field-input { font-variant-numeric: tabular-nums; }
+.mg-steps { display: grid; gap: var(--space-2); }
+.mg-step { display: grid; grid-template-columns: 1.75rem minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); background: var(--color-tertiary-system-grouped-background); font-size: var(--text-subheadline-size); }
+.mg-step-num { display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--color-label); color: var(--color-system-background); font-size: var(--text-caption-1-size); font-weight: var(--weight-bold); }
+.mg-step-flow { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1-5); }
+.mg-step-flow > .icon { --icon-size: 0.75rem; color: var(--color-tertiary-label); }
+.mg-warn { color: var(--color-error-text); font-size: var(--text-footnote-size); }
+
+/* Spending: fixed lines and changing lines side by side, same scale */
+.mg-split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4) var(--space-6); }
+@media (width < 64rem) { .mg-split { grid-template-columns: minmax(0, 1fr); } }
+.mg-group { display: grid; align-content: start; gap: var(--space-2); }
+.mg-group > header { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); padding-bottom: var(--space-1); border-bottom: var(--hairline) solid var(--color-separator); }
+.mg-group h3 { font-size: var(--text-subheadline-size); font-weight: var(--weight-semibold); }
+.mg-group > header span { font-size: var(--text-footnote-size); color: var(--color-secondary-label); font-variant-numeric: tabular-nums; }
+
+/* Calendar. Every day is a button; the limit line is green, yellow, or red. */
+.mg-cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--space-1); }
+.mg-cal-head { padding: var(--space-1); font-size: var(--text-caption-1-size); font-weight: var(--weight-semibold); color: var(--color-secondary-label); text-align: center; }
+.mg-cal-day {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  align-content: start;
+  gap: var(--space-1);
+  min-width: 0;
+  min-height: 5rem;
+  padding: var(--space-1-5);
+  border-radius: var(--radius-sm);
+  background: var(--color-secondary-system-grouped-background);
+  box-shadow: inset 0 0 0 var(--hairline) var(--color-separator);
+  font-size: var(--text-caption-1-size);
+  line-height: var(--text-caption-1-line);
+  text-align: start;
+  transition: box-shadow var(--duration-instant) var(--ease-out), background-color var(--duration-instant) var(--ease-out);
+}
+@media (hover: hover) {
+  .mg-cal-day:not(.is-blank):hover { box-shadow: inset 0 0 0 1px var(--color-tertiary-label); }
+}
+.mg-cal-day.is-weekend { background: var(--color-tertiary-system-grouped-background); }
+.mg-cal-day.is-future { color: var(--color-secondary-label); }
+.mg-cal-day.is-blank { background: transparent; box-shadow: none; }
+.mg-cal-day.is-payday { background: color-mix(in srgb, var(--color-app-yellow) 12%, var(--color-secondary-system-grouped-background)); }
+.mg-cal-day.is-today .mg-cal-num > span:first-child { display: inline-grid; place-items: center; min-width: 1.35rem; padding: 0 var(--space-1); border-radius: var(--radius-full); background: var(--color-label); color: var(--color-system-background); }
+.mg-cal-day.is-selected, .mg-cal-day.is-selected:hover { box-shadow: inset 0 0 0 2px var(--color-label); }
+.mg-cal-num { display: flex; align-items: center; justify-content: space-between; gap: var(--space-1); font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; }
+.mg-star { display: inline-grid; color: #f2b300; }
+.mg-star > .icon { --icon-size: 0.9rem; fill: currentColor; }
+
+/* The limit line in a day and the three boxes in the day panel */
+[data-tone] { --tone: var(--color-secondary-label); }
+[data-tone="ok"] { --tone: color-mix(in srgb, var(--color-app-green), black 22%); }
+[data-tone="on"] { --tone: color-mix(in srgb, var(--color-app-yellow), black 30%); }
+[data-tone="over"] { --tone: color-mix(in srgb, var(--color-app-red), black 8%); }
+.mg-cal-limit { display: inline-flex; align-items: center; gap: 2px; justify-self: start; max-width: 100%; padding: 0 var(--space-1); border-radius: var(--radius-xs); color: var(--tone); background: color-mix(in srgb, var(--tone) 12%, transparent); font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; }
+.mg-cal-limit[data-tone="plan"] { background: none; padding: 0; font-weight: var(--weight-regular); }
+.mg-cal-limit .icon { --icon-size: 0.7rem; --icon-stroke: 2.4; flex: none; }
+.mg-cal-marks { display: flex; flex-wrap: wrap; align-content: end; gap: 3px; }
+.mg-cal-mark { display: inline-grid; }
+.mg-cal-mark .mg-logo, .mg-cal-mark .mg-glyph { width: 1rem; height: 1rem; }
+.mg-cal-mark .mg-glyph .icon { --icon-size: 0.8rem; }
+.mg-cal-mark.is-planned { opacity: 0.4; }
+.mg-cal-more { font-size: var(--text-caption-2-size); color: var(--color-secondary-label); align-self: center; }
+.mg-cal-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-4); font-size: var(--text-caption-1-size); color: var(--color-secondary-label); }
+.mg-keys { display: inline-flex; gap: var(--space-3); }
+.mg-key { display: inline-flex; align-items: center; gap: var(--space-1); }
+.mg-key i { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--tone); }
+@media (width < 48rem) {
+  .mg-cal-day { min-height: 3.75rem; padding: var(--space-1); }
+  .mg-cal-limit { font-size: var(--text-caption-2-size); }
+  .mg-cal-marks { display: none; }
+}
+
+/* The open day */
+.mg-day { gap: var(--space-3); }
+.mg-payday { display: inline-flex; align-items: center; gap: var(--space-1); --badge-bg: color-mix(in srgb, var(--color-app-yellow) 24%, transparent); }
+.mg-payday .icon { --icon-size: 0.75rem; fill: #f2b300; color: #c99500; }
+/* Day entries: one calm line each. Edit, delete, and undo appear on hover or keyboard focus. */
+.mg-entries { display: grid; }
+.mg-entry {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-2);
+  margin-inline: calc(var(--space-2) * -1);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-subheadline-size);
+  line-height: var(--text-subheadline-line);
+}
+.mg-entry + .mg-entry { box-shadow: 0 calc(var(--hairline) * -1) 0 var(--color-separator); }
+.mg-entry:hover, .mg-entry:focus-within, .mg-entry.is-editing { background: var(--color-quaternary-system-fill); box-shadow: none; }
+.mg-entry:hover + .mg-entry, .mg-entry:focus-within + .mg-entry { box-shadow: none; }
+.mg-entry.is-planned .mg-entry-text, .mg-entry.is-planned .mg-amount, .mg-entry.is-planned > .mg-logo, .mg-entry.is-planned > .mg-glyph { opacity: 0.55; }
+.mg-entry-text { display: grid; min-width: 0; }
+.mg-entry-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: var(--weight-medium); }
+.mg-check { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; color: color-mix(in srgb, var(--color-app-green), black 25%); background: color-mix(in srgb, var(--color-app-green) 14%, transparent); }
+.mg-check .icon { --icon-size: 0.8rem; }
+.mg-entry-tools { display: flex; gap: var(--space-0-5); opacity: 0; transition: opacity var(--duration-fast) var(--ease-out); }
+.mg-entry:hover .mg-entry-tools, .mg-entry:focus-within .mg-entry-tools, .mg-entry.is-editing .mg-entry-tools { opacity: 1; }
+@media (hover: none) { .mg-entry-tools { opacity: 1; } }
+.mg-entry-tools .icon-btn { width: 1.875rem; height: 1.875rem; color: var(--color-secondary-label); }
+.mg-entry-tools .icon-btn:hover { color: var(--color-label); }
+
+/* Pocket fills and other moves between my accounts, folded into one line */
+.mg-moves { border-top: var(--hairline) solid var(--color-separator); padding-top: var(--space-2); }
+.mg-moves summary { display: flex; align-items: center; gap: var(--space-2); cursor: pointer; font-size: var(--text-footnote-size); color: var(--color-secondary-label); list-style: none; }
+.mg-moves summary::-webkit-details-marker { display: none; }
+.mg-moves summary::before { content: "›"; display: inline-block; width: 0.75rem; font-size: 1rem; transition: rotate var(--duration-fast) var(--ease-out); }
+.mg-moves[open] summary::before { rotate: 90deg; }
+.mg-moves summary span { margin-inline-start: auto; font-variant-numeric: tabular-nums; }
+.mg-moves[open] .mg-entries { margin-top: var(--space-1); }
+
+/* Header: the date on the left, the day's limit as one line on the right */
+.mg-day-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+.mg-day-head h2 { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); font-size: var(--text-headline-size); line-height: var(--text-headline-line); font-weight: var(--weight-semibold); }
+.mg-limit-line { display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-1) var(--space-3); border-radius: var(--radius-full); font-size: var(--text-footnote-size); font-variant-numeric: tabular-nums; color: var(--tone); background: color-mix(in srgb, var(--tone) 11%, transparent); }
+.mg-limit-line[data-tone="plan"] { color: var(--color-secondary-label); background: var(--color-tertiary-system-fill); }
+.mg-limit-line .icon { --icon-size: 0.8rem; }
+.mg-day-tools { display: flex; align-items: center; gap: var(--space-3); }
+.mg-day-tools .btn .icon, .mg-add-today .icon { --icon-size: 0.85rem; }
+
+/* Category picks in the entry form */
+.mg-cat-picks { display: flex; flex-wrap: wrap; gap: var(--space-1-5); }
+.mg-cat-chip[aria-pressed="false"] { --badge-fg: var(--color-secondary-label); --badge-bg: var(--color-tertiary-system-fill); }
+.mg-cat-chip[aria-pressed="true"] { --badge-fg: var(--color-system-background); --badge-bg: var(--color-label); }
+
+/* Tab bar: the four tabs, then the last update time and a quiet refresh button */
+.mg-tabs-bar { display: flex; align-items: center; gap: var(--space-3); }
+.mg-tabs-bar > .tabs { flex: 1; min-width: 0; }
+.mg-tabs-tools { display: flex; align-items: center; gap: var(--space-1); padding-inline-end: var(--space-1); }
+.mg-tabs-tools span { font-size: var(--text-caption-1-size); color: var(--color-secondary-label); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mg-tabs-tools .icon-btn { width: 2rem; height: 2rem; color: var(--color-secondary-label); }
+.mg-tabs-tools .icon-btn:hover { color: var(--color-label); }
+.mg-add-today { margin-inline-start: var(--space-2); }
+.mg-day-note { display: flex; gap: var(--space-2); font-size: var(--text-footnote-size); line-height: var(--text-footnote-line); color: var(--color-secondary-label); }
+.mg-day-note .icon { flex: none; margin-top: 2px; }
+.mg-ok { display: flex; align-items: center; gap: var(--space-1-5); font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
+.mg-day .field-error { display: flex; align-items: center; gap: var(--space-1-5); }
+
+/* Entry form on a day */
+.mg-entry-form { display: grid; gap: var(--space-3); padding-top: var(--space-3); border-top: var(--hairline) solid var(--color-separator); }
+.mg-entry-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.mg-entry-head h3 { font-size: var(--text-subheadline-size); font-weight: var(--weight-semibold); }
+.mg-entry-form .mg-form { grid-template-columns: minmax(9rem, 1fr) minmax(14rem, 2fr) minmax(10rem, 1fr) minmax(10rem, 1fr); align-items: end; border: 0; padding: 0; margin: 0; min-width: 0; }
+@media (width < 64rem) { .mg-entry-form .mg-form { grid-template-columns: repeat(2, minmax(0, 1fr)); } .mg-entry-form .is-desc { grid-column: 1 / -1; } }
+.mg-more .mg-form { grid-template-columns: minmax(8rem, 1fr) minmax(8rem, 1fr) minmax(12rem, 3fr); }
+.mg-entry-form .field { gap: var(--space-1); min-width: 0; }
+.mg-entry-form .is-wide { grid-column: 1 / -1; }
+.mg-entry-form .field-label { font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
+.mg-entry-form textarea { resize: vertical; min-height: 3rem; }
+.mg-entry-form .btn .icon { --icon-size: 0.9rem; }
+.mg-more summary { cursor: pointer; font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
+.mg-more[open] summary { margin-bottom: var(--space-2); }
+
+/* Savings */
+.mg-progress { display: grid; gap: var(--space-1); }
+.mg-progress-track { height: 0.5rem; border-radius: var(--radius-full); background: var(--color-system-fill); overflow: hidden; }
+.mg-progress-fill { height: 100%; border-radius: var(--radius-full); background: var(--color-label); }
+.mg-progress-meta { display: flex; justify-content: space-between; gap: var(--space-3); font-size: var(--text-footnote-size); color: var(--color-secondary-label); font-variant-numeric: tabular-nums; }
+
+/* Projection chart */
+.mg-chart { position: relative; }
+.mg-chart svg { display: block; width: 100%; height: auto; overflow: visible; font-family: var(--font-sans); }
+.mg-chart .grid line { stroke: var(--color-separator); stroke-width: 1; }
+.mg-chart .axis text { font-size: 10px; fill: var(--color-secondary-label); font-variant-numeric: tabular-nums; }
+.mg-chart .area { fill: var(--color-quaternary-system-fill); }
+.mg-chart .line { fill: none; stroke: var(--color-label); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.mg-chart .target line { stroke: var(--color-secondary-label); stroke-width: 1.2; stroke-dasharray: 4 3; }
+.mg-chart .target text { font-size: 10px; font-weight: 600; fill: var(--color-secondary-label); }
+.mg-chart .dot { fill: var(--color-label); stroke: var(--color-secondary-system-grouped-background); stroke-width: 2; }
+.mg-chart .hit { fill: transparent; cursor: default; }
+.mg-chart .cross { stroke: var(--color-tertiary-label); stroke-width: 1; }
+.mg-tip {
+  position: absolute;
+  z-index: 2;
+  padding: var(--space-1-5) var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-label);
+  color: var(--color-system-background);
+  font-size: var(--text-caption-1-size);
+  line-height: var(--text-caption-1-line);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+  translate: -50% calc(-100% - 10px);
+}
+
+.mg-notes { display: grid; gap: var(--space-2); padding-inline-start: var(--space-5); font-size: var(--text-subheadline-size); line-height: var(--text-body-line-relaxed); color: var(--color-secondary-label); }
+.mg-notes li::marker { color: var(--color-tertiary-label); font-variant-numeric: tabular-nums; }
+
+/* Database banner */
+.mg-banner { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); background: var(--color-tertiary-system-fill); font-size: var(--text-footnote-size); line-height: var(--text-footnote-line); }
+.mg-banner[hidden] { display: none; }
+.mg-banner .icon { flex: none; color: var(--color-error-text); }
+
+/* Report dialog */
+.mg-report-dialog { width: min(24rem, calc(100vw - var(--space-8))); }
+.mg-report-options { display: grid; gap: var(--space-2); margin: 0; padding: var(--space-4) var(--pad) 0; border: 0; }
+.mg-report-option { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); background: var(--color-tertiary-system-fill); cursor: pointer; }
+.mg-report-option > span { display: grid; flex: 1; gap: var(--space-1); }
+.mg-report-option small { color: var(--color-secondary-label); font-size: var(--text-footnote-size); }
+.mg-report-option:has(input:checked) { box-shadow: inset 0 0 0 2px var(--color-label); }
+/* In tables, long names may wrap so every column fits */
+.table .mg-party { white-space: normal; }
+
+/* Plan: budget table group headings */
+.mg-group-row td { padding-top: var(--space-3); font-weight: var(--weight-semibold); background: var(--color-tertiary-system-grouped-background); }
+.mg-group-row td span { margin-inline-start: var(--space-2); font-weight: var(--weight-regular); color: var(--color-secondary-label); font-size: var(--text-footnote-size); }
+/* Payday transfers flow across the width */
+.mg-steps { grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr)); }
+.mg-notes.is-columns { columns: 2 22rem; column-gap: var(--space-8); }
+.mg-notes.is-columns li { break-inside: avoid; margin-bottom: var(--space-2); }
+
+#mg-refresh[aria-busy] .icon { animation: mg-spin 0.8s linear infinite; }
+@keyframes mg-spin { to { rotate: 360deg; } }
+
+/* Loading skeletons: soft gray shapes with a light sweep */
+.sk {
+  display: block;
+  border-radius: var(--radius-xs);
+  background: linear-gradient(90deg, var(--color-tertiary-system-fill) 0%, var(--color-quaternary-system-fill) 45%, var(--color-tertiary-system-fill) 90%);
+  background-size: 220% 100%;
+  animation: mg-shimmer 1.3s ease-in-out infinite;
+}
+@keyframes mg-shimmer { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+@media (prefers-reduced-motion: reduce) { .sk, #mg-refresh[aria-busy] .icon { animation: none; } }
+.mg-sk-card { gap: var(--space-3); }
+.sk-title { width: 12rem; height: 1rem; }
+.sk-label { width: 45%; height: 0.7rem; }
+.sk-value { width: 70%; height: 1.4rem; }
+.sk-line { width: 80%; height: 0.7rem; }
+.sk-num { width: 5rem; height: 0.8rem; margin-inline-start: auto; }
+.sk-dot { width: 1.5rem; height: 1.5rem; border-radius: 6px; flex: none; }
+.sk-cell { height: 5rem; border-radius: var(--radius-sm); }
+.sk-field { width: 10rem; height: 2rem; border-radius: var(--radius-sm); }
+.mg-sk-row { display: flex; align-items: center; gap: var(--space-3); padding-block: var(--space-2); border-bottom: var(--hairline) solid var(--color-separator); }
+.mg-sk-row .sk-line { width: 40%; }
+.mg-sk-filters { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.mg-kpi .sk + .sk, .mg-bank .sk + .sk, .mg-pocket-card .sk + .sk { margin-top: var(--space-1); }

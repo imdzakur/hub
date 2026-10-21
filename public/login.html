@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sign In - Hub</title>
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script type="module" src="/assets/js/device-gate.js"></script>
+  <script type="module" src="/assets/js/login.js"></script>
+</head>
+<body class="login-page">
+  <main class="login-card material material-thick">
+    <img class="brand-icon" src="/assets/img/app-icon.svg" alt="" width="72" height="72">
+    <h1 class="text-title-2 strong">Hub</h1>
+    <p class="text-subheadline text-secondary">Enter your password to continue.</p>
+
+    <form class="login-form" method="post" action="/api/login">
+      <div class="field">
+        <label class="field-label" for="password">Password</label>
+        <input class="field-input" id="password" name="password" type="password"
+               autocomplete="current-password" required autofocus>
+      </div>
+      <p class="field-error" id="login-error" role="alert" hidden>
+        <svg class="icon icon-sm" aria-hidden="true"><use href="/assets/icons/sprite.svg#circle-x"></use></svg>
+        <span class="login-error-text"></span>
+      </p>
+      <button class="btn btn-filled btn-lg login-submit" type="submit">Sign In</button>
+    </form>
+  </main>
+</body>
+</html>

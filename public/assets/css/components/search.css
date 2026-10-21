@@ -1,0 +1,26 @@
+.search { position: relative; display: block; min-width: 0; }
+.search-input {
+  border-radius: var(--radius-full);
+  border-color: transparent;
+  background: var(--color-tertiary-system-fill);
+  padding-inline: var(--space-8) var(--space-8);
+}
+.search-input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+.search-icon {
+  position: absolute;
+  left: var(--space-3);
+  top: 50%;
+  translate: 0 -50%;
+  color: var(--color-secondary-label);
+  pointer-events: none;
+}
+.search-clear {
+  position: absolute;
+  right: var(--space-1);
+  top: 50%;
+  translate: 0 -50%;
+  width: var(--control-height-sm);
+  height: var(--control-height-sm);
+}
+/* The clear button only shows when there is text */
+.search-input:placeholder-shown + .search-clear { display: none; }

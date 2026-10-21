@@ -1,0 +1,1212 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Peta Integrasi Sistem Retail dan Manufaktur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #F3F5F9;
+  --surface: #FFFFFF;
+  --ink: #152036;
+  --muted: #5C677D;
+  --faint: #8A94A8;
+  --line: #A9B3C5;
+  --hair: #E1E6EE;
+  --chip: #EDF2FA;
+  --chip-ink: #2650A8;
+  --sel: #2650A8;
+  --sel-soft: #E8EEFA;
+  --route: #D88A00;
+  --route-soft: #F1CD84;
+  --route-bg: #FFF7E6;
+  --route-ink: #2A1A00;
+  --ext: #F6F7FA;
+  --ext-chip: #E9ECF1;
+  --font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 72px); -webkit-text-size-adjust: 100%; background: var(--paper); }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font); font-size: 15.5px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+button, input { font-family: inherit; }
+:focus-visible { outline: 2.5px solid var(--sel); outline-offset: 2px; }
+.ic { display: inline-block; flex: 0 0 auto; vertical-align: middle; }
+
+.wrap { max-width: 1480px; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+
+/* header */
+.top { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding-top: 30px; padding-bottom: 18px; }
+.brand h1 { margin: 0; font-size: clamp(28px, 3.4vw, 42px); line-height: 1.08; font-weight: 800; letter-spacing: -0.025em; }
+.brand p { margin: 10px 0 0; color: var(--muted); max-width: 60ch; font-size: 16px; }
+.brand p strong { color: var(--ink); font-weight: 800; font-variant-numeric: tabular-nums; }
+.search { position: relative; width: 400px; max-width: 100%; flex: 0 0 auto; }
+.search-box { display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 12px 0 14px; background: var(--surface); border: 1.5px solid var(--hair); border-radius: 14px; color: var(--muted); }
+.search-box:focus-within { border-color: var(--sel); box-shadow: 0 0 0 4px var(--sel-soft); }
+.search input { flex: 1; min-width: 0; border: 0; outline: none; background: none; font-size: 15px; color: var(--ink); height: 100%; }
+.search input::placeholder { color: var(--faint); }
+.search input::-webkit-search-cancel-button { display: none; }
+.search kbd { font-family: var(--font); font-size: 12px; font-weight: 700; color: var(--faint); border: 1.5px solid var(--hair); border-radius: 6px; padding: 1px 7px; }
+#results { position: absolute; z-index: 20; top: calc(100% + 8px); left: 0; right: 0; max-height: 440px; overflow: auto; background: var(--surface); border: 1px solid var(--hair); border-radius: 14px; box-shadow: 0 16px 40px rgba(21, 32, 54, .14); padding: 6px; }
+#results .empty { margin: 0; padding: 14px; color: var(--muted); font-size: 14px; }
+.res { display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: center; width: 100%; text-align: left; border: 0; background: none; border-radius: 10px; padding: 8px; cursor: pointer; color: var(--ink); }
+.res:hover, .res.active { background: var(--sel-soft); }
+.res-body { display: grid; min-width: 0; }
+.res-name { font-size: 14.5px; font-weight: 600; }
+.res-sub { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* tabs */
+.tabbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); border-bottom: 1px solid var(--hair); }
+.tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 8px; border: 0; background: none; color: var(--muted); font-size: 14.5px; font-weight: 600; padding: 15px 14px 13px; border-bottom: 3px solid transparent; cursor: pointer; white-space: nowrap; }
+.tab:hover { color: var(--ink); }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--sel); }
+.tab[aria-selected="true"] .ic { color: var(--sel); }
+.tab-cnt { font-size: 12px; font-weight: 700; color: var(--muted); background: var(--surface); border: 1px solid var(--hair); border-radius: 999px; padding: 1px 8px; font-variant-numeric: tabular-nums; }
+.tab[aria-selected="true"] .tab-cnt { color: var(--sel); border-color: #C9D6F1; background: var(--sel-soft); }
+
+/* toolbar */
+.toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; padding: 16px 0; }
+.tb { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.tb-label { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--muted); margin-right: 4px; }
+.chip { border: 1.5px solid var(--hair); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 7px 14px; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+.chip:hover { border-color: var(--route-soft); }
+.chip[aria-pressed="true"] { background: var(--route); border-color: var(--route); color: var(--route-ink); }
+.mode { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--hair); background: var(--surface); color: var(--ink); border-radius: 10px; padding: 7px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.mode svg path { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+.mode[aria-pressed="false"] { color: var(--faint); background: transparent; border-style: dashed; }
+.mode[aria-pressed="false"] svg path { stroke: var(--faint); }
+
+/* layout */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 404px; gap: 20px; align-items: start; }
+@media (max-width: 1080px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+.layout > section { min-width: 0; }
+.swipe { display: none; align-items: center; gap: 8px; margin: 0 0 10px; font-size: 13.5px; color: var(--muted); }
+@media (max-width: 1080px) { .swipe { display: flex; } }
+
+/* map */
+.mapbox { background: var(--surface); border: 1px solid var(--hair); border-radius: 18px; overflow-x: auto; overflow-y: hidden; }
+#map { display: block; width: 100%; min-width: 960px; height: auto; font-family: var(--font); }
+.edge { fill: none; stroke: var(--line); stroke-width: 1.5; transition: opacity .2s ease, stroke .2s ease; }
+.edge.m-bt { stroke-dasharray: 6 5; }
+.edge.m-ev { stroke-dasharray: 1.5 5; stroke-linecap: round; stroke-width: 2; }
+.edge.off, .ehit.off { display: none; }
+.edge.dim { opacity: .1; }
+.edge.on { stroke: var(--sel); stroke-width: 2.2; }
+.edge.hot { stroke: var(--route); stroke-width: 2.8; opacity: 1; }
+.edge.r-past { stroke: var(--route-soft); stroke-width: 2.8; stroke-dasharray: none; }
+.edge.r-now { stroke: var(--route); stroke-width: 4; stroke-dasharray: 11 7; stroke-linecap: butt; animation: flow .9s linear infinite; }
+.edge.r-now.rev { animation-direction: reverse; }
+@keyframes flow { to { stroke-dashoffset: -18; } }
+.ehit { fill: none; stroke: transparent; stroke-width: 14; pointer-events: stroke; cursor: help; }
+.node { cursor: pointer; outline: none; }
+.node .nb { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; transition: stroke .15s ease, fill .15s ease; }
+.node.ext .nb { fill: var(--ext); stroke-dasharray: 5 4; }
+.node .chip { fill: var(--chip); stroke: none; transition: fill .15s ease; }
+.node.ext .chip { fill: var(--ext-chip); }
+.node .ico { color: var(--chip-ink); pointer-events: none; }
+.node.ext .ico { color: var(--muted); }
+.node .nl { font-size: 13.5px; font-weight: 600; fill: var(--ink); pointer-events: none; }
+.node .nl.sm { font-size: 12.5px; }
+.node .nt { font-size: 11px; font-weight: 700; fill: var(--faint); pointer-events: none; font-variant-numeric: tabular-nums; }
+.node, .node * { transition: opacity .2s ease; }
+.node:hover .nb { stroke: var(--sel); }
+.node.dim { opacity: .3; }
+.node.on .nb { stroke: var(--sel); stroke-width: 1.7; }
+.node.sel .nb { stroke: var(--sel); stroke-width: 2.6; fill: var(--sel-soft); }
+.node.sel .chip { fill: var(--surface); }
+.node.r-node .nb { stroke: var(--route-soft); stroke-width: 2.2; }
+.node.r-now .nb { stroke: var(--route); stroke-width: 3; fill: var(--route-bg); }
+.node.r-now .chip { fill: var(--surface); }
+.node:focus-visible .nb { stroke: var(--sel); stroke-width: 3; }
+.elabel { font-size: 12px; font-weight: 600; fill: var(--ink); paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round; pointer-events: none; }
+.elabel.hot { font-size: 13px; }
+.badge circle { fill: var(--surface); stroke: var(--route-soft); stroke-width: 2; }
+.badge text { font-size: 11.5px; font-weight: 800; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.badge.now circle { fill: var(--route); stroke: var(--route); }
+.badge.now text { fill: var(--route-ink); }
+@media (prefers-reduced-motion: reduce) {
+  .edge.r-now { animation: none; stroke-dasharray: none; }
+  .edge, .node .nb, .node .chip, .node, .node * { transition: none; }
+}
+
+.legend { display: flex; flex-wrap: wrap; gap: 8px 22px; padding: 12px 6px 0; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+
+/* panel */
+.panel { background: var(--surface); border: 1px solid var(--hair); border-radius: 18px; padding: 20px 20px 22px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 72px); max-height: calc(100vh - 92px); overflow: auto; }
+@media (max-width: 1080px) { .panel { position: static; max-height: none; } }
+.p-head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.p-chip { width: 46px; height: 46px; border-radius: 13px; background: var(--chip); color: var(--chip-ink); display: grid; place-items: center; flex: 0 0 auto; }
+.p-chip.ext { background: var(--ext-chip); color: var(--muted); }
+.panel .kind { font-size: 13px; font-weight: 700; color: var(--muted); margin: 0; }
+.panel h2 { font-size: 22px; line-height: 1.2; font-weight: 800; letter-spacing: -0.015em; margin: 1px 0 0; }
+.panel h3 { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 800; margin: 22px 0 10px; }
+.count { font-size: 12px; font-weight: 700; color: var(--muted); background: var(--paper); border-radius: 999px; padding: 1px 8px; font-variant-numeric: tabular-nums; }
+.panel .lead { margin: 0 0 14px; line-height: 1.6; }
+.panel ul, .panel ol { margin: 0; padding: 0; list-style: none; }
+.tips li { display: flex; gap: 10px; align-items: flex-start; color: var(--muted); font-size: 14px; padding: 4px 0; }
+.tips .ic { color: var(--chip-ink); margin-top: 1px; }
+.back { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; color: var(--muted); font-size: 13.5px; font-weight: 700; padding: 4px 0; margin-bottom: 12px; cursor: pointer; }
+.back:hover { color: var(--ink); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 700; padding: 9px 14px; border-radius: 10px; border: 1.5px solid var(--hair); background: var(--surface); color: var(--ink); cursor: pointer; }
+.btn:hover:not(:disabled) { border-color: var(--line); }
+.btn:disabled { opacity: .4; cursor: default; }
+.btn.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+.btn.primary:hover { background: #24304A; }
+.btn.wide { width: 100%; margin-top: 2px; }
+.btn.icon-only { width: 40px; height: 40px; padding: 0; }
+
+.nodelist li + li, .grouplist li + li { border-top: 1px solid var(--hair); }
+.nodelist button, .grouplist li { display: grid; grid-template-columns: 32px 1fr auto; align-items: center; gap: 10px; width: 100%; text-align: left; background: none; border: 0; padding: 8px 6px; color: var(--ink); font-size: 14.5px; border-radius: 10px; }
+.nodelist button { cursor: pointer; }
+.nodelist button:hover { background: var(--paper); }
+.nl-chip { width: 32px; height: 32px; border-radius: 9px; background: var(--chip); color: var(--chip-ink); display: grid; place-items: center; }
+.nl-chip.ext { background: var(--ext-chip); color: var(--muted); }
+.nl-name { font-weight: 600; }
+.nl-num { display: inline-block; min-width: 22px; color: var(--faint); font-weight: 700; font-size: 12.5px; font-variant-numeric: tabular-nums; margin-right: 4px; }
+.nl-cnt { color: var(--muted); font-size: 12.5px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.nodelist .is-ext .nl-name { font-weight: 500; color: var(--muted); }
+
+.conns li + li { margin-top: 6px; }
+.conn { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; width: 100%; text-align: left; background: var(--paper); border: 1.5px solid transparent; border-radius: 12px; padding: 9px 10px; color: var(--ink); cursor: pointer; }
+.conn:hover, .conn:focus-visible { border-color: var(--route); background: var(--route-bg); }
+.conn.muted { opacity: .45; }
+.c-chip { width: 32px; height: 32px; border-radius: 9px; background: var(--surface); color: var(--chip-ink); display: grid; place-items: center; }
+.c-chip.ext { color: var(--muted); }
+.c-body { display: grid; min-width: 0; }
+.c-name { font-size: 14px; font-weight: 700; }
+.c-what { font-size: 13px; color: var(--muted); line-height: 1.4; }
+.c-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-top: 4px; }
+.c-mode { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.c-proto { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--chip-ink); background: var(--surface); border: 1px solid #D5DFF2; border-radius: 6px; padding: 1px 7px; white-space: nowrap; }
+.c-to { font-weight: 500; color: var(--muted); }
+.panel .hint { margin: -4px 0 10px; color: var(--muted); font-size: 13.5px; }
+.protolist li + li { border-top: 1px solid var(--hair); }
+.protolist button { display: grid; grid-template-columns: 32px 1fr auto; align-items: center; gap: 10px; width: 100%; text-align: left; background: none; border: 0; padding: 7px 6px; color: var(--ink); font-size: 14.5px; border-radius: 10px; cursor: pointer; }
+.protolist button:hover { background: var(--paper); }
+.pl-chip { width: 32px; height: 32px; border-radius: 9px; background: var(--paper); color: var(--chip-ink); display: grid; place-items: center; border: 1px solid var(--hair); }
+.pl-name { font-weight: 600; }
+.also { display: flex; flex-wrap: wrap; gap: 8px; }
+.also .chip { display: inline-flex; align-items: center; gap: 6px; }
+.s-proto { display: inline-flex; justify-self: start; align-items: center; gap: 5px; margin-top: 5px; font-size: 12px; font-weight: 700; color: var(--chip-ink); background: var(--surface); border: 1px solid #D5DFF2; border-radius: 6px; padding: 1px 7px; }
+.c-mode path { fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round; }
+
+.sys li { display: grid; grid-template-columns: 38px 1fr; gap: 6px; padding: 9px 6px; border-top: 1px solid var(--hair); border-radius: 8px; }
+.sys li:first-child { border-top: 0; }
+.s-no { font-size: 13px; font-weight: 700; color: var(--faint); font-variant-numeric: tabular-nums; padding-top: 1px; }
+.s-body { display: grid; gap: 1px; }
+.s-name { font-size: 14.5px; font-weight: 600; }
+.s-fn { font-size: 13.5px; color: var(--muted); line-height: 1.45; }
+.sys li.flash { background: var(--route-bg); box-shadow: inset 3px 0 0 var(--route); }
+
+.controls { display: flex; align-items: center; gap: 8px; margin: 6px 0 12px; }
+.progress { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bar { height: 4px; background: var(--hair); border-radius: 99px; overflow: hidden; margin-bottom: 14px; }
+.bar span { display: block; height: 100%; background: var(--route); border-radius: 99px; transition: width .3s ease; }
+@media (prefers-reduced-motion: reduce) { .bar span { transition: none; } }
+.steps li + li { margin-top: 4px; }
+.steps button { display: grid; grid-template-columns: 30px 1fr; gap: 10px; width: 100%; text-align: left; border: 0; border-left: 3px solid transparent; background: none; color: var(--ink); padding: 9px 10px 9px 9px; border-radius: 0 10px 10px 0; cursor: pointer; }
+.steps button:hover { background: var(--paper); }
+.s-num { width: 26px; height: 26px; border-radius: 50%; display: inline-grid; place-items: center; font-size: 12.5px; font-weight: 800; font-variant-numeric: tabular-nums; border: 2px solid var(--hair); color: var(--muted); }
+.s-who { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.s-who .ic { color: var(--chip-ink); }
+.s-to { font-weight: 500; margin: 0 2px; }
+.s-txt { font-size: 14.5px; line-height: 1.45; margin-top: 2px; }
+.steps li.todo .s-txt { color: var(--muted); }
+.steps li.done .s-num { border-color: var(--route-soft); color: var(--ink); }
+.steps li.now button { border-left-color: var(--route); background: var(--route-bg); }
+.steps li.now .s-num { background: var(--route); border-color: var(--route); color: var(--route-ink); }
+.steps li.now .s-who { color: var(--ink); }
+
+footer { padding: 30px 0 40px; color: var(--muted); font-size: 13.5px; max-width: 76ch; }
+footer a { color: var(--sel); font-weight: 600; }
+
+@media (max-width: 760px) {
+  .wrap { padding-left: 16px; padding-right: 16px; }
+  .top { flex-direction: column; align-items: stretch; gap: 16px; padding-top: 22px; }
+  .search { width: 100%; }
+  .search kbd { display: none; }
+  .toolbar { flex-direction: column; align-items: flex-start; }
+}
+</style>
+<svg id="sprite" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"></svg>
+<header class="wrap top">
+  <div class="brand">
+    <h1>Peta integrasi sistem retail dan manufaktur</h1>
+    <p><strong id="total">0</strong> sistem dari sebelas bagian retail dan manufaktur, dari desain produk dan lantai pabrik sampai rak toko, toko online, dan pembeli, dan cara mereka saling bertukar data. Pilih kotak untuk melihat koneksinya, atau ikuti satu alur dari awal sampai akhir.</p>
+  </div>
+  <div class="search">
+    <label class="search-box" for="search">
+      <svg class="ic" width="20" height="20" aria-hidden="true"><use href="#i-search"/></svg>
+      <input id="search" type="search" autocomplete="off" spellcheck="false" placeholder="Cari sistem, misalnya MRP atau planogram" role="combobox" aria-autocomplete="list" aria-controls="results" aria-expanded="false">
+      <kbd>/</kbd>
+    </label>
+    <div id="results" role="listbox" aria-label="Hasil pencarian" hidden></div>
+  </div>
+</header>
+<div class="tabbar">
+  <nav class="wrap tabs" id="tabs" role="tablist" aria-label="Bagian sistem retail dan manufaktur"></nav>
+</div>
+<main class="wrap">
+  <div class="toolbar">
+    <div class="tb" id="routes"></div>
+    <div class="tb" id="modes" aria-label="Tampilkan jenis integrasi"></div>
+  </div>
+  <div class="layout">
+    <section aria-label="Peta">
+      <p class="swipe"><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-hand"/></svg>Geser peta ke kiri dan kanan untuk melihat semua kotak.</p>
+      <div class="mapbox">
+        <svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" preserveAspectRatio="xMidYMin meet"></svg>
+      </div>
+      <div class="legend">
+        <span><svg width="34" height="18" aria-hidden="true"><rect x="1" y="1" width="32" height="16" rx="5" fill="#F6F7FA" stroke="#A9B3C5" stroke-dasharray="4 3"/></svg>Pihak luar</span>
+        <span><svg width="34" height="18" aria-hidden="true"><rect x="1" y="1" width="32" height="16" rx="5" fill="#E8EEFA" stroke="#2650A8" stroke-width="2"/></svg>Kotak dipilih dan koneksinya</span>
+        <span><svg width="34" height="10" aria-hidden="true"><path d="M1 5H33" stroke="#D88A00" stroke-width="4" fill="none"/></svg>Rute yang sedang diikuti</span>
+        <span><svg width="18" height="18" aria-hidden="true"><text x="9" y="13" text-anchor="middle" font-size="11" font-weight="700" fill="#8A94A8" font-family="sans-serif">12</text></svg>Nomor kelompok di dokumen</span>
+      </div>
+    </section>
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+  </div>
+  <footer>
+    Disusun dari pengetahuan umum dan sumber publik per Oktober 2026, bukan dari dokumen resmi perusahaan mana pun; nama dan pembagian sistem berbeda di tiap perusahaan. Penjelasan lengkap tiap sistem, termasuk aturan per wilayah, tech stack, dan tempat AI dipakai, ada di dokumen <a href="https://claude.ai/code/artifact/79f1c7b8-20bb-42a8-b475-369dd8b9351f" target="_blank" rel="noopener">Peta Lengkap Sistem Retail dan Manufaktur</a>. Gudang, transportasi, dan bea cukai dirujuk ke <a href="https://claude.ai/code/artifact/7721ffde-a331-4c51-bbef-d63c8fe03f24" target="_blank" rel="noopener">Peta Lengkap Sistem Logistik</a>; pembayaran, buku besar, dan pajak ke <a href="https://claude.ai/code/artifact/756c77c3-a150-4297-b1e2-2fc69d05845d" target="_blank" rel="noopener">Peta Lengkap Sistem Keuangan</a>.
+  </footer>
+</main>
+<script>
+const ICONS = {
+  cart: '<path d="M2.5 4h2.6l2.3 11h10.8l2.3-7.5H6.4"/><circle cx="9.5" cy="19.5" r="1.5"/><circle cx="16.5" cy="19.5" r="1.5"/>',
+  factory: '<path d="M3 21V11l5 3v-3l5 3v-3l5 3"/><path d="M18 14V4h3v17"/><path d="M2 21h20"/><path d="M7 17.5h2M12 17.5h2"/>',
+  gift: '<rect x="3.5" y="8" width="17" height="4" rx="1"/><path d="M5 12v8.5h14V12M12 8v12.5"/><path d="M12 8C10.5 4.5 6.5 4 6.5 6.5S10 8 12 8zM12 8c1.5-3.5 5.5-4 5.5-1.5S14 8 12 8z"/>',
+  hardhat: '<path d="M4 16a8 8 0 0 1 16 0"/><path d="M2.5 16h19v2.5h-19z"/><path d="M10 8.3V5.5h4v2.8"/>',
+  list: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>',
+  recycle: '<path d="M8.5 6.5l2.2-3.6a1.5 1.5 0 0 1 2.6 0l3.4 5.6"/><path d="M14.5 8.5h2.2V6.3"/><path d="M19 13.5l1.6 2.8a1.5 1.5 0 0 1-1.3 2.2H12.5"/><path d="M14.5 16.5l-2 2 2 2"/><path d="M7.5 18.5H4.7a1.5 1.5 0 0 1-1.3-2.2l3.4-5.8"/><path d="M4.6 11.6l2.2-1.1 1.1 2.2"/>',
+  star: '<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/>',
+  tag: '<path d="M3.5 12.5v-8a1 1 0 0 1 1-1h8l8 8a1.5 1.5 0 0 1 0 2.1l-7 7a1.5 1.5 0 0 1-2.1 0z"/><circle cx="8" cy="8" r="1.5"/>',
+  truck: '<path d="M2.5 6.5h11V17h-11z"/><path d="M13.5 10h4.2l3 3.5V17h-7.2"/><circle cx="6.5" cy="17.5" r="2"/><circle cx="17" cy="17.5" r="2"/>',
+  wrench: '<path d="M14.7 3.6a5 5 0 0 0-5.9 6.6L3.5 15.5a2.1 2.1 0 0 0 3 3l5.3-5.3a5 5 0 0 0 6.6-5.9l-3 3-2.8-.8-.8-2.8z"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c0-4 3.4-6.8 7.5-6.8s7.5 2.8 7.5 6.8"/>',
+  users: '<circle cx="9" cy="8.5" r="3.4"/><path d="M2.8 20c0-3.5 2.8-5.9 6.2-5.9s6.2 2.4 6.2 5.9"/><path d="M15.5 5.2a3.4 3.4 0 0 1 0 6.6M17.6 14.4c2.1.6 3.6 2.6 3.6 5.6"/>',
+  userplus: '<circle cx="10" cy="8" r="4"/><path d="M3 20.5c0-4 3.1-6.8 7-6.8 1.6 0 3 .4 4.1 1.2"/><path d="M18.5 14.5v6M15.5 17.5h6"/>',
+  bank: '<path d="M3 9.5h18L12 4z"/><path d="M5.5 9.5v8M10 9.5v8M14 9.5v8M18.5 9.5v8M3 20.5h18"/>',
+  building: '<rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h1.5M13.5 7H15M9 11h1.5M13.5 11H15M9 15h1.5M13.5 15H15M10.5 21v-2.5h3V21"/>',
+  idcard: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.6 16.4c.6-1.7 1.9-2.6 3.4-2.6s2.8.9 3.4 2.6M14.5 10h4M14.5 13.5h3"/>',
+  phone: '<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
+  link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  plug: '<path d="M9 2.5v5M15 2.5v5"/><path d="M6.5 7.5h11V11a5.5 5.5 0 0 1-11 0z"/><path d="M12 16.5v5"/>',
+  lock: '<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3M12 14.5v2"/>',
+  shield: '<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/><path d="M8.8 12l2.2 2.2 4.2-4.4"/>',
+  coins: '<ellipse cx="12" cy="6" rx="7" ry="2.7"/><path d="M5 6v4c0 1.5 3.1 2.7 7 2.7s7-1.2 7-2.7V6M5 10v4c0 1.5 3.1 2.7 7 2.7s7-1.2 7-2.7v-4M5 14v4c0 1.5 3.1 2.7 7 2.7s7-1.2 7-2.7v-4"/>',
+  handcoin: '<circle cx="14" cy="7" r="3.5"/><path d="M2.5 14h3.2l3.3 1.8h4.2a1.5 1.5 0 0 1 0 3H9.5"/><path d="M14.4 17.6l4.4-2.4a1.6 1.6 0 0 1 1.8 2.6l-4.9 3.7H2.5"/>',
+  pie: '<path d="M11 3.5a8.5 8.5 0 1 0 9.5 9.5H11z"/><path d="M14.5 2.8A8 8 0 0 1 21.2 9.5h-6.7z"/>',
+  briefcase: '<rect x="3" y="7.5" width="18" height="12.5" rx="2"/><path d="M9 7.5V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5v2M3 12.5h18"/>',
+  moon: '<path d="M19.5 14.5A8 8 0 1 1 9.5 4.5a6.5 6.5 0 0 0 10 10z"/>',
+  card: '<rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/>',
+  chart: '<path d="M3.5 20.5h17"/><path d="M5 16l4.5-5 3.5 3 6.5-7.5"/><path d="M15.5 6.5h4v4"/>',
+  cpu: '<rect x="6" y="6" width="12" height="12" rx="1.5"/><rect x="9.5" y="9.5" width="5" height="5" rx=".5"/><path d="M9.5 2.5V6M14.5 2.5V6M9.5 18v3.5M14.5 18v3.5M2.5 9.5H6M2.5 14.5H6M18 9.5h3.5M18 14.5h3.5"/>',
+  swap: '<path d="M4 8h15.5M15.5 4l4 4-4 4"/><path d="M20 16H4.5M8.5 12l-4 4 4 4"/>',
+  shuffle: '<path d="M3 7h3.5l10 10H21M3 17h3.5l3-3M14 10l2.5-3H21"/><path d="M18.5 4.5L21 7l-2.5 2.5M18.5 14.5L21 17l-2.5 2.5"/>',
+  receipt: '<path d="M6 3h12v18l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4L6 21z"/><path d="M9 8h6M9 11.5h6M9 15h3.5"/>',
+  gauge: '<path d="M3.8 17.5a8.2 8.2 0 1 1 16.4 0"/><path d="M12 17.5l4.2-5.2"/><circle cx="12" cy="17.5" r="1.3"/>',
+  book: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5"/><path d="M8.5 7.5h7M8.5 11h5"/>',
+  scales: '<path d="M12 4v16.5M7.5 20.5h9M5 7h14"/><path d="M5 7l-2.7 6a2.8 2.8 0 0 0 5.4 0zM19 7l-2.7 6a2.8 2.8 0 0 0 5.4 0z"/>',
+  database: '<ellipse cx="12" cy="5.5" rx="7.5" ry="2.7"/><path d="M4.5 5.5v13c0 1.5 3.4 2.7 7.5 2.7s7.5-1.2 7.5-2.7v-13M4.5 12c0 1.5 3.4 2.7 7.5 2.7s7.5-1.2 7.5-2.7"/>',
+  megaphone: '<path d="M4 9.8v4.4h3l7.5 4.6V5.2L7 9.8z"/><path d="M18 9a4 4 0 0 1 0 6"/>',
+  gear: '<circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.8M12 18.4v2.8M2.8 12h2.8M18.4 12h2.8M5.5 5.5l2 2M16.5 16.5l2 2M5.5 18.5l2-2M16.5 7.5l2-2"/>',
+  headset: '<path d="M4.5 14v-2a7.5 7.5 0 0 1 15 0v2"/><rect x="3.5" y="13.5" width="4" height="6" rx="1.5"/><rect x="16.5" y="13.5" width="4" height="6" rx="1.5"/><path d="M18.5 19.5c0 1.3-1.6 2-4 2H13"/>',
+  server: '<rect x="4" y="3.5" width="16" height="7" rx="1.5"/><rect x="4" y="13.5" width="16" height="7" rx="1.5"/><path d="M8 7h.01M8 17h.01M12 7h4M12 17h4"/>',
+  box: '<path d="M12 3l8.5 4.5v9L12 21l-8.5-4.5v-9z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/>',
+  file: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 11.5h6M9 15h6"/>',
+  filecheck: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 14l2 2 4-4"/>',
+  claim: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M12 10.5v3.8M12 17.3v.01"/>',
+  hospital: '<rect x="4" y="4" width="16" height="16" rx="2.5"/><path d="M12 8v8M8 12h8"/>',
+  network: '<circle cx="12" cy="5" r="2.3"/><circle cx="5" cy="18.5" r="2.3"/><circle cx="19" cy="18.5" r="2.3"/><path d="M12 7.3v4.4M12 11.7l-5.4 5M12 11.7l5.4 5"/>',
+  trend: '<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+  sigma: '<path d="M17.5 5H6.5l5.5 7-5.5 7h11"/>',
+  layers: '<path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5M3 16.5l9 4.5 9-4.5"/>',
+  umbrella: '<path d="M3 12a9 9 0 0 1 18 0z"/><path d="M12 12v6.5a2 2 0 0 1-4 0M12 3v.5"/>',
+  candle: '<path d="M7 3v4M7 15v6M17 3v3M17 13v8"/><rect x="5" y="7" width="4" height="8" rx="1"/><rect x="15" y="6" width="4" height="7" rx="1"/>',
+  flag: '<path d="M5 21V4"/><path d="M5 4h11l-2.2 4 2.2 4H5"/>',
+  eye: '<path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  merge: '<path d="M5 3.5v4a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4v-4"/><path d="M12 11.5V21M8.8 17.8L12 21l3.2-3.2"/>',
+  vault: '<rect x="3" y="3.5" width="18" height="16" rx="2"/><circle cx="12" cy="11.5" r="3.5"/><path d="M12 8v-.8M12 15.8V15M8.5 11.5h-.8M16.3 11.5h-.8M6.5 19.5V21M17.5 19.5V21"/>',
+  search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>',
+  sparkle: '<path d="M11 3l1.9 4.8 4.8 1.9-4.8 1.9L11 16.4l-1.9-4.8-4.8-1.9 4.8-1.9z"/><path d="M18.5 14.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+  cert: '<rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M7 8.5h10M7 12h5.5"/><circle cx="16" cy="16.5" r="2.5"/><path d="M14.8 18.7L14 22l2-1 2 1-.8-3.3"/>',
+  grid: '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>',
+  arrowin: '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v9M8 12.5l4 4 4-4"/>',
+  arrowout: '<circle cx="12" cy="12" r="9"/><path d="M12 16.5v-9M8 11.5l4-4 4 4"/>',
+  cash: '<rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.7"/><path d="M6 9.5v.01M18 14.5v.01"/>',
+  sliders: '<path d="M5 3v18M12 3v18M19 3v18"/><circle cx="5" cy="15" r="2.3" style="fill:#fff"/><circle cx="12" cy="8" r="2.3" style="fill:#fff"/><circle cx="19" cy="13" r="2.3" style="fill:#fff"/>',
+  checklist: '<path d="M10 6h10M10 12h10M10 18h10"/><path d="M3.5 6l1.6 1.6L8 4.8M3.5 12l1.6 1.6L8 10.8M3.5 18l1.6 1.6L8 16.8"/>',
+  target: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
+  calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M9 15l2 2 4-4"/>',
+  percent: '<path d="M18.5 5.5l-13 13"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/>',
+  audit: '<path d="M6 3h8l4 4v5"/><path d="M6 3v18h6.5"/><circle cx="16.5" cy="16.5" r="3"/><path d="M18.7 18.7L21 21"/>',
+  wallet: '<path d="M4 7.5h14.5A1.5 1.5 0 0 1 20 9v9.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5V6a1.5 1.5 0 0 1 1.5-1.5H16"/><path d="M15.5 13.75h1.5"/>',
+  gateway: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M7.5 14.5h6M15.5 12.5l2 2-2 2"/>',
+  store: '<path d="M4 9.5L5.5 4h13L20 9.5"/><path d="M4 9.5c0 1.4 1.2 2.5 2.7 2.5s2.6-1.1 2.6-2.5c0 1.4 1.2 2.5 2.7 2.5s2.7-1.1 2.7-2.5c0 1.4 1.1 2.5 2.6 2.5S20 10.9 20 9.5"/><path d="M5.5 12v8.5h13V12M10 20.5v-4.5h4v4.5"/>',
+  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>',
+  send: '<path d="M21 3L10.5 13.5"/><path d="M21 3l-6.5 18-4-7.5-7.5-4z"/>',
+  route: '<circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"/>',
+  play: '<path d="M7 4.5v15l12-7.5z"/>',
+  pause: '<path d="M8 4.5v15M16 4.5v15"/>',
+  prev: '<path d="M15 5l-7 7 7 7"/>',
+  next: '<path d="M9 5l7 7-7 7"/>',
+  close: '<path d="M6 6l12 12M18 6L6 18"/>',
+  back: '<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  open: '<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 19V7.5A1.5 1.5 0 0 1 5.5 6H10"/>',
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.01"/>',
+  hand: '<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11M11 10V4a1.5 1.5 0 0 1 3 0v6M14 10.5V5.5a1.5 1.5 0 0 1 3 0V14c0 4-2.5 7-6.5 7-2.6 0-4.1-1.3-5.4-3.2L3 14.2a1.5 1.5 0 0 1 2.5-1.6L8 15"/>',
+  undo: '<path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',
+  gate: '<path d="M4 21V5M4 7h15.5a1.5 1.5 0 0 1 0 3H4"/><path d="M8 7l2 3M12 7l2 3M16 7l2 3"/><path d="M2.5 21h4"/>',
+  nfc: '<rect x="3" y="6" width="12" height="13" rx="2"/><path d="M7 10.5h4"/><path d="M17.5 8.5a5 5 0 0 1 0 7M20 6a8.5 8.5 0 0 1 0 12"/>',
+  code: '<path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5M13.5 4.5l-3 15"/>',
+  scatter: '<path d="M3.5 3.5v17h17"/><circle cx="8" cy="15.5" r="1.3"/><circle cx="11.5" cy="11.5" r="1.3"/><circle cx="15" cy="13" r="1.3"/><circle cx="18" cy="7.5" r="1.3"/><path d="M6.5 17.5L19.5 6"/>',
+  pen: '<path d="M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 3L8 18.5z"/><path d="M13.5 7l3 3"/><path d="M12.5 20.5h7.5"/>',
+  car: '<path d="M5 12.5l1.7-4.3A1.5 1.5 0 0 1 8.1 7.2h7.8a1.5 1.5 0 0 1 1.4 1L19 12.5"/><rect x="3.5" y="12.5" width="17" height="4.5" rx="1.2"/><path d="M6.5 17v2.5M17.5 17v2.5M7 14.8h.01M17 14.8h.01"/>',
+  flask: '<path d="M9.5 3.5h5M10.5 3.5v6.2l-5.6 8.9a1.5 1.5 0 0 0 1.3 2.3h11.6a1.5 1.5 0 0 0 1.3-2.3l-5.6-8.9V3.5"/><path d="M7.4 14.5h9.2"/>',
+  pulse: '<path d="M3 12.5h4l2.5-6.5 4.5 12 2.5-5.5H21"/>',
+  history: '<path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4.5v4h4"/><path d="M12 8v4.3l2.8 1.8"/>',
+  bolt: '<path d="M13.5 2.5L5 13.5h6.5l-1 8 8.5-11H12.5z"/>',
+  func: '<path d="M8 21c1.8 0 2.6-1.2 3.1-3.6l2.3-11c.5-2.4 1.3-3.4 3.1-3.4"/><path d="M8.5 9.5h7.5"/>',
+  alert: '<path d="M12 3.5L21.5 20h-19z"/><path d="M12 10v4.5M12 17.3v.01"/>',
+  cursor: '<path d="M5 3.5l13 6.5-5.6 1.6L10.8 17z"/><path d="M12.4 11.6L18 17.2"/>',
+  stetho: '<path d="M5 3H4.5A1.5 1.5 0 0 0 3 4.5V9a5.5 5.5 0 0 0 11 0V4.5A1.5 1.5 0 0 0 12.5 3H12"/><path d="M8.5 14.5v.5a5.5 5.5 0 0 0 11 0v-3"/><circle cx="19.5" cy="10" r="2"/>',
+  pill: '<path d="M10.5 20.5a5 5 0 0 1-7-7l7-7a5 5 0 0 1 7 7z"/><path d="M7 10l7 7"/>',
+  syringe: '<path d="M18 2.5l3.5 3.5M19.75 4.25L16.5 7.5"/><path d="M14.5 5.5l4 4-9 9h-4v-4z"/><path d="M5.5 18.5l-3 3M8.5 11.5l2 2M11 9l2 2"/>',
+  heart: '<path d="M12 20s-8-4.9-8-10.3A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 8 2.1C20 15.1 12 20 12 20z"/>',
+  watch: '<rect x="6" y="6" width="12" height="12" rx="3"/><path d="M9 6l.6-3h4.8l.6 3M9 18l.6 3h4.8l.6-3"/><path d="M8.5 12h1.5l1-2 2 4 1-2h1.5"/>',
+  scan: '<path d="M3.5 8V5.5a2 2 0 0 1 2-2H8M16 3.5h2.5a2 2 0 0 1 2 2V8M20.5 16v2.5a2 2 0 0 1-2 2H16M8 20.5H5.5a2 2 0 0 1-2-2V16"/><path d="M12 7v10M9 9.5h6M9.5 12.5h5M10 15.5h4"/>',
+  bed: '<path d="M3 5v15M3 16.5h18V20M21 16.5v-4a3 3 0 0 0-3-3h-7.5v7"/><circle cx="7" cy="12" r="2"/>',
+  dna: '<path d="M7 3c0 4.5 10 4.5 10 9s-10 4.5-10 9"/><path d="M17 3c0 4.5-10 4.5-10 9s10 4.5 10 9"/><path d="M8.5 6.5h7M8.5 17.5h7"/>',
+  virus: '<circle cx="12" cy="12" r="5"/><path d="M12 3.5V7M12 17v3.5M3.5 12H7M17 12h3.5M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/><circle cx="10.5" cy="11" r=".6"/><circle cx="13.5" cy="13.2" r=".6"/>',
+  ambulance: '<path d="M2.5 17V7.5h11V17"/><path d="M13.5 10.5h4l3 3.5V17h-1.5"/><path d="M2.5 17h2M9.5 17h4.5"/><circle cx="7" cy="17.5" r="2"/><circle cx="16.5" cy="17.5" r="2"/><path d="M8 9.5v4M6 11.5h4"/>',
+  swords: '<path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6M16 16l4 4M19 21l2-2"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6M8 16l-4 4M5 21l-2-2"/>',
+  crown: '<path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 10H5z"/><path d="M5 21h14"/>',
+  trophy: '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H4.5v1.5A3.5 3.5 0 0 0 8 11M16 6h3.5v1.5A3.5 3.5 0 0 1 16 11"/><path d="M12 13v4M8.5 20.5h7M10 17h4v3.5h-4z"/>',
+  gamepad: '<path d="M7 7h10a4 4 0 0 1 4 4.5l-.6 4.6a2.5 2.5 0 0 1-4.3 1.4L14.5 16h-5l-1.6 1.5a2.5 2.5 0 0 1-4.3-1.4L3 11.5A4 4 0 0 1 7 7z"/><path d="M8 10.5v3M6.5 12h3M15.5 11h.01M17.5 13h.01"/>',
+  dice: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8.5 8.5h.01M15.5 8.5h.01M12 12h.01M8.5 15.5h.01M15.5 15.5h.01"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/>',
+  message: '<path d="M4 5.5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-4.5 3.5V17.5H4a1 1 0 0 1-1-1v-10a1 1 0 0 1 1-1z"/><path d="M7.5 10h9M7.5 13.5h6"/>',
+  video: '<rect x="2.5" y="6" width="13.5" height="12" rx="2"/><path d="M16 10.5l5.5-3v9l-5.5-3z"/>',
+  map: '<path d="M3 6.5l6-2.5 6 2.5 6-2.5v13.5l-6 2.5-6-2.5-6 2.5z"/><path d="M9 4v13.5M15 6.5V20"/>',
+  robot: '<rect x="4.5" y="8" width="15" height="11" rx="2.5"/><path d="M12 4.5V8M9 12.5h.01M15 12.5h.01M9.5 16h5M2.5 12v3M21.5 12v3"/><circle cx="12" cy="3.5" r="1"/>',
+  cloud: '<path d="M7 18.5a4.5 4.5 0 0 1-.6-9 6 6 0 0 1 11.5 1.5 4 4 0 0 1-.4 7.5z"/>',
+};
+const DOMAINS = [{"id":"antar","name":"Antar Bagian","intro":"Sebelas bagian sistem retail dan manufaktur dan cara mereka saling bertukar data. Pilih satu bagian untuk melihat kelompok sistemnya, lalu buka tabnya untuk detail integrasi.","nodes":[{"id":"pemasok","ext":true,"label":"Pemasok dan vendor","row":0,"icon":"building","desc":"Pemasok bahan untuk pabrik dan vendor barang dagangan untuk ritel."},{"id":"pembeli","ext":true,"label":"Pembeli","row":0,"icon":"user","desc":"Orang yang belanja di toko, situs, aplikasi, dan marketplace."},{"id":"mp","ext":true,"label":"Marketplace dan TikTok Shop","row":0,"icon":"store","desc":"Shopee, Tokopedia dan TikTok Shop, Lazada, Blibli, dan Amazon."},{"id":"produk","link":"produk","label":"Produk dan Data Induk","row":1,"icon":"layers","desc":"Desain, BOM dan routing, perubahan teknik, kemasan dan label, barcode, dan konten katalog."},{"id":"rencana","link":"rencana","label":"Perencanaan dan Penjadwalan","row":1,"icon":"calendar","desc":"Ramalan per toko, replenishment, alokasi, jadwal induk, MRP, dan penjadwalan mesin."},{"id":"pengadaan","link":"pengadaan","label":"Pengadaan dan Pemasok","row":1,"icon":"handcoin","desc":"Kualifikasi pemasok, sourcing, portal dan EDI, vendor ritel, pencocokan, dan uji tuntas."},{"id":"produksi","link":"produksi","label":"Produksi dan MES","row":1,"icon":"factory","desc":"Perintah kerja, eksekusi, resep dan batch, perakitan, genealogi, OEE, dan biaya produksi."},{"id":"otomasi","link":"otomasi","label":"Otomasi dan IIoT","row":1,"icon":"cpu","desc":"PLC, SCADA, historian, robot, digital twin, keamanan OT, dan produk terhubung."},{"id":"kualitas","link":"kualitas","label":"Kualitas dan Kepatuhan","row":1,"icon":"filecheck","desc":"QMS, inspeksi, SPC, lab, CAPA, halal, izin edar, dan recall."},{"id":"aset","link":"aset","label":"Pemeliharaan, Energi, dan K3","row":2,"icon":"wrench","desc":"Perawatan mesin dan alat toko, energi, emisi, limbah, dan keselamatan kerja."},{"id":"merch","link":"merch","label":"Merchandising dan Harga","row":2,"icon":"tag","desc":"Assortment, planogram, harga, promo, markdown, dan syarat dagang."},{"id":"toko","link":"toko","label":"Toko dan Kasir","row":2,"icon":"store","desc":"POS, pembayaran, struk, stok toko, tenaga kerja, susut, dan waralaba."},{"id":"omni","link":"omni","label":"Omnichannel dan E-commerce","row":2,"icon":"cart","desc":"Toko online, marketplace, pesanan, BOPIS, retur, dan penjualan B2B."},{"id":"pelanggan","link":"pelanggan","label":"Pelanggan dan Loyalitas","row":2,"icon":"users","desc":"Identitas, CDP, poin, penawaran personal, pesan, retail media, dan privasi."},{"id":"logistik","ext":true,"label":"Peta logistik","row":3,"icon":"truck","desc":"Gudang, DC, transportasi, kurir, dan bea cukai; dirujuk dari Peta Lengkap Sistem Logistik."},{"id":"keuangan","ext":true,"label":"Peta keuangan","row":3,"icon":"bank","desc":"Pembayaran, buku besar, pajak, dan gaji; dirujuk dari Peta Lengkap Sistem Keuangan."},{"id":"regulator","ext":true,"label":"Regulator","row":3,"icon":"scales","desc":"BPOM, BPJPH, Kemenperin, KLH, Kemnaker, dan DJP di Indonesia; FDA, CPSC, dan FTC di AS; Komisi Eropa dan ENISA di Eropa."}],"edges":[{"f":"pemasok","t":"pengadaan","l":"PO, konfirmasi, ASN, dan faktur","m":"ev","p":"EDI"},{"f":"produk","t":"rencana","l":"BOM, routing, dan lead time","m":"bt","p":"ETL"},{"f":"produk","t":"produksi","l":"Versi BOM, routing, dan resep","m":"rt","p":"REST API"},{"f":"produk","t":"kualitas","l":"Spesifikasi dan label untuk dicek","m":"rt","p":"REST API"},{"f":"produk","t":"omni","l":"Konten produk per kanal","m":"ev","p":"REST API"},{"f":"rencana","t":"pengadaan","l":"Pesanan rencana bahan","m":"bt","p":"Internal"},{"f":"rencana","t":"produksi","l":"Urutan job per mesin","m":"rt","p":"REST API"},{"f":"produksi","t":"otomasi","l":"Parameter turun, status mesin naik","m":"rt","p":"OPC UA"},{"f":"produksi","t":"kualitas","l":"Hasil uji dan sampel batch","m":"ev","p":"Message queue"},{"f":"otomasi","t":"aset","l":"Kondisi dan jam jalan mesin","m":"ev","p":"MQTT"},{"f":"aset","t":"rencana","l":"Jendela perawatan mesin","m":"ev","p":"Message queue"},{"f":"kualitas","t":"toko","l":"Blokir jual lot yang ditahan","m":"ev","p":"Message queue"},{"f":"kualitas","t":"omni","l":"Turunkan produk bermasalah","m":"ev","p":"Message queue"},{"f":"kualitas","t":"logistik","l":"Perintah recall ke gudang","m":"ev","p":"Message queue"},{"f":"merch","t":"toko","l":"Harga, promo, dan planogram","m":"ev","p":"Message queue"},{"f":"merch","t":"omni","l":"Harga dan promo online","m":"ev","p":"Message queue"},{"f":"merch","t":"pelanggan","l":"Promo yang boleh dipersonalisasi","m":"ev","p":"REST API"},{"f":"toko","t":"rencana","l":"Penjualan dan stok per toko","m":"bt","p":"ETL"},{"f":"pembeli","t":"toko","l":"Belanja dan bayar di kasir","m":"rt","p":"Internal"},{"f":"pembeli","t":"omni","l":"Belanja lewat situs dan aplikasi","m":"rt","p":"REST API"},{"f":"omni","t":"mp","l":"Listing, stok, dan pesanan","m":"rt","p":"API marketplace"},{"f":"toko","t":"pelanggan","l":"Transaksi anggota","m":"ev","p":"Message queue"},{"f":"omni","t":"pelanggan","l":"Kejadian situs dan aplikasi","m":"ev","p":"Message queue"},{"f":"pelanggan","t":"toko","l":"Kupon dan saldo poin","m":"rt","p":"REST API"},{"f":"pelanggan","t":"pembeli","l":"Pesan dan penawaran","m":"ev","p":"API pesan"},{"f":"toko","t":"keuangan","l":"Penjualan, pembayaran, dan pajak","m":"bt","p":"File batch"},{"f":"omni","t":"keuangan","l":"Pembayaran online","m":"rt","p":"REST API"},{"f":"pengadaan","t":"keuangan","l":"Faktur pemasok yang sudah cocok","m":"bt","p":"File batch"},{"f":"produksi","t":"logistik","l":"Barang jadi ke gudang","m":"ev","p":"Message queue"},{"f":"omni","t":"logistik","l":"Pesanan untuk dikirim","m":"ev","p":"Message queue"},{"f":"logistik","t":"toko","l":"Kiriman dari DC ke toko","m":"ev","p":"Message queue"},{"f":"kualitas","t":"regulator","l":"Izin edar, halal, dan laporan recall","m":"rt","p":"Portal pelaporan"},{"f":"aset","t":"regulator","l":"Laporan lingkungan dan K3","m":"rt","p":"Portal pelaporan"}],"routes":[{"name":"Produk baru dari desain sampai rak toko","steps":[{"f":"produk","t":"kualitas","x":"Formula, spesifikasi, dan label disetujui."},{"f":"produk","t":"rencana","x":"BOM dan routing masuk MRP."},{"f":"rencana","t":"pengadaan","x":"Bahan baru dipesan."},{"f":"pemasok","t":"pengadaan","x":"Bahan datang dengan ASN dan faktur."},{"f":"rencana","t":"produksi","x":"Batch pertama dijadwalkan."},{"f":"produksi","t":"kualitas","x":"Batch diuji lalu dilepas."},{"f":"produksi","t":"logistik","x":"Barang jadi masuk gudang."},{"f":"merch","t":"toko","x":"Harga dan planogram dikirim ke toko."},{"f":"logistik","t":"toko","x":"Kiriman pertama tiba di toko."}]},{"name":"Rak kosong sampai diproduksi ulang","steps":[{"f":"toko","t":"rencana","x":"Penjualan dan stok toko masuk malam hari."},{"f":"rencana","t":"produksi","x":"Permintaan toko menjadi job produksi."},{"f":"produksi","t":"otomasi","x":"Parameter resep dikirim ke mesin."},{"f":"produksi","t":"logistik","x":"Barang jadi dikirim ke DC."},{"f":"logistik","t":"toko","x":"DC mengisi ulang toko."}]},{"name":"Recall lot bermasalah","steps":[{"f":"produksi","t":"kualitas","x":"Uji ulang sampel simpan menunjukkan kontaminasi."},{"f":"kualitas","t":"toko","x":"Kasir memblokir lot itu."},{"f":"kualitas","t":"omni","x":"Produk diturunkan dari toko online dan marketplace."},{"f":"kualitas","t":"logistik","x":"Recall dijalankan ke gudang dan toko."},{"f":"kualitas","t":"regulator","x":"Laporan recall dikirim ke BPOM."}]},{"name":"Belanja online dengan poin anggota","steps":[{"f":"pembeli","t":"omni","x":"Pembeli login di aplikasi."},{"f":"merch","t":"omni","x":"Harga promo minggu ini tampil."},{"f":"omni","t":"pelanggan","x":"Poin dipakai sebagai potongan."},{"f":"omni","t":"keuangan","x":"Sisa tagihan dibayar lewat payment gateway."},{"f":"omni","t":"logistik","x":"Pesanan dikirim dari gudang terdekat."},{"f":"pelanggan","t":"pembeli","x":"Poin baru dan status pesanan dikirim lewat WhatsApp."}]}]},{"id":"produk","name":"Produk dan Data Induk","intro":"8 kelompok sistem produk dan data induk. Desain dan BOM menjadi dasar, perubahan dan siklus hidup menjaga versinya, label dan barcode melengkapi isi produk, lalu konten dan produk merek ritel membawanya ke pembeli.","nodes":[{"id":"tim","label":"Tim desain dan regulasi","row":0,"icon":"users","desc":"Desainer, insinyur produk, dan petugas regulasi yang membuat dan menyetujui data produk.","ext":true},{"id":"pemasok","label":"Pemasok bahan dan pabrik pembuat","row":0,"icon":"building","desc":"Mengirim data bahan, sertifikat, dan sampel; untuk produk merek ritel juga membuat produknya.","ext":true},{"id":"gs1","label":"GS1 Indonesia","row":0,"icon":"scan","desc":"Pemberi awalan nomor perusahaan untuk GTIN dan pengelola jaringan data barang GDSN.","ext":true},{"id":"q1","num":1,"label":"Desain dan rekayasa","row":1,"desc":"Data desain satu versi untuk semua.","icon":"pen","sys":[["Manajemen data produk (PDM)","File CAD dan dokumen teknik tersimpan berversi dengan check-in dan check-out"],["Integrasi CAD","Struktur rakitan dan atribut part ditarik langsung dari SolidWorks, CATIA, atau NX"],["Spesifikasi produk","Ukuran, toleransi, bahan, dan syarat uji yang menjadi acuan semua bagian"],["Pengembangan formula","Komposisi bahan produk proses seperti makanan, kosmetik, dan cat, beserta nilai gizi hasil hitungan"],["Pustaka part dan bahan","Daftar part standar dan bahan yang sudah disetujui supaya desainer tidak membuat part yang sebenarnya sudah ada"]],"start":1},{"id":"q2","num":2,"label":"Struktur produk dan BOM","row":1,"desc":"Daftar bahan dan cara membuatnya.","icon":"grid","sys":[["BOM teknik (EBOM)","Struktur part sesuai desain"],["BOM manufaktur (MBOM)","Struktur sesuai cara pabrik merakit, termasuk kemasan dan bahan bantu"],["Routing dan operasi","Urutan langkah, mesin, waktu standar, dan alat untuk tiap operasi"],["Varian dan konfigurasi","Aturan pilihan produk seperti warna dan ukuran, supaya tidak perlu satu BOM untuk setiap kombinasi"],["BOM per pabrik","Versi BOM dan routing yang berbeda di tiap pabrik untuk produk yang sama"]],"start":6},{"id":"q3","num":3,"label":"Perubahan teknik","row":1,"desc":"Mengubah produk tanpa merusak produksi.","icon":"history","sys":[["Permintaan perubahan (ECR)","Usulan perubahan beserta alasan dan bukti masalahnya"],["Perintah perubahan (ECO)","Perubahan yang disetujui beserta tanggal efektifnya"],["Analisis dampak perubahan","Stok lama, PO terbuka, dan WIP yang terkena perubahan"],["Persetujuan dan tanda tangan elektronik","Persetujuan berjenjang yang tercatat siapa dan kapan"],["Riwayat revisi dan baseline","Versi produk yang dikunci pada tiap peluncuran"]],"start":11},{"id":"q4","num":4,"label":"Kemasan dan label","row":1,"desc":"Isi kemasan yang benar dan sesuai aturan.","icon":"box","sys":[["Spesifikasi kemasan","Bahan, berat, ukuran, dan susunan dari kemasan primer sampai palet"],["Manajemen artwork","Desain label dari draf sampai disetujui pemasaran, regulasi, dan pemasok cetak"],["Konten label regulasi","Komposisi, alergen, informasi nilai gizi, logo halal, dan nomor izin per negara"],["Kalkulator gizi dan Nutri-Level","Informasi nilai gizi dan level Nutri-Level dihitung dari formula"],["Data bahan kemasan","Jenis bahan dan berat per kemasan untuk laporan EPR dan PPWR"]],"start":16},{"id":"q5","num":5,"label":"Identitas barang dan barcode","row":2,"desc":"Nomor unik untuk setiap barang.","icon":"scan","sys":[["Alokasi GTIN","Nomor barang per varian dan per tingkat kemasan"],["Pembuat barcode","EAN-13, GS1 DataMatrix, dan QR GS1 Digital Link"],["Hierarki kemasan","Hubungan satuan, karton, dan palet beserta isinya"],["Atribut logistik","Berat, dimensi, dan suhu simpan untuk gudang dan transportasi"],["Sinkronisasi data dengan mitra (GDSN)","Data barang dikirim ke ritel dan distributor lewat jaringan GS1"]],"start":21},{"id":"q6","num":6,"label":"Konten dan katalog produk (PIM)","row":2,"desc":"Informasi produk yang dilihat pembeli.","icon":"file","sys":[["Atribut produk per kategori","Daftar isian wajib berbeda untuk pakaian, makanan, dan elektronik"],["Aset digital (DAM)","Foto, video, dan dokumen produk dengan hak pakainya"],["Deskripsi dan terjemahan","Teks produk dalam beberapa bahasa"],["Skor kelengkapan","Produk yang datanya belum lengkap tidak boleh tayang"],["Penyaluran ke kanal (syndication)","Format data disesuaikan dengan syarat tiap marketplace dan ritel"]],"start":26},{"id":"q7","num":7,"label":"Produk merek ritel","row":2,"desc":"Ritel mengembangkan produknya sendiri.","icon":"store","sys":[["Brief produk baru","Target harga, mutu, dan pembeli untuk produk merek sendiri"],["Pemilihan pabrik pembuat","Tender dan audit pabrik yang akan memproduksi"],["Persetujuan sampel","Sampel diuji terhadap spesifikasi sebelum produksi massal"],["Kalender peluncuran","Jalur kritis dari ide sampai barang di rak"]],"start":31},{"id":"q8","num":8,"label":"Siklus hidup dan portofolio","row":2,"desc":"Kapan produk lahir dan dihentikan.","icon":"trend","sys":[["Gerbang produk baru (stage-gate)","Ide, kelayakan, pengembangan, uji pasar, lalu peluncuran"],["Status siklus hidup","Aktif, akan berhenti, dan berhenti, dengan tanggal per kanal"],["Produk pengganti","Produk lama menunjuk penggantinya untuk ramalan dan pesanan"],["Rasionalisasi SKU","Produk dengan penjualan dan margin rendah dianalisis untuk dihentikan"]],"start":35},{"id":"rencana","label":"Perencanaan dan Penjadwalan","row":3,"icon":"calendar","link":"rencana","desc":"Memakai BOM dan routing untuk MRP dan jadwal.","ext":true},{"id":"produksi","label":"Produksi dan MES","row":3,"icon":"factory","link":"produksi","desc":"Menerima versi BOM, routing, dan resep untuk perintah kerja.","ext":true},{"id":"kualitas","label":"Kualitas dan Kepatuhan","row":3,"icon":"filecheck","link":"kualitas","desc":"Memakai spesifikasi sebagai batas uji dan mengecek label sebelum cetak.","ext":true},{"id":"omni","label":"Omnichannel dan E-commerce","row":3,"icon":"cart","link":"omni","desc":"Menayangkan konten produk di toko online dan marketplace.","ext":true},{"id":"logistik","label":"Peta logistik","row":3,"icon":"truck","desc":"Data induk barang dan MDM di Logistik, Perencanaan dan Kontrol 1 sampai 6; paspor produk digital di 61.","ext":true}],"edges":[{"f":"tim","t":"q1","l":"Gambar CAD, formula, dan spesifikasi","m":"rt","p":"REST API"},{"f":"q1","t":"q2","l":"Struktur rakitan menjadi EBOM","m":"rt","p":"Internal"},{"f":"q2","t":"q3","l":"BOM yang berubah masuk ECO","m":"ev","p":"Internal"},{"f":"q3","t":"q2","l":"Revisi BOM berlaku di tanggal efektif","m":"ev","p":"Internal"},{"f":"q3","t":"rencana","l":"Tanggal efektif dan stok lama yang dihabiskan","m":"ev","p":"Message queue"},{"f":"q2","t":"rencana","l":"BOM dan routing untuk MRP","m":"bt","p":"ETL"},{"f":"q2","t":"produksi","l":"Versi BOM, routing, dan resep","m":"rt","p":"REST API"},{"f":"q1","t":"kualitas","l":"Spesifikasi dan batas uji","m":"rt","p":"REST API"},{"f":"q1","t":"q4","l":"Formula untuk komposisi dan gizi","m":"rt","p":"Internal"},{"f":"q4","t":"kualitas","l":"Label diperiksa sebelum cetak","m":"rt","p":"REST API"},{"f":"q4","t":"pemasok","l":"Artwork final ke percetakan kemasan","m":"ev","p":"Manual"},{"f":"q5","t":"gs1","l":"Daftar GTIN dan data barang","m":"bt","p":"File batch"},{"f":"q5","t":"q6","l":"GTIN dan atribut logistik","m":"rt","p":"Internal"},{"f":"q5","t":"logistik","l":"Dimensi, berat, dan hierarki kemasan","m":"ev","p":"Message queue"},{"f":"q6","t":"omni","l":"Konten produk per kanal","m":"ev","p":"REST API"},{"f":"pemasok","t":"q7","l":"Penawaran dan sampel produk merek ritel","m":"rt","p":"Manual"},{"f":"q7","t":"q1","l":"Spesifikasi produk merek ritel","m":"rt","p":"Internal"},{"f":"q8","t":"q6","l":"Status aktif atau berhenti per kanal","m":"ev","p":"Internal"},{"f":"q8","t":"rencana","l":"Produk pengganti dan tanggal berhenti","m":"ev","p":"Message queue"},{"f":"tim","t":"q8","l":"Ide produk dan hasil uji pasar","m":"rt","p":"REST API"}],"routes":[{"name":"Produk baru sampai siap dijual","steps":[{"f":"tim","t":"q8","x":"Ide lolos gerbang kelayakan dan masuk pengembangan."},{"f":"tim","t":"q1","x":"Formula dan spesifikasi dibuat lalu disetujui."},{"f":"q1","t":"q2","x":"BOM teknik dan BOM pabrik disusun."},{"f":"q1","t":"q4","x":"Komposisi dan gizi dihitung untuk label."},{"f":"q4","t":"kualitas","x":"Label dicek terhadap aturan BPOM dan halal."},{"f":"q5","t":"q6","x":"GTIN dibuat lalu konten produk dilengkapi."},{"f":"q6","t":"omni","x":"Produk tayang di toko online dan marketplace."}]},{"name":"Bahan diganti karena pemasok berhenti","steps":[{"f":"pemasok","t":"q7","x":"Pemasok memberi tahu bahan tidak lagi tersedia."},{"f":"q7","t":"q1","x":"Bahan pengganti dicek di pustaka bahan dan spesifikasi."},{"f":"q2","t":"q3","x":"Permintaan perubahan dibuat untuk BOM yang terkena."},{"f":"q3","t":"rencana","x":"Tanggal efektif dihitung dari sisa stok bahan lama."},{"f":"q3","t":"q2","x":"Revisi BOM baru berlaku di tanggal itu."},{"f":"q2","t":"produksi","x":"Perintah kerja berikutnya memakai versi baru."}]},{"name":"Produk lama dihentikan","steps":[{"f":"q8","t":"q6","x":"Status produk diubah menjadi akan berhenti."},{"f":"q8","t":"rencana","x":"Produk pengganti ditetapkan untuk ramalan."},{"f":"q6","t":"omni","x":"Produk diturunkan dari kanal saat stok habis."}]}]},{"id":"rencana","name":"Perencanaan dan Penjadwalan","intro":"8 kelompok sistem perencanaan dan penjadwalan. Sisi toko menghitung permintaan dan pesanan ulang per toko, sisi pabrik mengubah jadwal induk menjadi kebutuhan bahan dan urutan mesin, lalu kinerja mengukur apakah rencana ditepati.","nodes":[{"id":"logistik","label":"Peta logistik","row":0,"icon":"truck","desc":"Ramalan jaringan, S&OP, stok pengaman, dan DC di Logistik, Perencanaan dan Kontrol 7 sampai 24.","ext":true},{"id":"toko","label":"Toko dan Kasir","row":0,"icon":"store","link":"toko","desc":"Mengirim penjualan dan stok per toko, menerima pesanan ulang.","ext":true},{"id":"produk","label":"Produk dan Data Induk","row":0,"icon":"layers","link":"produk","desc":"Sumber BOM, routing, dan status siklus hidup.","ext":true},{"id":"q1","num":1,"label":"Ramalan per toko dan hari","row":1,"desc":"Permintaan di tingkat paling kecil.","icon":"chart","sys":[["Ramalan toko, SKU, dan hari","Model deret waktu untuk jutaan kombinasi toko dan produk"],["Koreksi penjualan hilang","Penjualan yang tidak tercatat karena stok kosong diperkirakan ulang"],["Faktor kalender lokal","Hari gajian, Ramadan dan Lebaran, libur sekolah, dan cuaca"],["Kanibalisasi dan efek promo","Produk yang penjualannya turun saat produk lain didiskon"],["Ramalan toko baru","Perkiraan dari toko serupa sebelum toko punya riwayat"]],"start":1},{"id":"q2","num":2,"label":"Replenishment toko","row":1,"desc":"Pesanan ulang otomatis.","icon":"route","sys":[["Usulan pesanan otomatis","Jumlah pesan per toko dari ramalan, stok, dan barang dalam perjalanan"],["Stok tampilan minimum","Jumlah minimal supaya rak terlihat penuh (presentation stock)"],["Jadwal pesan dan kirim","Hari pesan dan hari kirim per toko dan per pemasok"],["Pembulatan karton dan kapasitas rak","Pesanan dibulatkan ke kelipatan karton tanpa melebihi rak"],["Tinjauan pesanan toko","Kepala toko mengoreksi usulan sebelum dikirim"]],"start":6},{"id":"q3","num":3,"label":"Alokasi dan distribusi awal","row":1,"desc":"Membagi barang baru ke banyak toko.","icon":"shuffle","sys":[["Alokasi awal per toko","Jumlah kiriman pertama barang baru ke setiap toko"],["Kurva dan paket ukuran","Komposisi ukuran S sampai XL per toko (size pack)"],["Klaster toko","Toko dikelompokkan menurut pola belanja dan iklim"],["Transfer antar toko","Memindahkan stok dari toko yang lambat ke toko yang laku"],["Penarikan stok sisa","Sisa barang ditarik ke DC atau outlet diskon"]],"start":11},{"id":"q4","num":4,"label":"Jadwal induk dan kapasitas kasar","row":1,"desc":"Apa yang dibuat minggu ini.","icon":"calendar","sys":[["Strategi produksi per produk","Buat untuk stok, buat untuk pesanan, atau rakit untuk pesanan"],["Batas kunci jadwal (time fence)","Periode yang tidak boleh diubah tanpa persetujuan"],["Cek kapasitas kasar (RCCP)","Jadwal induk dibandingkan dengan jam mesin per lini"],["Konsumsi ramalan","Pesanan nyata mengurangi ramalan supaya tidak dihitung dua kali"],["Jadwal kampanye","Produk yang butuh pembersihan lama dikelompokkan dalam satu rangkaian"]],"start":16},{"id":"q5","num":5,"label":"Mesin MRP","row":2,"desc":"Jadwal menjadi kebutuhan bahan.","icon":"sigma","sys":[["Ledakan BOM bertingkat","Kebutuhan produk jadi dipecah sampai bahan paling bawah"],["Kebutuhan bersih (netting)","Kebutuhan kotor dikurangi stok dan pesanan terbuka"],["Ukuran lot","Lot-for-lot, jumlah tetap, periode tetap, atau minimum pesan"],["Offset lead time","Tanggal pesan dimundurkan dari tanggal butuh"],["Pegging","Kebutuhan bahan ditelusuri ke pesanan asalnya"],["Pesanan rencana dan pesan pengecualian","Usulan beli atau buat, beserta saran percepat, tunda, atau batal"]],"start":21},{"id":"q6","num":6,"label":"Penjadwalan detail (APS)","row":2,"desc":"Urutan kerja per mesin per jam.","icon":"sliders","sys":[["Jadwal kapasitas terbatas","Job ditempatkan ke mesin dan jam tanpa melebihi kapasitas"],["Matriks waktu ganti produk","Waktu setup antar produk dan urutan terbaik, misalnya warna terang ke gelap"],["Batasan sumber daya","Bahan, cetakan, alat, dan operator yang harus tersedia bersamaan"],["Papan jadwal dan jadwal ulang","Jadwal disusun ulang saat mesin rusak atau bahan terlambat"],["Janji tanggal dari kapasitas (CTP)","Tanggal selesai pesanan khusus dihitung dari jadwal nyata"]],"start":27},{"id":"q7","num":7,"label":"Lini dan tenaga kerja","row":2,"desc":"Orang dan ritme lini.","icon":"users","sys":[["Keseimbangan lini dan takt time","Pekerjaan dibagi rata ke setiap stasiun"],["Rencana tenaga kerja per shift","Jumlah dan keahlian operator per lini"],["Rencana lembur dan shift tambahan","Lembur dihitung sesuai batas aturan kerja"],["Kalender pabrik","Hari kerja, shift, dan libur per pabrik"]],"start":32},{"id":"q8","num":8,"label":"Kinerja perencanaan","row":2,"desc":"Seberapa sering rencana ditepati.","icon":"gauge","sys":[["Ketaatan jadwal produksi","Jumlah dan urutan yang dibuat dibandingkan jadwal"],["Ketersediaan di rak (OSA)","Persentase produk yang ada di rak saat dicari pembeli"],["Akurasi ramalan toko","Kesalahan ramalan per toko, terutama produk segar"],["Analisis penyebab rencana gagal","Bahan telat, mesin rusak, atau ramalan meleset"]],"start":36},{"id":"pengadaan","label":"Pengadaan dan Pemasok","row":3,"icon":"handcoin","link":"pengadaan","desc":"Mengubah pesanan rencana bahan menjadi PO ke pemasok.","ext":true},{"id":"produksi","label":"Produksi dan MES","row":3,"icon":"factory","link":"produksi","desc":"Menjalankan jadwal per mesin dan melaporkan hasil.","ext":true},{"id":"aset","label":"Pemeliharaan, Energi, dan K3","row":3,"icon":"wrench","link":"aset","desc":"Memberi jadwal perawatan yang mengurangi kapasitas mesin.","ext":true},{"id":"merch","label":"Merchandising dan Harga","row":3,"icon":"tag","link":"merch","desc":"Mengirim kalender promo dan kapasitas rak dari planogram.","ext":true}],"edges":[{"f":"toko","t":"q1","l":"Penjualan dan stok harian per toko","m":"bt","p":"ETL"},{"f":"logistik","t":"q4","l":"Rencana S&OP dan ramalan jaringan","m":"bt","p":"File batch"},{"f":"merch","t":"q1","l":"Kalender promo dan harga","m":"ev","p":"Message queue"},{"f":"q1","t":"q2","l":"Ramalan per toko per hari","m":"bt","p":"Internal"},{"f":"merch","t":"q2","l":"Kapasitas rak dari planogram","m":"bt","p":"File batch"},{"f":"q2","t":"toko","l":"Usulan pesanan untuk ditinjau","m":"bt","p":"REST API"},{"f":"q2","t":"logistik","l":"Pesanan toko ke DC","m":"bt","p":"File batch"},{"f":"q1","t":"q3","l":"Ramalan musim per klaster","m":"bt","p":"Internal"},{"f":"q3","t":"logistik","l":"Alokasi awal per toko ke DC","m":"bt","p":"File batch"},{"f":"q2","t":"q4","l":"Total kebutuhan toko jadi permintaan pabrik","m":"bt","p":"Internal"},{"f":"produk","t":"q5","l":"BOM, routing, dan lead time","m":"bt","p":"ETL"},{"f":"q4","t":"q5","l":"Jadwal induk yang dikunci","m":"bt","p":"Internal"},{"f":"q5","t":"pengadaan","l":"Pesanan rencana bahan","m":"bt","p":"Internal"},{"f":"q5","t":"q6","l":"Pesanan rencana produksi","m":"bt","p":"Internal"},{"f":"aset","t":"q6","l":"Jadwal perawatan mesin","m":"ev","p":"Message queue"},{"f":"q6","t":"produksi","l":"Urutan job per mesin","m":"rt","p":"REST API"},{"f":"produksi","t":"q6","l":"Status job dan mesin berhenti","m":"ev","p":"Message queue"},{"f":"q6","t":"q7","l":"Kebutuhan operator per shift","m":"bt","p":"Internal"},{"f":"produksi","t":"q8","l":"Hasil produksi per job","m":"ev","p":"Message queue"},{"f":"toko","t":"q8","l":"Rak kosong dan penjualan hilang","m":"ev","p":"Message queue"}],"routes":[{"name":"Roti segar dipesan ulang tiap hari","steps":[{"f":"toko","t":"q1","x":"Penjualan kemarin dan sisa stok terkirim malam hari."},{"f":"merch","t":"q1","x":"Promo minggu ini ikut dihitung."},{"f":"q1","t":"q2","x":"Ramalan besok per toko dibuat."},{"f":"q2","t":"toko","x":"Usulan pesanan muncul di aplikasi kepala toko."},{"f":"q2","t":"logistik","x":"Pesanan final dikirim ke DC untuk dikirim pagi."}]},{"name":"Pesanan khusus diberi tanggal janji","steps":[{"f":"q4","t":"q5","x":"Pesanan masuk jadwal induk di luar periode kunci."},{"f":"q5","t":"pengadaan","x":"Bahan yang kurang menjadi pesanan beli."},{"f":"q5","t":"q6","x":"Pesanan rencana masuk penjadwalan; tanggal selesai dihitung dari kapasitas mesin."},{"f":"q6","t":"q7","x":"Operator untuk shift tambahan disiapkan."},{"f":"q6","t":"produksi","x":"Job dirilis ke lantai sesuai urutan."}]},{"name":"Mesin rusak di tengah shift","steps":[{"f":"produksi","t":"q6","x":"Mesin berhenti; job dipindah ke mesin lain atau digeser."},{"f":"aset","t":"q6","x":"Perbaikan darurat dicatat sebagai jendela perawatan."},{"f":"q6","t":"q7","x":"Operator dipindah ke lini yang masih jalan."},{"f":"q6","t":"produksi","x":"Urutan baru dikirim ke lantai."},{"f":"produksi","t":"q8","x":"Penyebab terlambat dicatat untuk analisis."}]}]},{"id":"pengadaan","name":"Pengadaan dan Pemasok","intro":"8 kelompok sistem pengadaan dan pemasok. Pemasok diverifikasi dan dipilih, lalu dokumen dagang mengalir lewat portal dan EDI, dan akhirnya barang, PO, dan faktur dicocokkan sebelum dibayar.","nodes":[{"id":"pemasok","label":"Pemasok bahan dan vendor","row":0,"icon":"building","desc":"Pemasok bahan langsung untuk pabrik dan vendor barang dagangan untuk ritel.","ext":true},{"id":"rencana","label":"Perencanaan dan Penjadwalan","row":0,"icon":"calendar","link":"rencana","desc":"Mengirim pesanan rencana bahan dari MRP dan pesanan toko.","ext":true},{"id":"regulator","label":"Regulator dan otoritas pajak","row":0,"icon":"scales","desc":"DJP untuk e-Faktur lewat Coretax, sistem informasi EUDR dan CBAM di Uni Eropa, CBP di AS.","ext":true},{"id":"q1","num":1,"label":"Onboarding dan kualifikasi pemasok","row":1,"desc":"Hanya pemasok terverifikasi yang dipakai.","icon":"idcard","sys":[["Registrasi dan dokumen legal","NIB, NPWP, akta, dan rekening pemasok"],["Audit pabrik pemasok","Hasil audit mutu dan sosial di lokasi pemasok"],["Daftar pemasok disetujui (ASL)","Pemasok yang boleh dipakai per bahan atau part"],["Sertifikat bahan","Halal, ISO, dan food grade beserta tanggal kedaluwarsanya"],["Penilaian awal ESG dan kerja paksa","Kuesioner dan skor risiko sosial dan lingkungan"]],"start":1},{"id":"q2","num":2,"label":"Sourcing bahan langsung","row":1,"desc":"Memilih pemasok part dan bahan produk.","icon":"target","sys":[["Model biaya wajar (should-cost)","Perkiraan biaya part dari bahan, proses, dan margin wajar"],["RFQ teknis","Permintaan penawaran dengan gambar dan spesifikasi"],["Persetujuan part baru","PPAP di otomotif, inspeksi artikel pertama (FAI) di industri lain"],["Dua sumber dan alokasi volume","Pembagian volume ke beberapa pemasok untuk mengurangi risiko"],["Indeks harga bahan baku","Formula penyesuaian harga mengikuti harga komoditas"]],"start":6},{"id":"q3","num":3,"label":"Kolaborasi pasokan","row":1,"desc":"Pemasok melihat kebutuhan pabrik.","icon":"link","sys":[["Portal pemasok","Satu tempat pemasok melihat PO, ramalan, dan status pembayaran"],["Konfirmasi PO","Pemasok menerima, mengubah, atau menolak PO"],["Berbagi ramalan dan komitmen","Ramalan kebutuhan dan kapasitas yang dijanjikan pemasok"],["Pemberitahuan kiriman (ASN)","Isi kiriman dan lot sebelum barang tiba"],["Kanban elektronik","Sinyal isi ulang otomatis ke pemasok saat kotak kosong"],["Stok konsinyasi di pabrik","Barang milik pemasok baru dibayar saat dipakai"]],"start":11},{"id":"q4","num":4,"label":"EDI dan dokumen B2B","row":1,"desc":"Dokumen dagang tanpa ketik ulang.","icon":"swap","sys":[["Penerjemah dan pemetaan EDI","Format X12 dan EDIFACT diubah ke format internal"],["Koneksi mitra","AS2, VAN, dan SFTP per pemasok dan pelanggan"],["Set dokumen dagang","PO, konfirmasi, ASN, dan faktur"],["Pemantauan dokumen gagal","Dokumen yang ditolak atau tidak dibalas diberi alarm"],["Faktur elektronik","e-Faktur lewat Coretax di Indonesia, Peppol dan aturan e-invoicing di Eropa"]],"start":17},{"id":"q5","num":5,"label":"Vendor ritel","row":2,"desc":"Ribuan pemasok barang dagangan.","icon":"store","sys":[["Pengajuan barang baru oleh vendor","Data, foto, dan harga barang baru diajukan pemasok"],["Perubahan harga beli","Pengajuan kenaikan harga beserta tanggal berlaku"],["Buku aturan dan denda vendor","Pelanggaran kiriman, label, atau jadwal dikenai potongan"],["Potongan dan klaim","Potongan tagihan yang diajukan atau disanggah pemasok"],["Konsinyasi dan beli putus","Dua model beli dengan risiko stok yang berbeda"]],"start":22},{"id":"q6","num":6,"label":"Penerimaan dan pencocokan","row":2,"desc":"Barang, PO, dan faktur harus cocok.","icon":"checklist","sys":[["Penerimaan barang terhadap PO","Jumlah dan lot yang datang dicatat terhadap PO"],["Pencocokan tiga arah","PO, penerimaan, dan faktur dibandingkan dengan toleransi"],["Retur ke pemasok dan nota debit","Barang ditolak dikembalikan dan tagihan dikurangi"],["Klaim mutu ke pemasok","Biaya cacat dibebankan ke pemasok"]],"start":27},{"id":"q7","num":7,"label":"Risiko dan uji tuntas pemasok","row":2,"desc":"Asal bahan bisa dibuktikan.","icon":"shield","sys":[["Peta pemasok bertingkat","Pemasok dari pemasok sampai bahan mentah"],["Geolokasi kebun dan pernyataan EUDR","Koordinat lahan asal dan nomor pernyataan uji tuntas"],["Dokumen asal untuk UFLPA","Bukti rantai asal bahan untuk barang yang masuk AS"],["Data emisi tertanam untuk CBAM","Emisi per ton barang dari pemasok baja dan aluminium"],["Pemantauan berita dan sanksi","Berita buruk, kebangkrutan, dan daftar sanksi pemasok"]],"start":31},{"id":"q8","num":8,"label":"Analitik belanja","row":2,"desc":"Ke mana uang pembelian pergi.","icon":"pie","sys":[["Kubus belanja","Belanja per kategori, pemasok, dan pabrik"],["Pelacakan penghematan","Penghematan yang dijanjikan dibandingkan yang terwujud"],["Strategi kategori","Rencana jumlah pemasok dan cara beli per kategori"],["Kepatuhan belanja","Pembelian di luar kontrak dan pemasok yang disetujui"]],"start":36},{"id":"kualitas","label":"Kualitas dan Kepatuhan","row":3,"icon":"filecheck","link":"kualitas","desc":"Memeriksa bahan datang dan menyetujui part baru.","ext":true},{"id":"merch","label":"Merchandising dan Harga","row":3,"icon":"tag","link":"merch","desc":"Mengelola syarat dagang dan dana promo dari vendor.","ext":true},{"id":"logistik","label":"Peta logistik","row":3,"icon":"truck","desc":"Penerimaan di gudang (Pergudangan 1 sampai 6) dan impor bahan (Bea Cukai).","ext":true},{"id":"keuangan","label":"Peta keuangan","row":3,"icon":"bank","desc":"Utang usaha dan pembayaran pemasok di Akuntansi dan Audit 16 sampai 21.","ext":true}],"edges":[{"f":"pemasok","t":"q1","l":"Dokumen legal dan sertifikat","m":"rt","p":"REST API"},{"f":"q1","t":"kualitas","l":"Sertifikat halal dan ISO bahan untuk dicek","m":"ev","p":"Message queue"},{"f":"q1","t":"q7","l":"Pemasok baru masuk pemantauan risiko","m":"ev","p":"Internal"},{"f":"q2","t":"pemasok","l":"RFQ teknis dengan gambar","m":"rt","p":"REST API"},{"f":"q2","t":"kualitas","l":"Sampel part baru untuk PPAP atau FAI","m":"ev","p":"Manual"},{"f":"rencana","t":"q3","l":"Pesanan rencana dan ramalan bahan","m":"bt","p":"Internal"},{"f":"q3","t":"pemasok","l":"PO, ramalan, dan sinyal kanban di portal","m":"rt","p":"REST API"},{"f":"q3","t":"q4","l":"PO untuk mitra yang memakai EDI","m":"ev","p":"Internal"},{"f":"q4","t":"pemasok","l":"PO, konfirmasi, ASN, dan faktur","m":"ev","p":"EDI"},{"f":"q4","t":"regulator","l":"Faktur pajak elektronik","m":"rt","p":"REST API"},{"f":"pemasok","t":"q5","l":"Pengajuan barang baru dan harga beli","m":"rt","p":"REST API"},{"f":"q5","t":"merch","l":"Barang baru dan perubahan harga beli","m":"ev","p":"Message queue"},{"f":"logistik","t":"q6","l":"Barang diterima di gudang","m":"ev","p":"Message queue"},{"f":"q4","t":"q6","l":"ASN dan faktur pemasok","m":"ev","p":"Internal"},{"f":"q6","t":"keuangan","l":"Faktur yang sudah cocok untuk dibayar","m":"bt","p":"File batch"},{"f":"kualitas","t":"q6","l":"Barang ditolak dan klaim mutu","m":"ev","p":"Message queue"},{"f":"pemasok","t":"q7","l":"Geolokasi lahan dan data emisi","m":"rt","p":"REST API"},{"f":"q7","t":"regulator","l":"Pernyataan uji tuntas EUDR dan data CBAM","m":"rt","p":"Portal pelaporan"},{"f":"q6","t":"q8","l":"Belanja aktual per kategori","m":"bt","p":"ETL"}],"routes":[{"name":"Pemasok bahan baru disetujui","steps":[{"f":"pemasok","t":"q1","x":"Pemasok mengunggah NIB, NPWP, dan sertifikat halal."},{"f":"q1","t":"kualitas","x":"Sertifikat bahan diperiksa tim mutu."},{"f":"q2","t":"kualitas","x":"Sampel lulus uji dan part disetujui."},{"f":"q1","t":"q7","x":"Pemasok masuk pemantauan risiko berkala."}]},{"name":"Bahan dipesan sampai dibayar","steps":[{"f":"rencana","t":"q3","x":"MRP mengeluarkan pesanan rencana bahan."},{"f":"q3","t":"q4","x":"PO dibuat dan diteruskan ke mesin EDI."},{"f":"q4","t":"pemasok","x":"PO terkirim; pemasok membalas konfirmasi lalu ASN."},{"f":"logistik","t":"q6","x":"Truk tiba dan barang diterima terhadap ASN."},{"f":"q4","t":"q6","x":"Faktur pemasok masuk lewat EDI."},{"f":"q6","t":"keuangan","x":"Tiga dokumen cocok; faktur diteruskan untuk dibayar."}]},{"name":"Kopi untuk ekspor ke Eropa","steps":[{"f":"q1","t":"q7","x":"Pemasok kopi masuk pemantauan risiko."},{"f":"pemasok","t":"q7","x":"Koordinat kebun asal dikirim lalu dicek terhadap peta tutupan hutan."},{"f":"q7","t":"regulator","x":"Pernyataan uji tuntas dikirim ke sistem informasi EUDR."}]}]},{"id":"produksi","name":"Produksi dan MES","intro":"9 kelompok sistem produksi dan MES. Perintah kerja dirilis bersama bahannya, dijalankan dengan cara yang berbeda untuk industri proses, perakitan, dan pengemasan, lalu genealogi, kinerja, dan biaya dicatat dari data yang sama.","nodes":[{"id":"rencana","label":"Perencanaan dan Penjadwalan","row":0,"icon":"calendar","link":"rencana","desc":"Mengirim urutan job per mesin dan menerima status.","ext":true},{"id":"produk","label":"Produk dan Data Induk","row":0,"icon":"layers","link":"produk","desc":"Sumber versi BOM, routing, dan resep.","ext":true},{"id":"operator","label":"Operator dan supervisor","row":0,"icon":"user","desc":"Orang yang menjalankan mesin, mengikuti instruksi, dan mencatat masalah.","ext":true},{"id":"q1","num":1,"label":"Perintah kerja dan rilis","row":1,"desc":"Rencana menjadi pekerjaan di lantai.","icon":"file","sys":[["Penerimaan perintah kerja","Perintah kerja dari ERP beserta versi BOM dan routing"],["Cek kesiapan","Bahan, alat, cetakan, dan dokumen dicek sebelum rilis"],["Permintaan penyiapan bahan (kitting)","Bahan diminta ke gudang dalam satu set per job"],["Rilis dan prioritas","Perintah kerja dilepas ke pusat kerja sesuai urutan jadwal"],["Penutupan perintah kerja","Jumlah baik, reject, dan bahan terpakai dilaporkan ke ERP"]],"start":1},{"id":"q2","num":2,"label":"Eksekusi operasi","row":1,"desc":"Apa yang dikerjakan operator sekarang.","icon":"cursor","sys":[["Daftar kerja per pusat kerja","Job yang harus dikerjakan sekarang di mesin itu"],["Login operator dan cek keahlian","Hanya operator yang terlatih boleh menjalankan operasi tertentu"],["Instruksi kerja elektronik","Langkah kerja bergambar sesuai versi produk"],["Pengumpulan data produksi","Jumlah baik, reject, dan waktu dari mesin dan operator"],["Andon","Panggilan bantuan saat ada masalah di lini"]],"start":6},{"id":"q3","num":3,"label":"Material di lantai produksi","row":1,"desc":"Bahan masuk lini dan tercatat terpakai.","icon":"box","sys":[["Stok sisi lini","Bahan yang sudah ada di samping mesin"],["Pemakaian bahan","Dipindai per lot atau backflush dari BOM"],["Pelacakan WIP","Posisi barang setengah jadi antar operasi"],["Pengisian ulang kanban","Sinyal isi ulang dari lini ke gudang bahan"],["Scrap dan sisa bahan","Bahan terbuang dicatat beserta alasannya"]],"start":11},{"id":"q4","num":4,"label":"Resep dan batch","row":1,"desc":"Industri proses: pangan, farmasi, kimia.","icon":"flask","sys":[["Resep induk dan resep pabrik","Resep umum diturunkan menjadi resep untuk peralatan tiap pabrik"],["Eksekusi batch per fase","Fase dijalankan berurutan dengan parameter yang dikunci"],["Penimbangan dan dispensing","Bahan ditimbang dengan timbangan terhubung dan dicek lotnya"],["Catatan batch elektronik (EBR)","Semua langkah, nilai, dan tanda tangan dalam satu catatan"],["Penskalaan formula","Jumlah bahan disesuaikan dengan ukuran batch dan kadar bahan aktif"]],"start":16},{"id":"q5","num":5,"label":"Perakitan diskret","row":2,"desc":"Otomotif, elektronik, dan mesin.","icon":"gear","sys":[["Urutan perakitan dan varian per unit","Setiap unit di lini bisa berbeda varian"],["Nomor seri per unit","Identitas unik sejak unit masuk lini"],["Data proses per unit","Torsi, tekanan, dan hasil tes fungsi"],["Pencegah salah pasang (poka-yoke)","Part atau urutan yang salah langsung ditolak"],["Pengerjaan ulang dan perbaikan","Unit gagal dicatat perbaikannya sebelum masuk lini lagi"]],"start":21},{"id":"q6","num":6,"label":"Genealogi dan ketertelusuran internal","row":2,"desc":"Dari lot bahan sampai lot produk.","icon":"network","sys":[["Pohon genealogi lot dan seri","Hubungan lot bahan, WIP, dan produk jadi"],["Catatan as-built","Isi sebenarnya dari setiap unit atau batch"],["Pencarian maju dan mundur","Dari lot bahan bermasalah ke semua produk, dan sebaliknya"],["Agregasi seri","Nomor seri unit dihubungkan ke karton dan palet"]],"start":26},{"id":"q7","num":7,"label":"Pengemasan dan penandaan","row":2,"desc":"Produk jadi siap kirim dan terbaca.","icon":"receipt","sys":[["Cetak label produk dan karton","GTIN, lot, dan tanggal kedaluwarsa"],["Verifikasi kode dengan kamera","Cetakan yang tidak terbaca atau salah ditolak"],["Serialisasi obat","Barcode 2D BPOM di Indonesia, DSCSA di AS, FMD di Eropa"],["Paletisasi dan label SSCC","Susunan palet dan nomor palet untuk gudang"]],"start":30},{"id":"q8","num":8,"label":"Kinerja produksi","row":2,"desc":"Seberapa efektif mesin dan lini.","icon":"gauge","sys":[["Perhitungan OEE","Ketersediaan, kecepatan, dan mutu per mesin dan shift"],["Alasan berhenti (downtime)","Kode alasan mesin berhenti, dari otomatis atau operator"],["Laporan shift","Ringkasan dan serah terima antar shift"],["Dashboard lini waktu nyata","Hasil versus target per jam"],["Analisis kerugian utama","Enam kerugian besar: rusak, setup, kecil berhenti, lambat, reject awal, reject proses"]],"start":34},{"id":"q9","num":9,"label":"Biaya produksi","row":2,"desc":"Biaya membuat satu produk.","icon":"coins","sys":[["Kalkulasi biaya standar","Biaya bahan, tenaga kerja, dan biaya pabrik dijumlahkan dari BOM dan routing"],["Biaya aktual per perintah kerja","Bahan, jam, dan scrap yang benar-benar terjadi"],["Analisis varians","Selisih harga, pemakaian, dan efisiensi"],["Nilai WIP akhir periode","Nilai barang setengah jadi untuk tutup buku"]],"start":39},{"id":"otomasi","label":"Otomasi dan IIoT","row":3,"icon":"cpu","link":"otomasi","desc":"Menerima parameter resep dan mengirim hitungan serta status mesin.","ext":true},{"id":"kualitas","label":"Kualitas dan Kepatuhan","row":3,"icon":"filecheck","link":"kualitas","desc":"Menerima hasil uji proses dan memberi status lepas lot.","ext":true},{"id":"logistik","label":"Peta logistik","row":3,"icon":"truck","desc":"Gudang bahan dan barang jadi; ketertelusuran rantai pasok di Logistik 57.","ext":true},{"id":"keuangan","label":"Peta keuangan","row":3,"icon":"bank","desc":"Jurnal produksi, nilai persediaan, dan alokasi biaya.","ext":true}],"edges":[{"f":"rencana","t":"q1","l":"Perintah kerja dan urutan job","m":"rt","p":"REST API"},{"f":"produk","t":"q1","l":"Versi BOM, routing, dan resep","m":"rt","p":"REST API"},{"f":"q1","t":"q3","l":"Permintaan kitting bahan","m":"ev","p":"Internal"},{"f":"q3","t":"logistik","l":"Permintaan bahan ke gudang","m":"ev","p":"Message queue"},{"f":"q1","t":"q2","l":"Job yang dirilis ke pusat kerja","m":"rt","p":"Internal"},{"f":"operator","t":"q2","l":"Mulai, selesai, dan alasan berhenti","m":"rt","p":"REST API"},{"f":"q2","t":"otomasi","l":"Parameter dan resep ke mesin","m":"rt","p":"OPC UA"},{"f":"otomasi","t":"q2","l":"Hitungan dan status mesin","m":"ev","p":"MQTT"},{"f":"q1","t":"q4","l":"Batch yang dirilis","m":"rt","p":"Internal"},{"f":"q4","t":"otomasi","l":"Fase resep ke server batch","m":"rt","p":"OPC UA"},{"f":"q5","t":"q6","l":"Part terpasang per nomor seri","m":"ev","p":"Internal"},{"f":"q3","t":"q6","l":"Lot bahan yang dipakai","m":"ev","p":"Internal"},{"f":"q4","t":"kualitas","l":"Hasil uji dalam proses dan EBR","m":"ev","p":"Message queue"},{"f":"kualitas","t":"q7","l":"Status lepas lot","m":"ev","p":"Message queue"},{"f":"q7","t":"logistik","l":"Palet jadi dengan SSCC","m":"ev","p":"Message queue"},{"f":"q6","t":"logistik","l":"Kejadian lot untuk ketertelusuran","m":"ev","p":"Message queue"},{"f":"otomasi","t":"q8","l":"Status mesin per detik","m":"ev","p":"MQTT"},{"f":"q2","t":"q8","l":"Jumlah baik dan reject","m":"ev","p":"Internal"},{"f":"q1","t":"q9","l":"Perintah kerja yang ditutup","m":"ev","p":"Internal"},{"f":"q9","t":"keuangan","l":"Biaya aktual dan varians","m":"bt","p":"File batch"},{"f":"q2","t":"rencana","l":"Status job untuk papan jadwal","m":"ev","p":"Message queue"},{"f":"q2","t":"q5","l":"Job perakitan per unit","m":"rt","p":"Internal"},{"f":"kualitas","t":"q6","l":"Lot bahan bermasalah","m":"ev","p":"Message queue"}],"routes":[{"name":"Satu batch biskuit dari resep sampai palet","steps":[{"f":"rencana","t":"q1","x":"Perintah kerja batch masuk dengan versi resep."},{"f":"q1","t":"q3","x":"Tepung, gula, dan mentega disiapkan per batch."},{"f":"q1","t":"q4","x":"Batch dirilis setelah bahan siap."},{"f":"q4","t":"otomasi","x":"Fase campur dan panggang dikirim ke mesin."},{"f":"q4","t":"kualitas","x":"Hasil uji kadar air dan berat masuk EBR."},{"f":"kualitas","t":"q7","x":"Lot dilepas untuk dikemas."},{"f":"q7","t":"logistik","x":"Palet berlabel SSCC masuk gudang barang jadi."}]},{"name":"Perakitan satu unit dengan nomor seri","steps":[{"f":"q1","t":"q2","x":"Job varian unit dirilis ke lini."},{"f":"q2","t":"q5","x":"Unit mendapat nomor seri di stasiun pertama."},{"f":"q5","t":"q6","x":"Part yang dipasang dipindai ke nomor seri."},{"f":"otomasi","t":"q2","x":"Nilai torsi dan hasil tes tercatat per unit."},{"f":"q2","t":"q8","x":"Unit lolos dihitung ke OEE."}]},{"name":"Lot bahan ternyata bermasalah","steps":[{"f":"kualitas","t":"q6","x":"Lot bahan ditandai bermasalah; pencarian maju menemukan semua lot produk yang memakainya."},{"f":"q6","t":"logistik","x":"Daftar lot produk dikirim untuk ditahan di gudang."}]}]},{"id":"otomasi","name":"Otomasi dan IIoT","intro":"8 kelompok sistem otomasi dan IIoT. Kontrol menjalankan mesin, supervisi dan rekayasa menjaga apa yang berjalan, data diangkat ke sistem lain, keamanan OT melindungi semua lapisan, dan produk terhubung meneruskan tanggung jawab setelah barang terjual.","nodes":[{"id":"mesin","label":"Mesin dan sensor","row":0,"icon":"gear","desc":"Motor, katup, sensor, timbangan, dan robot di lantai pabrik.","ext":true},{"id":"produksi","label":"Produksi dan MES","row":0,"icon":"factory","link":"produksi","desc":"Mengirim parameter resep dan menerima hitungan serta status mesin.","ext":true},{"id":"vendor","label":"Vendor mesin","row":0,"icon":"briefcase","desc":"Pembuat mesin yang memberi dukungan jarak jauh dan pembaruan program.","ext":true},{"id":"q1","num":1,"label":"Kontrol mesin","row":1,"desc":"Mengendalikan mesin dalam milidetik.","icon":"cpu","sys":[["PLC dan program logika","Pengendali yang membaca sensor dan menggerakkan aktuator"],["DCS","Sistem kendali untuk pabrik proses kontinu seperti kimia dan semen"],["HMI di mesin","Layar operator untuk menjalankan dan memantau mesin"],["PLC keselamatan dan interlock","Menghentikan mesin saat pintu terbuka atau tombol darurat ditekan"],["Kontrol gerak, robot, dan CNC","Pengendali sumbu, lengan robot, dan mesin perkakas"]],"start":1},{"id":"q2","num":2,"label":"Supervisi dan SCADA","row":1,"desc":"Seluruh proses dari ruang kontrol.","icon":"eye","sys":[["SCADA dan layar proses","Tampilan seluruh lini atau pabrik dari satu ruang kontrol"],["Manajemen alarm","Prioritas, penekanan, dan analisis banjir alarm"],["Unduh resep dan parameter","Setpoint dari MES dikirim ke PLC yang tepat"],["Log kejadian operator","Siapa mengubah apa di layar kendali"]],"start":6},{"id":"q3","num":3,"label":"Pengumpulan dan penyimpanan data","row":1,"desc":"Data mesin bisa dipakai sistem lain.","icon":"database","sys":[["Historian proses","Penyimpanan deret waktu nilai sensor dengan kompresi"],["Gateway OPC UA","Menyatukan banyak protokol mesin menjadi satu model data"],["Broker MQTT dan Sparkplug B","Kirim data kejadian dengan format payload standar"],["Komputasi tepi (edge)","Olah dan saring data di pabrik sebelum dikirim"],["Ruang nama terpadu","Satu struktur nama data untuk semua mesin, misalnya pabrik, area, lini, mesin"],["Model aset digital (AAS)","Deskripsi standar kemampuan dan data tiap mesin"]],"start":10},{"id":"q4","num":4,"label":"Robot, vision, dan kendaraan otonom","row":1,"desc":"Mesin pintar di lantai pabrik.","icon":"robot","sys":[["Pemrograman dan manajemen robot","Program, titik, dan alat ujung lengan robot"],["Inspeksi visual dengan kamera","Cacat permukaan, posisi part, dan kelengkapan"],["AMR dan AGV pengangkut bahan","Kendaraan otonom dari gudang ke lini"],["Pengatur armada kendaraan","Tugas, jalur, dan antrean kendaraan otonom"]],"start":16},{"id":"q5","num":5,"label":"Digital twin dan simulasi","row":2,"desc":"Mencoba di komputer sebelum di pabrik.","icon":"layers","sys":[["Simulasi alur produksi","Simulasi kejadian diskrit untuk antrean, buffer, dan kapasitas"],["Commissioning virtual","Program PLC diuji terhadap model mesin sebelum mesin datang"],["Model proses untuk setpoint","Setpoint terbaik dicari dari model fisika dan data"],["Simulasi tata letak pabrik","Letak mesin dan jalur bahan dibandingkan sebelum dibangun"]],"start":20},{"id":"q6","num":6,"label":"Keamanan OT","row":2,"desc":"Melindungi mesin dari serangan siber.","icon":"lock","sys":[["Inventaris aset OT","Daftar PLC, HMI, dan perangkat lain beserta versinya"],["Zona dan aturan akses","Pembagian zona dan siapa boleh bicara dengan siapa"],["Akses jarak jauh vendor","Sesi vendor dibatasi waktu, disetujui, dan direkam"],["Deteksi anomali OT","Perintah atau perangkat yang tidak biasa di jaringan pabrik"],["Patch dan kerentanan OT","Kerentanan dinilai terhadap risiko berhentinya produksi"],["Cadangan dan pemulihan program","Salinan program PLC dan konfigurasi untuk pulih cepat"]],"start":24},{"id":"q7","num":7,"label":"Rekayasa dan perubahan otomasi","row":2,"desc":"Versi program mesin tercatat.","icon":"code","sys":[["Version control program PLC dan HMI","Riwayat dan perbandingan program antar versi"],["Manajemen perubahan otomasi (MOC)","Perubahan dinilai risikonya dan disetujui sebelum dipasang"],["Daftar instrumen dan tag","Semua sensor, alamat, dan satuan dalam satu daftar"],["Dokumentasi as-built panel","Gambar panel dan kabel sesuai yang terpasang"]],"start":30},{"id":"q8","num":8,"label":"Produk terhubung di tangan pelanggan","row":2,"desc":"Pabrik mengurus produk yang sudah terjual.","icon":"plug","sys":[["Registrasi dan provisioning perangkat","Identitas dan kunci tiap perangkat sejak keluar pabrik"],["Telemetri produk di lapangan","Data pemakaian dan kesehatan perangkat"],["Pembaruan perangkat lunak jarak jauh (OTA)","Firmware baru dikirim bertahap dengan rollback"],["Penanganan kerentanan dan laporan CRA","Kerentanan diterima, dinilai, dan dilaporkan ke ENISA"],["Portal akses data pengguna","Pengguna mengunduh atau membagikan data perangkatnya sesuai Data Act"]],"start":34},{"id":"aset","label":"Pemeliharaan, Energi, dan K3","row":3,"icon":"wrench","link":"aset","desc":"Memakai kondisi dan jam jalan mesin untuk perawatan.","ext":true},{"id":"kualitas","label":"Kualitas dan Kepatuhan","row":3,"icon":"filecheck","link":"kualitas","desc":"Menerima hasil inspeksi kamera dan data SPC.","ext":true},{"id":"pelanggan","label":"Pengguna produk terhubung","row":3,"icon":"phone","desc":"Pemilik alat yang menerima pembaruan dan berhak atas data alatnya.","ext":true},{"id":"enisa","label":"ENISA dan CSIRT","row":3,"icon":"scales","desc":"Penerima laporan kerentanan dan insiden CRA lewat Single Reporting Platform.","ext":true}],"edges":[{"f":"mesin","t":"q1","l":"Sinyal sensor dan perintah aktuator","m":"rt","p":"Fieldbus industri"},{"f":"q1","t":"q2","l":"Status dan alarm PLC","m":"rt","p":"OPC UA"},{"f":"q2","t":"q1","l":"Setpoint dan resep","m":"rt","p":"OPC UA"},{"f":"produksi","t":"q2","l":"Parameter resep untuk mesin","m":"rt","p":"OPC UA"},{"f":"q1","t":"q3","l":"Nilai sensor dan hitungan","m":"rt","p":"OPC UA"},{"f":"q3","t":"produksi","l":"Hitungan dan status mesin","m":"ev","p":"MQTT"},{"f":"q3","t":"aset","l":"Getaran, suhu, dan jam jalan","m":"ev","p":"MQTT"},{"f":"q4","t":"q1","l":"Status robot dan sel kerja","m":"rt","p":"Fieldbus industri"},{"f":"q4","t":"kualitas","l":"Hasil inspeksi kamera","m":"ev","p":"Message queue"},{"f":"q3","t":"q5","l":"Data aktual untuk model","m":"bt","p":"ETL"},{"f":"q5","t":"q1","l":"Program yang lulus uji virtual","m":"ev","p":"Manual"},{"f":"vendor","t":"q6","l":"Sesi dukungan jarak jauh","m":"rt","p":"Akses jarak jauh"},{"f":"q6","t":"q1","l":"Pemantauan perintah ke PLC","m":"rt","p":"Internal"},{"f":"q7","t":"q1","l":"Program yang disetujui diunduh","m":"ev","p":"Manual"},{"f":"q6","t":"q7","l":"Cadangan program untuk pemulihan","m":"bt","p":"File batch"},{"f":"pelanggan","t":"q8","l":"Telemetri dan permintaan data","m":"rt","p":"MQTT"},{"f":"q8","t":"pelanggan","l":"Pembaruan firmware bertahap","m":"ev","p":"REST API"},{"f":"q8","t":"enisa","l":"Peringatan dini 24 jam dan laporan 72 jam","m":"rt","p":"Portal pelaporan"},{"f":"q3","t":"kualitas","l":"Data proses untuk SPC","m":"ev","p":"MQTT"}],"routes":[{"name":"Data mesin sampai ke MES dan perawatan","steps":[{"f":"mesin","t":"q1","x":"Sensor membaca suhu dan putaran motor."},{"f":"q1","t":"q3","x":"PLC menyediakan nilai lewat server OPC UA."},{"f":"q3","t":"produksi","x":"Gateway tepi mengirim hitungan ke MES lewat MQTT."},{"f":"q3","t":"aset","x":"Getaran yang naik terkirim ke pemeliharaan prediktif."}]},{"name":"Vendor memperbaiki mesin dari jauh","steps":[{"f":"vendor","t":"q6","x":"Vendor meminta sesi; akses dibuka untuk dua jam."},{"f":"q6","t":"q1","x":"Perintah vendor ke PLC dipantau dan direkam."},{"f":"q7","t":"q1","x":"Perubahan program dicatat sebagai versi baru."},{"f":"q6","t":"q7","x":"Cadangan program terbaru disimpan."}]},{"name":"Kerentanan ditemukan di produk terjual","steps":[{"f":"pelanggan","t":"q8","x":"Telemetri menunjukkan pola serangan di perangkat."},{"f":"q8","t":"enisa","x":"Peringatan dini dikirim dalam 24 jam."},{"f":"q8","t":"pelanggan","x":"Firmware perbaikan dikirim bertahap."}]}]},{"id":"kualitas","name":"Kualitas dan Kepatuhan","intro":"10 kelompok sistem kualitas dan kepatuhan. Aturan dan izin menetapkan batas, pemeriksaan mencari penyimpangan, penanganan menutup masalah sampai akarnya, dan bagian keluar menjaga barang yang beredar tetap aman.","nodes":[{"id":"produksi","label":"Produksi dan MES","row":0,"icon":"factory","link":"produksi","desc":"Mengirim hasil uji proses dan menerima status lepas lot.","ext":true},{"id":"pengadaan","label":"Pengadaan dan Pemasok","row":0,"icon":"handcoin","link":"pengadaan","desc":"Mengirim sertifikat bahan dan sampel part baru.","ext":true},{"id":"pembeli","label":"Pembeli dan toko","row":0,"icon":"user","desc":"Sumber keluhan, retur, dan klaim garansi.","ext":true},{"id":"q1","num":1,"label":"Sistem manajemen mutu (QMS)","row":1,"desc":"Dokumen dan proses mutu di satu tempat.","icon":"book","sys":[["Kendali dokumen dan SOP","Versi, persetujuan, dan distribusi dokumen mutu"],["Catatan pelatihan dan kompetensi","Siapa sudah dilatih untuk SOP versi mana"],["Audit internal dan audit pelanggan","Jadwal, temuan, dan tindak lanjut audit"],["Tinjauan manajemen","Sasaran mutu dan hasilnya dibahas berkala"]],"start":1},{"id":"q2","num":2,"label":"Inspeksi dan pengujian","row":1,"desc":"Memeriksa bahan, proses, dan produk jadi.","icon":"search","sys":[["Rencana inspeksi","Karakteristik, metode, dan jumlah sampel per produk"],["Inspeksi bahan datang","Bahan dari pemasok diuji sebelum dipakai"],["Inspeksi dalam proses","Pengecekan di tengah produksi"],["Inspeksi akhir dan pelepasan","Produk jadi diperiksa sebelum boleh dikirim"],["Integrasi alat ukur","Hasil alat ukur dan mesin uji masuk tanpa diketik"]],"start":5},{"id":"q3","num":3,"label":"SPC dan kendali proses","row":1,"desc":"Menangkap penyimpangan sebelum jadi reject.","icon":"scatter","sys":[["Grafik kendali waktu nyata","Rata-rata dan sebaran ukuran per subgrup"],["Kemampuan proses (Cp dan Cpk)","Perbandingan sebaran proses dengan toleransi"],["Aturan alarm SPC","Pola seperti tujuh titik naik berturut-turut"],["Analisis sistem pengukuran (gage R&R)","Seberapa besar variasi datang dari alat ukur"]],"start":10},{"id":"q4","num":4,"label":"Laboratorium (LIMS)","row":1,"desc":"Sampel, uji, dan sertifikat.","icon":"flask","sys":[["Registrasi dan pelacakan sampel","Label, lokasi, dan rantai serah terima sampel"],["Metode uji dan spesifikasi","Prosedur dan batas lulus per uji"],["Integrasi instrumen lab","Hasil kromatografi, spektrometer, dan timbangan masuk otomatis"],["Uji stabilitas dan umur simpan","Jadwal uji untuk menentukan tanggal kedaluwarsa"],["Sertifikat analisis (CoA)","Hasil uji per lot untuk pelanggan"],["Sampel simpan","Sampel per lot disimpan untuk pengujian ulang"]],"start":14},{"id":"q5","num":5,"label":"Ketidaksesuaian dan CAPA","row":2,"desc":"Masalah ditutup sampai akarnya.","icon":"alert","sys":[["Laporan ketidaksesuaian (NCR)","Apa yang menyimpang, di mana, dan berapa banyak"],["Keputusan disposisi (MRB)","Pakai, perbaiki, kembalikan, atau buang"],["Analisis akar masalah","5 why, diagram tulang ikan, dan 8D"],["Tindakan korektif dan pencegahan (CAPA)","Tindakan, penanggung jawab, dan cek efektivitas"],["Deviasi terencana","Penyimpangan sementara yang disetujui sebelum terjadi"]],"start":20},{"id":"q6","num":6,"label":"Keluhan, garansi, dan suara pasar","row":2,"desc":"Masalah yang ditemukan pembeli.","icon":"message","sys":[["Pencatatan keluhan dari semua kanal","Keluhan toko, telepon, chat, dan ulasan"],["Klaim garansi","Klaim, keputusan, dan biaya garansi per nomor seri"],["Analisis barang retur","Penyebab kerusakan barang yang dikembalikan"],["Tren kegagalan di lapangan","Lonjakan keluhan untuk produk atau lot tertentu"]],"start":25},{"id":"q7","num":7,"label":"Keamanan pangan dan halal internal","row":2,"desc":"Pangan aman dan halal sejak bahan.","icon":"shield","sys":[["Rencana HACCP","Bahaya, titik kendali kritis, dan batasnya"],["Pemantauan CCP","Suhu, waktu, dan detektor logam dicatat otomatis"],["Kendali alergen","Pemisahan bahan alergen dan pembersihan antar produksi"],["Sistem Jaminan Produk Halal (SJPH)","Bahan, proses, dan penyelia halal di pabrik"],["Catatan sanitasi","Jadwal dan bukti pembersihan alat dan ruang"]],"start":29},{"id":"q8","num":8,"label":"Izin dan sertifikasi produk","row":2,"desc":"Produk boleh dijual di tiap negara.","icon":"cert","sys":[["Izin edar BPOM","Nomor MD, ML, atau notifikasi kosmetik per produk"],["Sertifikat SNI wajib (SPPT SNI)","Sertifikat produk untuk barang yang SNI-nya wajib"],["Sertifikat halal produk","Sertifikat BPJPH per produk beserta masa berlakunya"],["Sertifikat TKDN","Nilai komponen dalam negeri, sejak Permenperin 35/2025 berlaku 5 tahun"],["Tanda CE dan berkas teknis","Bukti kesesuaian produk untuk pasar Eropa"],["Pengecekan label sebelum cetak","Label dibandingkan dengan izin dan aturan per negara"]],"start":34},{"id":"q9","num":9,"label":"Kepatuhan bahan dan produk global","row":2,"desc":"Isi produk sesuai aturan negara tujuan.","icon":"globe","sys":[["Deklarasi bahan dari pemasok","Zat terlarang dan dibatasi per bahan: REACH, RoHS, PFAS"],["Penilaian keamanan produk","Analisis risiko produk umum sesuai GPSR di Eropa"],["Deklarasi kesesuaian kemasan","Dokumen PPWR untuk setiap jenis kemasan"],["Jejak karbon produk","Emisi per produk, termasuk emisi tertanam untuk CBAM"]],"start":40},{"id":"q10","num":10,"label":"Penahanan dan recall","row":2,"desc":"Barang bermasalah berhenti beredar.","icon":"flag","sys":[["Status tahan dan lepas per lot","Lot belum boleh dipakai atau dijual sampai dilepas"],["Hentikan kirim dan blokir jual","Perintah ke gudang, kasir, dan toko online"],["Keputusan dan rencana recall","Tingkat recall, cakupan lot, dan pesan ke publik"],["Laporan ke otoritas","BPOM, FDA, dan Safety Gate di Eropa"]],"start":44},{"id":"regulator","label":"BPOM, BPJPH, dan otoritas lain","row":3,"icon":"scales","desc":"BPOM, BPJPH, dan LSPro SNI di Indonesia; FDA dan CPSC di AS; Safety Gate di Eropa.","ext":true},{"id":"toko","label":"Toko dan Kasir","row":3,"icon":"store","link":"toko","desc":"Memblokir penjualan lot yang ditahan.","ext":true},{"id":"omni","label":"Omnichannel dan E-commerce","row":3,"icon":"cart","link":"omni","desc":"Menurunkan produk bermasalah dari kanal online.","ext":true},{"id":"logistik","label":"Peta logistik","row":3,"icon":"truck","desc":"Recall ke gudang dan toko di Logistik 58; halal rantai pasok di 60.","ext":true}],"edges":[{"f":"q1","t":"q2","l":"Rencana inspeksi dan SOP terbaru","m":"ev","p":"Internal"},{"f":"pengadaan","t":"q2","l":"Bahan datang untuk diuji","m":"ev","p":"Message queue"},{"f":"produksi","t":"q3","l":"Ukuran proses per subgrup","m":"rt","p":"Message queue"},{"f":"produksi","t":"q4","l":"Sampel batch dan hasil uji proses","m":"ev","p":"Message queue"},{"f":"q2","t":"q5","l":"Hasil di luar batas","m":"ev","p":"Internal"},{"f":"q3","t":"q5","l":"Proses keluar kendali","m":"ev","p":"Internal"},{"f":"q4","t":"q5","l":"Hasil lab gagal","m":"ev","p":"Internal"},{"f":"pembeli","t":"q6","l":"Keluhan dan klaim garansi","m":"rt","p":"REST API"},{"f":"q6","t":"q5","l":"Pola keluhan menjadi NCR","m":"ev","p":"Internal"},{"f":"q7","t":"q5","l":"Batas CCP terlewati","m":"ev","p":"Internal"},{"f":"q8","t":"regulator","l":"Pengajuan izin edar, SNI, dan halal","m":"rt","p":"Portal pelaporan"},{"f":"q8","t":"q1","l":"Syarat izin masuk SOP","m":"ev","p":"Internal"},{"f":"pengadaan","t":"q9","l":"Deklarasi bahan dari pemasok","m":"bt","p":"File batch"},{"f":"q4","t":"q10","l":"Lot lulus uji siap dilepas","m":"ev","p":"Internal"},{"f":"q5","t":"q10","l":"Lot ditahan karena NCR","m":"ev","p":"Internal"},{"f":"q10","t":"produksi","l":"Status lepas lot","m":"ev","p":"Message queue"},{"f":"q10","t":"toko","l":"Blokir jual lot di kasir","m":"ev","p":"Message queue"},{"f":"q10","t":"omni","l":"Turunkan produk dari kanal online","m":"ev","p":"Message queue"},{"f":"q10","t":"logistik","l":"Perintah recall ke gudang dan toko","m":"ev","p":"Message queue"},{"f":"q10","t":"regulator","l":"Laporan recall","m":"rt","p":"Portal pelaporan"},{"f":"q4","t":"pembeli","l":"Sertifikat analisis untuk pelanggan B2B","m":"ev","p":"REST API"}],"routes":[{"name":"Batch dilepas setelah lulus lab","steps":[{"f":"produksi","t":"q4","x":"Sampel batch dikirim ke lab."},{"f":"q4","t":"q10","x":"Semua uji lulus; lot siap dilepas."},{"f":"q10","t":"produksi","x":"Status lepas membuka pengemasan dan pengiriman."},{"f":"q4","t":"pembeli","x":"Sertifikat analisis terbit untuk pelanggan."}]},{"name":"Keluhan berulang menjadi recall","steps":[{"f":"pembeli","t":"q6","x":"Keluhan benda asing masuk dari tiga kota."},{"f":"q6","t":"q5","x":"Pola yang sama memicu NCR dan analisis akar masalah."},{"f":"q5","t":"q10","x":"Lot terkait ditahan."},{"f":"q10","t":"toko","x":"Kasir memblokir penjualan lot itu."},{"f":"q10","t":"omni","x":"Produk diturunkan dari marketplace."},{"f":"q10","t":"logistik","x":"Recall dijalankan ke gudang dan toko."},{"f":"q10","t":"regulator","x":"Laporan recall dikirim ke BPOM."}]},{"name":"Produk baru mendapat izin edar","steps":[{"f":"q8","t":"regulator","x":"Dokumen izin edar BPOM dan sertifikat halal diajukan."},{"f":"q8","t":"q1","x":"Syarat izin masuk SOP produksi."},{"f":"q1","t":"q2","x":"Rencana inspeksi produk baru berlaku."}]}]},{"id":"aset","name":"Pemeliharaan, Energi, dan K3","intro":"9 kelompok sistem pemeliharaan, energi, dan K3. Daftar aset menjadi dasar, perawatan menjaga mesin tetap jalan, energi dan lingkungan dihitung dari meter dan cerobong, dan K3 menjaga orang yang bekerja di sekitarnya.","nodes":[{"id":"otomasi","label":"Otomasi dan IIoT","row":0,"icon":"cpu","link":"otomasi","desc":"Mengirim getaran, suhu, jam jalan, dan alarm mesin.","ext":true},{"id":"toko","label":"Toko dan Kasir","row":0,"icon":"store","link":"toko","desc":"Melaporkan alat toko rusak dan suhu chiller.","ext":true},{"id":"pekerja","label":"Teknisi dan pekerja","row":0,"icon":"users","desc":"Mengerjakan perawatan, melapor insiden, dan meminta izin kerja.","ext":true},{"id":"q1","num":1,"label":"Aset dan hierarki","row":1,"desc":"Daftar semua mesin dan peralatan.","icon":"grid","sys":[["Register aset dan lokasi fungsional","Mesin, peralatan toko, dan bangunan dalam satu pohon"],["Penilaian kekritisan","Dampak aset berhenti ke keselamatan, mutu, dan produksi"],["Daftar suku cadang per aset","Part pengganti yang cocok untuk tiap aset"],["Riwayat dan biaya perawatan","Semua pekerjaan dan biayanya per aset"]],"start":1},{"id":"q2","num":2,"label":"Pemeliharaan terencana","row":1,"desc":"Merawat sebelum rusak.","icon":"calendar","sys":[["Jadwal pemeliharaan preventif","Per tanggal, per jam jalan, atau per jumlah siklus"],["Perintah kerja pemeliharaan","Pekerjaan, teknisi, part, dan waktu"],["Rencana kerja dan daftar periksa","Langkah standar per jenis perawatan"],["Perawatan oleh operator (TPM)","Pembersihan, pelumasan, dan cek harian oleh operator"],["Kontraktor dan teknisi luar","Pekerjaan vendor dan kontrak layanan"]],"start":5},{"id":"q3","num":3,"label":"Pemeliharaan prediktif","row":1,"desc":"Merawat sesuai kondisi.","icon":"pulse","sys":[["Pemantauan kondisi","Getaran, suhu, arus, dan kualitas oli"],["Model prediksi kerusakan","Perkiraan sisa umur dan peluang rusak"],["Pemantauan suhu chiller toko","Suhu dan pintu terbuka di ruang pendingin toko"],["Pemicu perintah kerja otomatis","Kondisi melewati batas langsung membuat perintah kerja"]],"start":10},{"id":"q4","num":4,"label":"Suku cadang dan MRO","row":1,"desc":"Suku cadang ada saat dibutuhkan.","icon":"box","sys":[["Gudang teknik","Stok suku cadang dan bahan perawatan"],["Stok minimum suku cadang kritis","Jumlah aman dari risiko dan lead time"],["Perbaikan dan rekondisi","Part rusak diperbaiki dan dipakai lagi"],["Pembelian MRO","Pembelian bahan perawatan dan operasional"]],"start":14},{"id":"q5","num":5,"label":"Kalibrasi","row":1,"desc":"Alat ukur bisa dipercaya.","icon":"gauge","sys":[["Jadwal kalibrasi","Interval dan jatuh tempo per alat ukur"],["Sertifikat kalibrasi","Hasil dan ketertelusuran ke standar nasional"],["Penilaian dampak di luar toleransi","Produk yang diukur sejak kalibrasi terakhir"]],"start":18},{"id":"q6","num":6,"label":"Energi dan utilitas","row":2,"desc":"Listrik, gas, uap, dan air.","icon":"bolt","sys":[["Meter energi per area dan mesin","Konsumsi listrik, gas, dan air per titik"],["Sistem manajemen energi","Target, kinerja, dan audit energi sesuai ISO 50001"],["Pemantauan udara tekan, uap, dan air","Kebocoran dan pemakaian utilitas"],["Pengendalian beban puncak","Menggeser beban supaya tagihan puncak turun"],["PLTS atap dan energi terbarukan","Produksi listrik surya dan sertifikat energi terbarukan"]],"start":21},{"id":"q7","num":7,"label":"Emisi dan lingkungan","row":2,"desc":"Laporan lingkungan dan karbon.","icon":"cloud","sys":[["Inventaris gas rumah kaca","Emisi lingkup 1, 2, dan 3 per lokasi"],["Pemantauan air limbah (SPARING)","Kualitas air limbah dikirim terus ke KLH"],["Pemantauan emisi cerobong (SISPEK)","Data emisi industri kontinu ke KLH"],["Laporan lingkungan dan PROPER","Penilaian kinerja lingkungan perusahaan"],["Laporan keberlanjutan","CSRD di Eropa, SB 253 di California, dan POJK keberlanjutan untuk emiten Indonesia"]],"start":26},{"id":"q8","num":8,"label":"Limbah dan B3","row":2,"desc":"Limbah tercatat sampai pengolah.","icon":"recycle","sys":[["Pencatatan limbah per jenis","Jumlah, kode, dan tempat simpan sementara"],["Manifest elektronik limbah B3","Festronik dari penghasil sampai pengolah"],["Neraca daur ulang dan sisa produksi","Berapa yang didaur ulang, dijual, atau dibuang"],["Data EPR kemasan","Berat kemasan beredar dan yang berhasil ditarik kembali"]],"start":31},{"id":"q9","num":9,"label":"Keselamatan dan kesehatan kerja (K3)","row":2,"desc":"Pekerja pulang selamat.","icon":"hardhat","sys":[["Pelaporan insiden dan nyaris celaka","Kejadian, korban, dan investigasi"],["Identifikasi bahaya dan penilaian risiko (HIRADC)","Bahaya per pekerjaan dan pengendaliannya"],["Izin kerja berbahaya dan LOTO","Kerja panas, ruang terbatas, dan penguncian energi"],["APD dan pelatihan keselamatan","Pembagian APD dan masa berlaku pelatihan"],["Audit SMK3 dan ISO 45001","Temuan audit dan tindak lanjutnya"],["Pemeriksaan kesehatan kerja","Hasil pemeriksaan berkala dengan akses terbatas"]],"start":35},{"id":"rencana","label":"Perencanaan dan Penjadwalan","row":3,"icon":"calendar","link":"rencana","desc":"Menerima jendela perawatan yang mengurangi kapasitas.","ext":true},{"id":"pengadaan","label":"Pengadaan dan Pemasok","row":3,"icon":"handcoin","link":"pengadaan","desc":"Membeli suku cadang dan jasa kontraktor.","ext":true},{"id":"regulator","label":"KLH, Kemnaker, dan otoritas lain","row":3,"icon":"scales","desc":"KLH untuk SPARING, SISPEK, PROPER, dan Festronik; Kemnaker untuk SMK3; CARB di California.","ext":true},{"id":"keuangan","label":"Peta keuangan","row":3,"icon":"bank","desc":"Aset tetap dan penyusutan di Akuntansi dan Audit 25 dan 26.","ext":true}],"edges":[{"f":"otomasi","t":"q3","l":"Getaran, suhu, dan arus mesin","m":"ev","p":"MQTT"},{"f":"otomasi","t":"q2","l":"Jam jalan untuk jadwal per pemakaian","m":"bt","p":"ETL"},{"f":"toko","t":"q3","l":"Suhu chiller dan freezer","m":"ev","p":"MQTT"},{"f":"toko","t":"q2","l":"Laporan alat toko rusak","m":"rt","p":"REST API"},{"f":"q1","t":"q2","l":"Aset dan kekritisannya","m":"rt","p":"Internal"},{"f":"q3","t":"q2","l":"Perintah kerja dari kondisi","m":"ev","p":"Internal"},{"f":"q2","t":"q4","l":"Kebutuhan suku cadang","m":"rt","p":"Internal"},{"f":"q4","t":"pengadaan","l":"Permintaan beli suku cadang","m":"ev","p":"Message queue"},{"f":"q2","t":"rencana","l":"Jendela perawatan mesin","m":"ev","p":"Message queue"},{"f":"pekerja","t":"q2","l":"Penyelesaian pekerjaan dan catatan","m":"rt","p":"REST API"},{"f":"q5","t":"q1","l":"Status kalibrasi per alat ukur","m":"ev","p":"Internal"},{"f":"otomasi","t":"q6","l":"Data meter energi","m":"ev","p":"MQTT"},{"f":"q6","t":"q7","l":"Konsumsi energi untuk emisi lingkup 2","m":"bt","p":"ETL"},{"f":"q7","t":"regulator","l":"Data SPARING, SISPEK, dan laporan emisi","m":"rt","p":"Portal pelaporan"},{"f":"q8","t":"regulator","l":"Manifest limbah B3","m":"rt","p":"Portal pelaporan"},{"f":"pekerja","t":"q9","l":"Laporan insiden dan permintaan izin kerja","m":"rt","p":"REST API"},{"f":"q9","t":"q2","l":"Izin kerja dan LOTO untuk pekerjaan perawatan","m":"rt","p":"Internal"},{"f":"q9","t":"regulator","l":"Laporan kecelakaan kerja","m":"rt","p":"Portal pelaporan"},{"f":"q1","t":"keuangan","l":"Aset baru dan dihapus","m":"bt","p":"File batch"}],"routes":[{"name":"Bantalan mesin mulai aus","steps":[{"f":"otomasi","t":"q3","x":"Getaran motor naik pelan selama dua minggu."},{"f":"q3","t":"q2","x":"Model memberi peringatan dan membuat perintah kerja."},{"f":"q2","t":"q4","x":"Bantalan pengganti dicek di gudang teknik."},{"f":"q2","t":"rencana","x":"Jendela perawatan dipasang di jadwal mesin."},{"f":"q9","t":"q2","x":"Izin kerja dan LOTO disetujui sebelum perbaikan."},{"f":"pekerja","t":"q2","x":"Teknisi menutup pekerjaan dan mencatat temuan."}]},{"name":"Chiller toko terlalu hangat","steps":[{"f":"toko","t":"q3","x":"Suhu chiller naik di atas batas selama 30 menit."},{"f":"q3","t":"q2","x":"Perintah kerja darurat dibuat untuk teknisi terdekat."},{"f":"pekerja","t":"q2","x":"Teknisi memperbaiki dan mencatat penyebabnya."}]},{"name":"Laporan emisi tahunan","steps":[{"f":"otomasi","t":"q6","x":"Meter listrik dan gas terkumpul sepanjang tahun."},{"f":"q6","t":"q7","x":"Konsumsi diubah menjadi emisi lingkup 1 dan 2."},{"f":"q7","t":"regulator","x":"Laporan dikirim ke otoritas dan untuk laporan keberlanjutan."}]}]},{"id":"merch","name":"Merchandising dan Harga","intro":"9 kelompok sistem merchandising dan harga. Rencana keuangan dan assortment menentukan isi toko, ruang menentukan letaknya, harga dan promo menentukan uangnya, lalu syarat dagang dan analitik menghitung hasil akhirnya.","nodes":[{"id":"pengadaan","label":"Pengadaan dan Pemasok","row":0,"icon":"handcoin","link":"pengadaan","desc":"Mengirim barang baru dan perubahan harga beli dari vendor.","ext":true},{"id":"pesaing","label":"Data harga pesaing","row":0,"icon":"search","desc":"Survei harga di toko pesaing dan harga yang tayang di situs dan marketplace.","ext":true},{"id":"rencana","label":"Perencanaan dan Penjadwalan","row":0,"icon":"calendar","link":"rencana","desc":"Menerima kalender promo dan kapasitas rak untuk replenishment.","ext":true},{"id":"q1","num":1,"label":"Perencanaan keuangan merchandise","row":1,"desc":"Anggaran beli per kategori.","icon":"pie","sys":[["Rencana penjualan, margin, dan stok","Target per kategori per bulan"],["Open-to-buy","Sisa anggaran beli setelah stok dan pesanan terbuka"],["Rencana musim","Anggaran per musim untuk fashion dan barang musiman"],["Rencana versus realisasi","Selisih rencana dan hasil per minggu"]],"start":1},{"id":"q2","num":2,"label":"Kategori dan assortment","row":1,"desc":"Produk apa dijual di toko mana.","icon":"grid","sys":[["Hierarki kategori","Departemen, kategori, subkategori, dan atribut"],["Rencana assortment per klaster","Daftar produk per kelompok toko"],["Peninjauan kategori (range review)","Evaluasi berkala produk yang masuk dan keluar"],["Listing dan delisting","Produk masuk dan keluar dari daftar jual"],["Assortment lokal","Produk daerah dan UMKM untuk toko tertentu"]],"start":5},{"id":"q3","num":3,"label":"Ruang dan planogram","row":1,"desc":"Letak produk di rak.","icon":"layers","sys":[["Denah toko","Letak rak, gondola, dan area per kategori"],["Pembuat planogram","Letak produk per rak dengan ukuran sebenarnya"],["Kapasitas rak per produk","Jumlah maksimum yang muat di rak"],["Kepatuhan planogram dari foto","Foto rak dibandingkan dengan planogram"]],"start":10},{"id":"q4","num":4,"label":"Harga","row":1,"desc":"Harga jual yang benar di semua kanal.","icon":"tag","sys":[["Daftar harga dan zona harga","Harga dasar per produk per zona"],["Pemantauan harga pesaing","Harga pesaing dari survei toko dan situs online"],["Optimasi harga","Harga dari elastisitas, margin, dan posisi terhadap pesaing"],["Cek harga eceran tertinggi (HET)","Harga jual tidak boleh melewati HET"],["Rilis perubahan harga","Harga baru dikirim ke toko, label, dan kanal online"]],"start":14},{"id":"q5","num":5,"label":"Promosi","row":2,"desc":"Diskon yang terencana dan terukur.","icon":"percent","sys":[["Kalender promosi","Promo per minggu per kategori dan kanal"],["Mekanisme promo","Potongan, beli dua gratis satu, bundel, dan harga anggota"],["Persetujuan dan anggaran promo","Siapa menyetujui dan berapa biayanya"],["Analisis hasil promo","Kenaikan penjualan bersih setelah kanibalisasi"],["Katalog dan materi promo","Brosur, materi rak, dan banner online"]],"start":19},{"id":"q6","num":6,"label":"Markdown dan clearance","row":2,"desc":"Menghabiskan stok sebelum tidak laku.","icon":"trend","sys":[["Optimasi markdown","Besar dan waktu potongan harga per minggu"],["Diskon mendekati kedaluwarsa","Potongan otomatis untuk produk segar"],["Pengalihan stok sisa","Outlet, donasi, atau daur ulang"],["Laporan barang tak terjual","Jumlah dan alasan barang dibuang sesuai ESPR"]],"start":24},{"id":"q7","num":7,"label":"Syarat dagang dan dana pemasok","row":2,"desc":"Uang dari pemasok selain harga beli.","icon":"handcoin","sys":[["Kesepakatan syarat dagang","Rabat, biaya, dan syarat per pemasok per tahun"],["Rabat volume","Target pembelian dan rabat yang sudah dicapai"],["Biaya listing dan sewa rak","Biaya produk baru dan ruang khusus"],["Dana promo dan klaimnya","Dana pemasok untuk promo dan penagihannya"]],"start":28},{"id":"q8","num":8,"label":"Label harga dan informasi rak","row":2,"desc":"Harga di rak sama dengan di kasir.","icon":"receipt","sys":[["Cetak label rak","Label kertas dicetak di toko saat harga berubah"],["Label harga elektronik (ESL)","Harga di rak berubah dari pusat"],["Harga per satuan","Harga per kilogram atau liter untuk dibandingkan pembeli"]],"start":32},{"id":"q9","num":9,"label":"Analitik merchandising","row":2,"desc":"Kategori mana yang menghasilkan uang.","icon":"chart","sys":[["Penjualan dan margin per kategori","Termasuk dana pemasok"],["GMROI dan perputaran stok","Margin per rupiah stok"],["Analisis keranjang belanja","Produk yang sering dibeli bersama"],["Elastisitas harga dan promo","Seberapa besar penjualan berubah saat harga berubah"]],"start":35},{"id":"toko","label":"Toko dan Kasir","row":3,"icon":"store","link":"toko","desc":"Menerapkan harga, promo, label, dan planogram.","ext":true},{"id":"omni","label":"Omnichannel dan E-commerce","row":3,"icon":"cart","link":"omni","desc":"Menampilkan harga dan promo di toko online dan marketplace.","ext":true},{"id":"pelanggan","label":"Pelanggan dan Loyalitas","row":3,"icon":"users","link":"pelanggan","desc":"Memakai daftar promo yang disetujui untuk penawaran personal.","ext":true},{"id":"keuangan","label":"Peta keuangan","row":3,"icon":"bank","desc":"Tagihan dana pemasok dan rabat di Akuntansi dan Audit 10 sampai 15.","ext":true}],"edges":[{"f":"q1","t":"q2","l":"Anggaran beli per kategori","m":"bt","p":"Internal"},{"f":"pengadaan","t":"q2","l":"Barang baru dari vendor","m":"ev","p":"Message queue"},{"f":"q2","t":"q3","l":"Daftar produk per klaster toko","m":"bt","p":"Internal"},{"f":"q3","t":"rencana","l":"Kapasitas rak per produk","m":"bt","p":"File batch"},{"f":"q3","t":"toko","l":"Planogram per toko","m":"bt","p":"File batch"},{"f":"pesaing","t":"q4","l":"Harga pesaing","m":"bt","p":"File batch"},{"f":"pengadaan","t":"q4","l":"Perubahan harga beli","m":"ev","p":"Message queue"},{"f":"q4","t":"toko","l":"Harga baru ke toko","m":"ev","p":"Message queue"},{"f":"q4","t":"omni","l":"Harga baru ke kanal online","m":"ev","p":"Message queue"},{"f":"q4","t":"q8","l":"Perubahan harga untuk label","m":"ev","p":"Internal"},{"f":"q8","t":"toko","l":"Harga ke label elektronik","m":"ev","p":"Message queue"},{"f":"q5","t":"rencana","l":"Kalender dan mekanisme promo","m":"ev","p":"Message queue"},{"f":"q5","t":"toko","l":"Aturan promo untuk mesin promo kasir","m":"ev","p":"Message queue"},{"f":"q5","t":"omni","l":"Aturan promo online","m":"ev","p":"Message queue"},{"f":"q5","t":"pelanggan","l":"Promo yang boleh dipersonalisasi","m":"ev","p":"REST API"},{"f":"q6","t":"q4","l":"Harga markdown","m":"ev","p":"Internal"},{"f":"q7","t":"keuangan","l":"Tagihan rabat dan dana promo","m":"bt","p":"File batch"},{"f":"toko","t":"q9","l":"Penjualan per transaksi","m":"bt","p":"ETL"},{"f":"q9","t":"q6","l":"Barang lambat laku","m":"bt","p":"Internal"}],"routes":[{"name":"Promo minggu depan sampai di kasir","steps":[{"f":"q5","t":"rencana","x":"Promo disetujui dan dikirim ke replenishment."},{"f":"q5","t":"toko","x":"Aturan promo dikirim ke mesin promo kasir."},{"f":"q5","t":"omni","x":"Promo yang sama tayang di toko online."},{"f":"q5","t":"pelanggan","x":"Promo anggota disiapkan untuk penawaran personal."},{"f":"toko","t":"q9","x":"Penjualan selama promo terkumpul untuk analisis."}]},{"name":"Harga beli naik dari pemasok","steps":[{"f":"pengadaan","t":"q4","x":"Harga beli baru berlaku bulan depan."},{"f":"q4","t":"toko","x":"Harga jual baru dikirim ke toko."},{"f":"q4","t":"q8","x":"Label rak ikut berubah."},{"f":"q8","t":"toko","x":"Label elektronik diperbarui malam hari."}]},{"name":"Akhir musim pakaian","steps":[{"f":"toko","t":"q9","x":"Penjualan per ukuran dan warna terkumpul."},{"f":"q9","t":"q6","x":"Barang lambat laku masuk daftar markdown."},{"f":"q6","t":"q4","x":"Harga turun bertahap per minggu."},{"f":"q4","t":"omni","x":"Harga markdown tayang di kanal online."}]}]},{"id":"toko","name":"Toko dan Kasir","intro":"10 kelompok sistem toko dan kasir. Kasir menangani transaksi, pembayaran, struk, dan uang tunai; barang dan orang menjaga rak dan jadwal; perangkat dan waralaba menjadi fondasi ratusan toko.","nodes":[{"id":"pembeli","label":"Pembeli","row":0,"icon":"user","desc":"Orang yang belanja di toko, membayar, dan kadang mengembalikan barang.","ext":true},{"id":"merch","label":"Merchandising dan Harga","row":0,"icon":"tag","link":"merch","desc":"Mengirim harga, promo, planogram, dan label.","ext":true},{"id":"rencana","label":"Perencanaan dan Penjadwalan","row":0,"icon":"calendar","link":"rencana","desc":"Menerima penjualan dan stok, mengirim usulan pesanan.","ext":true},{"id":"pelanggan","label":"Pelanggan dan Loyalitas","row":0,"icon":"users","link":"pelanggan","desc":"Memberi poin dan penawaran untuk anggota.","ext":true},{"id":"q1","num":1,"label":"Transaksi kasir (POS)","row":1,"desc":"Scan, hitung, bayar, struk.","icon":"receipt","sys":[["Mesin transaksi POS","Keranjang, total, dan status transaksi"],["Pencarian dan pemindaian barang","GTIN, barcode timbang, dan kode cepat"],["Mesin harga dan promo di kasir","Potongan dihitung dari aturan promo yang dikirim pusat"],["Mode offline dan sinkronisasi","Transaksi tetap jalan lalu dikirim saat koneksi kembali"],["Retur dan pembatalan di kasir","Pengembalian dengan atau tanpa struk, dengan persetujuan supervisor"],["Tutup kasir harian","Ringkasan penjualan dan pembayaran per kasir"]],"start":1},{"id":"q2","num":2,"label":"Pembayaran di kasir","row":1,"desc":"Semua cara bayar di satu layar.","icon":"card","sys":[["Integrasi terminal EDC","POS mengirim jumlah, terminal memproses kartu"],["QRIS dinamis di layar kasir","QR dengan jumlah tertentu per transaksi"],["Pembayaran campuran dan voucher","Satu transaksi dibayar dengan beberapa cara"],["Rekonsiliasi pembayaran harian","Transaksi kasir dicocokkan dengan laporan acquirer"]],"start":7},{"id":"q3","num":3,"label":"Struk dan pajak","row":1,"desc":"Bukti transaksi yang sah.","icon":"file","sys":[["Perhitungan pajak per barang","Barang kena pajak, bebas, dan pajak daerah"],["Struk digital","Struk dikirim lewat aplikasi, WhatsApp, atau email"],["Penomoran dan arsip struk","Nomor berurutan dan simpanan sesuai masa retensi"],["Pajak daerah dan alat perekam","Data transaksi untuk pemerintah daerah"]],"start":11},{"id":"q4","num":4,"label":"Kas dan brankas","row":1,"desc":"Uang tunai tidak hilang.","icon":"cash","sys":[["Laci kas dan serah terima","Modal awal, setoran tengah hari, dan serah terima shift"],["Rekonsiliasi kas per kasir","Uang fisik dibandingkan dengan catatan"],["Brankas dan setoran bank","Uang disimpan dan disetor dengan bukti"],["Jadwal penjemputan uang (CIT)","Jadwal dan bukti serah terima ke jasa pengangkut"]],"start":15},{"id":"q5","num":5,"label":"Stok toko","row":1,"desc":"Tahu barang di rak atau di gudang belakang.","icon":"box","sys":[["Penerimaan barang di toko","Kiriman DC atau pemasok dicek terhadap surat jalan"],["Stok per lokasi toko","Rak penjualan dan gudang belakang"],["Hitung siklus","Sebagian produk dihitung setiap hari secara bergilir"],["Penyesuaian stok dan barang rusak","Selisih dan barang rusak dicatat dengan alasan"],["Produk segar","Penimbangan, label harga timbang, dan barang dibuang"],["Retur dari toko","Barang dikembalikan ke DC atau pemasok"]],"start":19},{"id":"q6","num":6,"label":"Operasional toko","row":2,"desc":"Tugas harian berjalan seragam.","icon":"checklist","sys":[["Manajemen tugas toko","Tugas dari pusat dengan tenggat dan bukti foto"],["Daftar periksa buka dan tutup","Langkah standar setiap hari"],["Komunikasi pusat ke toko","Pengumuman dan konfirmasi baca"],["Audit toko","Penilaian standar layanan dan kebersihan"]],"start":25},{"id":"q7","num":7,"label":"Tenaga kerja toko","row":2,"desc":"Jumlah karyawan sesuai keramaian.","icon":"users","sys":[["Ramalan beban kerja per jam","Pengunjung dan transaksi per jam"],["Penjadwalan shift","Jadwal yang memenuhi beban kerja dan aturan jam kerja"],["Absensi dan jam kerja","Masuk, pulang, dan istirahat"],["Tukar shift dan cuti","Pengajuan dan persetujuan"]],"start":29},{"id":"q8","num":8,"label":"Pencegahan susut","row":2,"desc":"Mengurangi barang hilang.","icon":"eye","sys":[["Analitik pengecualian kasir","Pola pembatalan, diskon manual, dan retur yang tidak wajar"],["Integrasi CCTV dan EAS","Rekaman dicocokkan dengan transaksi"],["Manajemen kasus kehilangan","Investigasi, bukti, dan hasilnya"],["Pemantauan kasir mandiri","Barang yang tidak dipindai di kasir mandiri"]],"start":33},{"id":"q9","num":9,"label":"Perangkat dan teknologi toko","row":2,"desc":"Perangkat ratusan toko dikelola dari pusat.","icon":"phone","sys":[["Manajemen perangkat jarak jauh","Versi aplikasi, konfigurasi, dan kesehatan perangkat"],["Kasir mandiri (self-checkout)","Pembeli memindai dan membayar sendiri"],["Scan and go","Pembeli memindai dengan ponsel sambil belanja"],["Layar digital (digital signage)","Konten promo per toko dan jam"],["Server tepi toko","Layanan lokal yang tetap jalan saat koneksi putus"]],"start":37},{"id":"q10","num":10,"label":"Waralaba","row":2,"desc":"Toko milik mitra dengan standar pusat.","icon":"briefcase","sys":[["Data mitra dan perjanjian","Mitra, lokasi, masa kontrak, dan nomor STPW"],["Pemesanan barang toko mitra","Pesanan mitra ke DC pusat"],["Perhitungan royalti dan biaya","Royalti dari penjualan dan biaya jasa"],["Audit kepatuhan mitra","Standar layanan, harga, dan merek"]],"start":42},{"id":"keuangan","label":"Peta keuangan","row":3,"icon":"bank","desc":"QRIS, kartu, dan dompet digital di Sistem Pembayaran; gaji di Akuntansi dan Audit 72 sampai 82.","ext":true},{"id":"logistik","label":"Peta logistik","row":3,"icon":"truck","desc":"DC yang mengirim ke toko dan menerima retur.","ext":true},{"id":"kualitas","label":"Kualitas dan Kepatuhan","row":3,"icon":"filecheck","link":"kualitas","desc":"Mengirim status tahan lot dan perintah recall.","ext":true},{"id":"pemda","label":"DJP dan pemerintah daerah","row":3,"icon":"scales","desc":"Pajak pusat dan pajak daerah, termasuk alat perekam transaksi di beberapa kota.","ext":true}],"edges":[{"f":"pembeli","t":"q1","l":"Barang dipindai dan transaksi dibuat","m":"rt","p":"Internal"},{"f":"merch","t":"q1","l":"Harga dan aturan promo","m":"ev","p":"Message queue"},{"f":"pelanggan","t":"q1","l":"Nomor anggota, poin, dan kupon","m":"rt","p":"REST API"},{"f":"q1","t":"q2","l":"Jumlah yang harus dibayar","m":"rt","p":"Internal"},{"f":"q2","t":"keuangan","l":"Otorisasi kartu, QRIS, dan dompet digital","m":"rt","p":"Integrasi terminal bayar"},{"f":"q1","t":"q3","l":"Transaksi selesai untuk struk","m":"rt","p":"Internal"},{"f":"q3","t":"pemda","l":"Data transaksi pajak daerah","m":"ev","p":"REST API"},{"f":"q1","t":"q4","l":"Pembayaran tunai per kasir","m":"rt","p":"Internal"},{"f":"q1","t":"q5","l":"Barang terjual mengurangi stok","m":"ev","p":"Internal"},{"f":"q1","t":"pelanggan","l":"Transaksi beranggota","m":"ev","p":"Message queue"},{"f":"q1","t":"rencana","l":"Penjualan per toko","m":"bt","p":"ETL"},{"f":"q5","t":"rencana","l":"Stok per toko dan barang rusak","m":"bt","p":"ETL"},{"f":"logistik","t":"q5","l":"Kiriman dari DC","m":"ev","p":"Message queue"},{"f":"kualitas","t":"q1","l":"Blokir jual lot yang ditahan","m":"ev","p":"Message queue"},{"f":"q1","t":"q8","l":"Transaksi untuk analitik pengecualian","m":"ev","p":"Message queue"},{"f":"q6","t":"q5","l":"Tugas hitung siklus","m":"ev","p":"Internal"},{"f":"q7","t":"q6","l":"Karyawan yang bertugas","m":"rt","p":"Internal"},{"f":"q7","t":"keuangan","l":"Jam kerja untuk penggajian","m":"bt","p":"File batch"},{"f":"q9","t":"q1","l":"Versi aplikasi dan konfigurasi kasir","m":"ev","p":"REST API"},{"f":"q10","t":"rencana","l":"Pesanan toko mitra","m":"bt","p":"File batch"},{"f":"q1","t":"q10","l":"Penjualan toko mitra untuk royalti","m":"bt","p":"Internal"}],"routes":[{"name":"Belanja dengan QRIS dan nomor anggota","steps":[{"f":"pembeli","t":"q1","x":"Pembeli datang ke kasir dan barang dipindai."},{"f":"pelanggan","t":"q1","x":"Nomor anggota dimasukkan; kupon dan harga anggota berlaku."},{"f":"q1","t":"q2","x":"Total dikirim ke layar QRIS."},{"f":"q2","t":"keuangan","x":"Pembayaran QRIS disetujui."},{"f":"q1","t":"q3","x":"Struk digital dikirim ke WhatsApp pembeli."},{"f":"q1","t":"pelanggan","x":"Poin anggota bertambah."}]},{"name":"Kasir offline saat internet putus","steps":[{"f":"q9","t":"q1","x":"Server tepi toko tetap memberi harga dan promo."},{"f":"q1","t":"q2","x":"Pembayaran tunai dan EDC tetap jalan."},{"f":"q1","t":"q5","x":"Stok dikurangi di toko."},{"f":"q1","t":"rencana","x":"Transaksi dikirim ke pusat begitu koneksi kembali."}]},{"name":"Lot ditahan masih ada di rak","steps":[{"f":"kualitas","t":"q1","x":"Status tahan lot diterima semua kasir."},{"f":"q1","t":"q5","x":"Kasir menolak barang lot itu saat dipindai."},{"f":"q6","t":"q5","x":"Tugas menarik barang dari rak dikirim ke karyawan."}]}]},{"id":"omni","name":"Omnichannel dan E-commerce","intro":"9 kelompok sistem omnichannel dan e-commerce. Tiga jenis kanal menerima pembeli, checkout dan pesanan menyatukannya, toko dan retur memenuhi pesanan, lalu konten dan analitik memperbaiki penjualan berikutnya.","nodes":[{"id":"pembeli","label":"Pembeli online","row":0,"icon":"user","desc":"Orang yang belanja lewat situs, aplikasi, dan media sosial.","ext":true},{"id":"mp","label":"Marketplace dan TikTok Shop","row":0,"icon":"store","desc":"Shopee, Tokopedia dan TikTok Shop, Lazada, dan Blibli di Indonesia; Amazon di AS dan Eropa.","ext":true},{"id":"distributor","label":"Distributor dan warung","row":0,"icon":"building","desc":"Pelanggan B2B pabrik barang konsumsi.","ext":true},{"id":"merch","label":"Merchandising dan Harga","row":0,"icon":"tag","link":"merch","desc":"Mengirim harga dan aturan promo.","ext":true},{"id":"q1","num":1,"label":"Etalase digital","row":1,"desc":"Toko online dan aplikasi.","icon":"globe","sys":[["Mesin perdagangan","Produk, harga, keranjang, dan pesanan lewat API"],["Katalog dan ketersediaan per lokasi","Stok yang bisa dijual per gudang dan toko"],["Pencarian dan filter produk","Pencarian teks, sinonim, dan filter atribut"],["Halaman dan konten (CMS)","Banner, halaman kampanye, dan artikel"]],"start":1},{"id":"q2","num":2,"label":"Keranjang dan checkout","row":1,"desc":"Dari memilih barang sampai bayar.","icon":"cart","sys":[["Keranjang belanja","Isi keranjang tersimpan lintas perangkat"],["Voucher dan promo online","Aturan promo yang sama dengan kasir ditambah voucher online"],["Pilihan pengiriman dan ongkir","Kurir, jadwal, dan ongkos kirim per alamat"],["Checkout dan pembayaran","Ringkasan pesanan dan pengalihan ke payment gateway"],["Cek fraud pesanan","Akun palsu, penyalahgunaan voucher, dan alamat mencurigakan"]],"start":5},{"id":"q3","num":3,"label":"Marketplace dan social commerce","row":1,"desc":"Berjualan di platform orang lain.","icon":"store","sys":[["Integrasi listing","Produk dan konten dikirim ke tiap marketplace"],["Sinkronisasi stok antar kanal","Stok yang sama dibagi dengan batas aman"],["Tarikan pesanan dari marketplace","Pesanan masuk ke sistem pesanan internal"],["Harga dan promo per kanal","Harga dan program kampanye tiap marketplace"],["Rekonsiliasi biaya marketplace","Komisi, ongkir, PPh 22, dan potongan dicocokkan dengan pencairan"]],"start":10},{"id":"q4","num":4,"label":"Pesanan dan status","row":1,"desc":"Pembeli tahu pesanannya di mana.","icon":"list","sys":[["Penangkapan pesanan semua kanal","Pesanan situs, aplikasi, marketplace, dan toko"],["Pemecahan pesanan","Satu pesanan dikirim dari beberapa lokasi"],["Notifikasi status","Pesan saat dikemas, dikirim, dan tiba"],["Perubahan dan pembatalan oleh pembeli","Batas waktu sebelum pesanan diproses"]],"start":15},{"id":"q5","num":5,"label":"Pemenuhan dari toko","row":2,"desc":"Toko menjadi gudang kecil.","icon":"route","sys":[["Klik dan ambil di toko (BOPIS)","Pesanan disiapkan toko dan diambil pembeli"],["Kirim dari toko","Toko terdekat mengirim pesanan ke rumah"],["Aplikasi picking toko","Karyawan mengambil barang pesanan dari rak"],["Dark store dan quick commerce","Gudang kecil khusus pesanan antar cepat"],["Slot waktu ambil dan antar","Kapasitas per jam yang bisa dipilih pembeli"]],"start":19},{"id":"q6","num":6,"label":"Retur dan refund","row":2,"desc":"Barang kembali, uang kembali.","icon":"undo","sys":[["Pengajuan retur online","Alasan, foto, dan label kirim balik"],["Retur lintas kanal di toko","Barang online dikembalikan di kasir"],["Aturan refund","Batas waktu, kondisi, dan cara pengembalian dana"],["Disposisi barang retur","Dijual lagi, diperbaiki, dikembalikan ke pemasok, atau dibuang"]],"start":24},{"id":"q7","num":7,"label":"Penjualan B2B dan distributor","row":2,"desc":"Pabrik menjual ke distributor dan warung.","icon":"briefcase","sys":[["Portal pemesanan B2B","Distributor dan toko memesan dengan harga kontrak"],["Sistem manajemen distributor (DMS)","Stok, penjualan, dan klaim di gudang distributor"],["Aplikasi salesman dan kanvas","Rute kunjungan, pesanan, dan penjualan langsung dari mobil"],["Limit kredit dan syarat bayar","Batas utang tiap pelanggan B2B"],["Klaim promo distributor","Potongan dagang yang diklaim kembali ke pabrik"]],"start":28},{"id":"q8","num":8,"label":"Konten dan ulasan","row":2,"desc":"Informasi yang membantu membeli.","icon":"star","sys":[["Konten kaya dan video produk","Halaman produk dengan konten tambahan dari merek"],["Ulasan dan rating","Pengumpulan dan moderasi ulasan"],["Tanya jawab produk","Pertanyaan pembeli dan jawabannya"]],"start":33},{"id":"q9","num":9,"label":"Analitik digital","row":2,"desc":"Mengapa pembeli batal membeli.","icon":"chart","sys":[["Analitik web dan aplikasi","Kunjungan, halaman, dan kejadian"],["Corong konversi","Dari lihat produk sampai bayar"],["Uji A/B","Dua versi halaman dibandingkan dengan statistik"],["Atribusi kanal pemasaran","Kanal iklan yang menghasilkan penjualan"]],"start":36},{"id":"toko","label":"Toko dan Kasir","row":3,"icon":"store","link":"toko","desc":"Menyiapkan pesanan BOPIS, kirim dari toko, dan menerima retur.","ext":true},{"id":"logistik","label":"Peta logistik","row":3,"icon":"truck","desc":"Orkestrasi pesanan (Perencanaan 31 sampai 36), fulfillment gudang, dan kurir.","ext":true},{"id":"keuangan","label":"Peta keuangan","row":3,"icon":"bank","desc":"Payment gateway di Sistem Pembayaran 17 sampai 27; piutang B2B di Akuntansi dan Audit 10 sampai 15.","ext":true},{"id":"pelanggan","label":"Pelanggan dan Loyalitas","row":3,"icon":"users","link":"pelanggan","desc":"Akun, poin, dan rekomendasi personal.","ext":true}],"edges":[{"f":"pembeli","t":"q1","l":"Lihat produk dan cari","m":"rt","p":"REST API"},{"f":"q1","t":"q2","l":"Barang masuk keranjang","m":"rt","p":"Internal"},{"f":"merch","t":"q2","l":"Harga dan aturan promo","m":"ev","p":"Message queue"},{"f":"q2","t":"keuangan","l":"Pembayaran lewat payment gateway","m":"rt","p":"REST API"},{"f":"keuangan","t":"q2","l":"Status bayar","m":"ev","p":"Webhook"},{"f":"q2","t":"q4","l":"Pesanan dibayar","m":"ev","p":"Message queue"},{"f":"q3","t":"mp","l":"Listing, stok, dan harga","m":"rt","p":"API marketplace"},{"f":"mp","t":"q3","l":"Pesanan baru dan pembatalan","m":"ev","p":"Webhook"},{"f":"q3","t":"q4","l":"Pesanan marketplace","m":"ev","p":"Internal"},{"f":"distributor","t":"q7","l":"Pesanan B2B","m":"rt","p":"REST API"},{"f":"q7","t":"q4","l":"Pesanan distributor","m":"ev","p":"Internal"},{"f":"q4","t":"logistik","l":"Pesanan untuk dipilihkan lokasi kirim","m":"ev","p":"Message queue"},{"f":"q4","t":"q5","l":"Pesanan untuk toko","m":"ev","p":"Internal"},{"f":"q5","t":"toko","l":"Daftar picking per toko","m":"rt","p":"REST API"},{"f":"q4","t":"pembeli","l":"Notifikasi status pesanan","m":"ev","p":"API pesan"},{"f":"pembeli","t":"q6","l":"Pengajuan retur","m":"rt","p":"REST API"},{"f":"q6","t":"toko","l":"Retur yang dikembalikan di toko","m":"rt","p":"REST API"},{"f":"q6","t":"keuangan","l":"Refund ke metode bayar asal","m":"rt","p":"REST API"},{"f":"q2","t":"pelanggan","l":"Akun, poin, dan rekomendasi","m":"rt","p":"REST API"},{"f":"q1","t":"q9","l":"Kejadian kunjungan dan klik","m":"ev","p":"Message queue"},{"f":"pembeli","t":"q8","l":"Ulasan dan rating","m":"rt","p":"REST API"},{"f":"q3","t":"keuangan","l":"Laporan pencairan dan potongan marketplace","m":"bt","p":"File batch"}],"routes":[{"name":"Beli online, ambil di toko","steps":[{"f":"pembeli","t":"q1","x":"Pembeli memilih toko dan melihat stoknya."},{"f":"q1","t":"q2","x":"Barang masuk keranjang; promo dihitung."},{"f":"q2","t":"keuangan","x":"Pembayaran lewat payment gateway."},{"f":"q2","t":"q4","x":"Pesanan dibayar masuk sistem pesanan."},{"f":"q4","t":"q5","x":"Pesanan diteruskan ke toko pilihan."},{"f":"q5","t":"toko","x":"Karyawan mengambil barang dari rak."},{"f":"q4","t":"pembeli","x":"Pesan siap diambil dikirim ke WhatsApp."}]},{"name":"Pesanan Shopee dari stok bersama","steps":[{"f":"mp","t":"q3","x":"Pesanan masuk lewat webhook."},{"f":"q3","t":"q4","x":"Pesanan dicatat dan stok dikunci."},{"f":"q4","t":"logistik","x":"Gudang terdekat dipilih untuk mengirim."},{"f":"q3","t":"mp","x":"Stok baru dikirim ke semua marketplace."},{"f":"q3","t":"keuangan","x":"Pencairan dicocokkan dengan komisi dan PPh 22."}]},{"name":"Barang online dikembalikan di toko","steps":[{"f":"pembeli","t":"q6","x":"Pembeli mengajukan retur di aplikasi."},{"f":"q6","t":"toko","x":"Barang diterima kasir dan dicek."},{"f":"q6","t":"keuangan","x":"Refund dikirim ke metode bayar asal."}]}]},{"id":"pelanggan","name":"Pelanggan dan Loyalitas","intro":"9 kelompok sistem pelanggan dan loyalitas. Pembeli dikenali dan dikelompokkan, diberi nilai lewat poin dan penawaran, dihubungi dan dilayani, dan semuanya berdiri di atas persetujuan dan analitik.","nodes":[{"id":"pembeli","label":"Pembeli","row":0,"icon":"user","desc":"Anggota yang belanja, mengumpulkan poin, dan menerima pesan.","ext":true},{"id":"toko","label":"Toko dan Kasir","row":0,"icon":"store","link":"toko","desc":"Mengirim transaksi anggota dan menerapkan kupon.","ext":true},{"id":"omni","label":"Omnichannel dan E-commerce","row":0,"icon":"cart","link":"omni","desc":"Mengirim kejadian situs dan aplikasi, menampilkan rekomendasi.","ext":true},{"id":"q1","num":1,"label":"Identitas dan profil pelanggan","row":1,"desc":"Satu pelanggan, satu ID.","icon":"idcard","sys":[["Akun pelanggan dan login","Akun aplikasi dan situs"],["Resolusi identitas lintas kanal","Telepon, email, dan nomor anggota disatukan"],["Profil pelanggan","Riwayat belanja, preferensi, dan persetujuan"],["Alamat dan preferensi","Alamat kirim, toko favorit, dan bahasa"]],"start":1},{"id":"q2","num":2,"label":"CDP dan segmentasi","row":1,"desc":"Kelompok pembeli untuk tiap tujuan.","icon":"pie","sys":[["Pengumpulan kejadian perilaku","Klik, transaksi, dan pembukaan pesan"],["Pembentukan segmen","Aturan dan model untuk kelompok pembeli"],["Skor RFM","Seberapa baru, sering, dan banyak belanja"],["Sinkronisasi audiens","Segmen dikirim ke kanal pesan dan iklan"]],"start":5},{"id":"q3","num":3,"label":"Program loyalitas","row":1,"desc":"Poin, tingkat, dan hadiah.","icon":"gift","sys":[["Buku besar poin","Setiap tambah dan kurang poin tercatat tidak bisa diubah"],["Aturan perolehan dan penukaran","Berapa poin per belanja dan nilai tukarnya"],["Tingkat keanggotaan","Silver, gold, dan syarat naik turun tingkat"],["Katalog hadiah","Barang, voucher, dan pengalaman yang bisa ditukar"],["Koalisi dan mitra poin","Poin dipakai atau diperoleh di mitra lain"],["Kedaluwarsa poin","Poin hangus sesuai aturan dan pemberitahuannya"]],"start":9},{"id":"q4","num":4,"label":"Penawaran personal dan kupon","row":1,"desc":"Penawaran berbeda tiap pembeli.","icon":"percent","sys":[["Mesin penawaran personal","Memilih penawaran terbaik per pembeli"],["Kupon digital dan kode unik","Kupon sekali pakai per pembeli"],["Penawaran saat di toko","Notifikasi aplikasi saat pembeli berada di toko"],["Pengukuran dengan kelompok kontrol","Dampak penawaran dibanding pembeli yang tidak menerima"]],"start":15},{"id":"q5","num":5,"label":"Komunikasi pemasaran","row":2,"desc":"Pesan lewat kanal yang dipakai pembeli.","icon":"megaphone","sys":[["Orkestrasi kampanye","Alur pesan berdasarkan perilaku pembeli"],["WhatsApp Business, SMS, dan email","Pengiriman lewat API resmi tiap kanal"],["Push notification aplikasi","Pesan ke ponsel lewat FCM dan APNs"],["Batas frekuensi dan jam kirim","Supaya pembeli tidak dibanjiri pesan"]],"start":19},{"id":"q6","num":6,"label":"Retail media","row":2,"desc":"Ritel menjual iklan ke merek.","icon":"video","sys":[["Iklan produk bersponsor","Produk merek tampil di hasil pencarian situs dan aplikasi"],["Iklan di layar toko","Konten merek di layar digital toko"],["Audiens untuk iklan di luar situs","Segmen pembeli untuk iklan di platform lain"],["Clean room data","Data ritel dan merek digabung tanpa saling melihat data pribadi"],["Laporan dampak penjualan","Penjualan tambahan dari iklan untuk pengiklan"]],"start":23},{"id":"q7","num":7,"label":"Layanan pelanggan","row":2,"desc":"Keluhan dijawab dan diselesaikan.","icon":"headset","sys":[["Tiket dan antrean lintas kanal","Semua keluhan dalam satu antrean"],["Chat dan WhatsApp","Percakapan dengan agen atau bot"],["Basis pengetahuan","Jawaban standar dan kebijakan terbaru"],["Survei kepuasan dan NPS","Penilaian setelah tiket selesai"]],"start":28},{"id":"q8","num":8,"label":"Privasi dan persetujuan","row":2,"desc":"Pelanggan mengendalikan datanya.","icon":"lock","sys":[["Pusat persetujuan pemasaran","Persetujuan per kanal dan tujuan, bisa dicabut kapan saja"],["Permintaan akses dan hapus data","Hak pelanggan dijalankan ke semua sistem"],["Retensi dan anonimisasi","Data lama dihapus atau dianonimkan"],["Pemetaan data pribadi","Data pribadi apa disimpan di sistem mana"]],"start":32},{"id":"q9","num":9,"label":"Analitik pelanggan","row":2,"desc":"Nilai dan perilaku pelanggan.","icon":"trend","sys":[["Nilai seumur pelanggan (CLV)","Perkiraan nilai belanja masa depan"],["Prediksi pelanggan berhenti","Peluang pelanggan tidak kembali"],["Afinitas dan rekomendasi produk","Produk yang cocok untuk tiap pembeli"],["Analisis kohort","Perilaku kelompok pelanggan menurut bulan bergabung"]],"start":36},{"id":"merch","label":"Merchandising dan Harga","row":3,"icon":"tag","link":"merch","desc":"Memberi daftar promo yang boleh dipersonalisasi.","ext":true},{"id":"merek","label":"Merek pengiklan","row":3,"icon":"briefcase","desc":"Pemasok yang membeli iklan retail media.","ext":true},{"id":"kanal","label":"WhatsApp, SMS, dan push","row":3,"icon":"message","desc":"Penyedia kanal pesan: WhatsApp Business Platform, operator SMS, FCM, dan APNs.","ext":true},{"id":"kualitas","label":"Kualitas dan Kepatuhan","row":3,"icon":"filecheck","link":"kualitas","desc":"Menerima keluhan produk dari layanan pelanggan.","ext":true}],"edges":[{"f":"toko","t":"q1","l":"Nomor anggota dan transaksi","m":"ev","p":"Message queue"},{"f":"omni","t":"q1","l":"Akun dan login","m":"rt","p":"REST API"},{"f":"omni","t":"q2","l":"Kejadian klik dan pencarian","m":"ev","p":"Message queue"},{"f":"q1","t":"q2","l":"Profil untuk segmen","m":"rt","p":"Internal"},{"f":"toko","t":"q3","l":"Transaksi untuk poin","m":"ev","p":"Message queue"},{"f":"q3","t":"toko","l":"Saldo poin dan penukaran","m":"rt","p":"REST API"},{"f":"merch","t":"q4","l":"Promo yang boleh dipersonalisasi","m":"ev","p":"REST API"},{"f":"q2","t":"q4","l":"Segmen dan skor","m":"bt","p":"Internal"},{"f":"q4","t":"toko","l":"Kupon personal untuk kasir","m":"rt","p":"REST API"},{"f":"q4","t":"omni","l":"Penawaran dan rekomendasi di aplikasi","m":"rt","p":"REST API"},{"f":"q2","t":"q5","l":"Audiens kampanye","m":"bt","p":"Internal"},{"f":"q8","t":"q5","l":"Status persetujuan per kanal","m":"rt","p":"Internal"},{"f":"q5","t":"kanal","l":"Pesan WhatsApp, SMS, dan push","m":"ev","p":"API pesan"},{"f":"merek","t":"q6","l":"Kampanye iklan dan anggaran","m":"rt","p":"REST API"},{"f":"q6","t":"merek","l":"Laporan dampak penjualan","m":"bt","p":"File batch"},{"f":"q2","t":"q6","l":"Segmen untuk iklan","m":"bt","p":"Internal"},{"f":"pembeli","t":"q7","l":"Keluhan lewat WhatsApp dan telepon","m":"rt","p":"API pesan"},{"f":"q7","t":"kualitas","l":"Keluhan produk","m":"ev","p":"Message queue"},{"f":"pembeli","t":"q8","l":"Persetujuan dan permintaan hapus data","m":"rt","p":"REST API"},{"f":"q2","t":"q9","l":"Data perilaku untuk model","m":"bt","p":"ETL"},{"f":"q9","t":"q4","l":"Skor CLV dan risiko berhenti","m":"bt","p":"Internal"}],"routes":[{"name":"Pelanggan mulai jarang datang","steps":[{"f":"q2","t":"q9","x":"Riwayat belanja masuk model."},{"f":"q9","t":"q4","x":"Skor risiko berhenti naik."},{"f":"merch","t":"q4","x":"Penawaran dipilih dari promo yang disetujui."},{"f":"q8","t":"q5","x":"Persetujuan WhatsApp dicek."},{"f":"q5","t":"kanal","x":"Pesan berisi kupon terkirim."},{"f":"q4","t":"toko","x":"Kupon berlaku saat pelanggan belanja."}]},{"name":"Merek beriklan di aplikasi ritel","steps":[{"f":"merek","t":"q6","x":"Merek membuat kampanye produk bersponsor."},{"f":"q2","t":"q6","x":"Segmen pembeli yang relevan dipilih."},{"f":"q4","t":"omni","x":"Produk bersponsor tampil di aplikasi."},{"f":"q6","t":"merek","x":"Laporan penjualan tambahan dikirim."}]},{"name":"Pelanggan meminta datanya dihapus","steps":[{"f":"pembeli","t":"q8","x":"Permintaan hapus data masuk."},{"f":"q8","t":"q5","x":"Pelanggan dikeluarkan dari semua kampanye."},{"f":"q1","t":"q2","x":"Profil dan kejadian dihapus atau dianonimkan."}]}]}];
+(function () {
+  const MODE = { rt: 'Real time', bt: 'Batch terjadwal', ev: 'Event' };
+  const MODE_HINT = {
+    rt: 'Dipanggil langsung saat pengguna atau mesin menunggu jawabannya',
+    bt: 'Dikirim berkala dalam jumlah besar, biasanya malam hari',
+    ev: 'Dikabarkan saat sesuatu terjadi, tanpa menunggu jawaban'
+  };
+  const PROTO = {
+    "Internal": "Modul di dalam satu aplikasi atau proses yang sama, dipanggil langsung. Contoh: Input kasir masuk mesin promo di POS yang sama.",
+    "Message queue": "Event asinkron lewat antrean seperti Kafka; pengirim tidak menunggu. Contoh: Harga baru ke ratusan toko, status lepas lot ke gudang.",
+    "REST API": "Panggilan HTTP dengan data JSON. Contoh: Checkout ke payment gateway, portal pemasok.",
+    "File batch": "Berkas terjadwal, misalnya CSV atau XML. Contoh: Planogram ke toko, faktur yang sudah cocok ke akuntansi.",
+    "ETL": "Penyalinan data terjadwal ke gudang data: ambil, olah, muat. Contoh: Penjualan per toko ke mesin ramalan setiap malam.",
+    "MQTT": "Protokol publikasi dan langganan yang ringan, sering dengan format Sparkplug B. Contoh: Getaran motor dan suhu chiller toko.",
+    "Portal pelaporan": "Unggah laporan atau pengajuan ke aplikasi regulator. Contoh: Izin edar BPOM, SPARING, pernyataan EUDR.",
+    "OPC UA": "Standar data mesin industri dengan model informasi dan keamanan bawaan. Contoh: Setpoint resep dari MES ke PLC.",
+    "Manual": "Keputusan atau dokumen oleh manusia. Contoh: Artwork final dikirim ke percetakan kemasan.",
+    "API pesan": "API resmi kanal pesan seperti WhatsApp Business Platform dan SMS. Contoh: Notifikasi status pesanan ke pembeli.",
+    "EDI": "Dokumen dagang standar X12 atau EDIFACT lewat AS2, VAN, atau SFTP. Contoh: PO, ASN, dan faktur dengan pemasok.",
+    "API marketplace": "API resmi tiap marketplace dengan aturan dan batas panggilan sendiri. Contoh: Listing dan stok ke Shopee dan Tokopedia.",
+    "Fieldbus industri": "Jaringan mesin seperti PROFINET, EtherNet/IP, Modbus, dan EtherCAT. Contoh: Sensor dan aktuator ke PLC.",
+    "Webhook": "Pemberitahuan HTTP dari pihak luar saat ada kejadian. Contoh: Pesanan baru dari marketplace, status bayar.",
+    "Akses jarak jauh": "Sesi jarak jauh lewat gerbang akses yang dibatasi waktu dan direkam. Contoh: Vendor memperbaiki program mesin.",
+    "Integrasi terminal bayar": "POS mengirim jumlah ke terminal; data kartu tidak lewat POS. Contoh: Pembayaran kartu dan QRIS di kasir."
+  };
+  const state = { dom: null, sel: null, hover: null, hotEdge: null, route: null, step: 0, timer: null, modes: { rt: true, bt: true, ev: true }, flash: null, proto: null };
+  const byId = {};
+  DOMAINS.forEach(d => { byId[d.id] = d; });
+  const $ = (s, r) => (r || document).querySelector(s);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const TAB_ICON = {"antar": "network", "produk": "layers", "rencana": "calendar", "pengadaan": "handcoin", "produksi": "factory", "otomasi": "cpu", "kualitas": "filecheck", "aset": "wrench", "merch": "tag", "toko": "store", "omni": "cart", "pelanggan": "users"};
+
+  function ic(name, size, cls) {
+    const s = size || 18;
+    return `<svg class="ic${cls ? ' ' + cls : ''}" width="${s}" height="${s}" aria-hidden="true" focusable="false"><use href="#i-${name}"/></svg>`;
+  }
+
+  function buildSprite() {
+    let s = '';
+    Object.keys(ICONS).forEach(k => {
+      s += `<symbol id="i-${k}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${ICONS[k]}</symbol>`;
+    });
+    $('#sprite').innerHTML = `<defs>${s}</defs>`;
+  }
+
+  function countSys(dom) {
+    let t = 0;
+    dom.nodes.forEach(n => { if (n.sys) t += n.sys.length; });
+    return t;
+  }
+
+  function totalSystems() {
+    let t = 0;
+    DOMAINS.forEach(d => { t += countSys(d); });
+    return t;
+  }
+
+  /* ---------- layout ---------- */
+  function curve(a, b) {
+    const f = v => v.toFixed(1);
+    if (a.side === 'l' || a.side === 'r') {
+      return { d: `M${f(a.x)} ${f(a.y)} L${f(b.x)} ${f(b.y)}`, mid: [(a.x + b.x) / 2, (a.y + b.y) / 2] };
+    }
+    let c1, c2;
+    if (a.side === 'b' && b.side === 't') {
+      const dy = Math.max(28, (b.y - a.y) * 0.5); c1 = [a.x, a.y + dy]; c2 = [b.x, b.y - dy];
+    } else if (a.side === 't' && b.side === 'b') {
+      const dy = Math.max(28, (a.y - b.y) * 0.5); c1 = [a.x, a.y - dy]; c2 = [b.x, b.y + dy];
+    } else {
+      const dir = a.side === 't' ? -1 : 1;
+      const h = 26 + Math.min(26, Math.abs(a.x - b.x) * 0.05);
+      c1 = [a.x, a.y + dir * h]; c2 = [b.x, b.y + dir * h];
+    }
+    return {
+      d: `M${f(a.x)} ${f(a.y)} C${f(c1[0])} ${f(c1[1])} ${f(c2[0])} ${f(c2[1])} ${f(b.x)} ${f(b.y)}`,
+      mid: [(a.x + 3 * c1[0] + 3 * c2[0] + b.x) / 8, (a.y + 3 * c1[1] + 3 * c2[1] + b.y) / 8]
+    };
+  }
+
+  function prep(d) {
+    if (d._prep) return;
+    d._nodes = {};
+    d.nodes.forEach(n => { d._nodes[n.id] = n; });
+    const W = 1100, mx = 12, rowH = 130, top = 34, nh = 62;
+    const rows = {};
+    d.nodes.forEach(n => { (rows[n.row] = rows[n.row] || []).push(n); });
+    const keys = Object.keys(rows).map(Number).sort((a, b) => a - b);
+    keys.forEach((r, ri) => {
+      const L = rows[r];
+      const slot = (W - 2 * mx) / L.length;
+      const w = Math.min(224, slot - 16);
+      L.forEach((n, i) => {
+        n._w = w; n._h = nh; n._cx = mx + slot * (i + 0.5); n._x = n._cx - w / 2; n._y = top + ri * rowH; n._ri = ri; n._ci = i;
+      });
+    });
+    d._W = W;
+    d._H = top + (keys.length - 1) * rowH + nh + 34;
+    const slots = {};
+    d.edges.forEach((e, i) => {
+      e._i = i;
+      const a = d._nodes[e.f], b = d._nodes[e.t];
+      let sa, sb;
+      if (a._ri < b._ri) { sa = 'b'; sb = 't'; }
+      else if (a._ri > b._ri) { sa = 't'; sb = 'b'; }
+      else if (Math.abs(a._ci - b._ci) === 1) { sa = a._ci < b._ci ? 'r' : 'l'; sb = sa === 'r' ? 'l' : 'r'; }
+      else { sa = sb = (a._ri === 0 ? 'b' : 't'); }
+      (slots[a.id + '|' + sa] = slots[a.id + '|' + sa] || []).push({ e, end: 'a', ox: b._cx });
+      (slots[b.id + '|' + sb] = slots[b.id + '|' + sb] || []).push({ e, end: 'b', ox: a._cx });
+    });
+    Object.keys(slots).forEach(k => {
+      const [id, side] = k.split('|');
+      const n = d._nodes[id];
+      const list = slots[k].sort((p, q) => p.ox - q.ox);
+      const c = list.length;
+      list.forEach((s, j) => {
+        if (side === 'l' || side === 'r') {
+          const x = side === 'r' ? n._x + n._w : n._x;
+          const y = n._y + n._h / 2 + (c === 1 ? 0 : (j - (c - 1) / 2) * 10);
+          s.e['_' + s.end] = { x, y, side };
+          return;
+        }
+        const x = c === 1 ? n._cx : n._x + n._w * (0.18 + 0.64 * (j / (c - 1)));
+        const y = side === 't' ? n._y : n._y + n._h;
+        s.e['_' + s.end] = { x, y, side };
+      });
+    });
+    d.edges.forEach(e => { const c = curve(e._a, e._b); e._d = c.d; e._mid = c.mid; });
+    d._prep = true;
+  }
+
+  function wrap(text, max) {
+    const words = text.split(' ');
+    const lines = [];
+    let cur = '';
+    words.forEach(w => {
+      const t = cur ? cur + ' ' + w : w;
+      if (t.length > max && cur) { lines.push(cur); cur = w; } else cur = t;
+    });
+    if (cur) lines.push(cur);
+    if (lines.length > 3) {
+      const rest = lines.slice(2).join(' ');
+      lines.length = 2;
+      lines.push(rest.length > max ? rest.slice(0, max - 1) + '\u2026' : rest);
+    }
+    return lines;
+  }
+
+  function nodeSVG(n) {
+    const textX = n._x + 50;
+    let lines = wrap(n.label, Math.max(8, Math.floor((n._w - 58) / 7.5)));
+    let small = false;
+    if (lines.length > 2) { lines = wrap(n.label, Math.max(8, Math.floor((n._w - 58) / 6.9))); small = lines.length > 2; }
+    const ys = lines.length === 1 ? [n._y + 36] : (lines.length === 2 ? [n._y + 28.5, n._y + 45] : [n._y + 21.5, n._y + 35.5, n._y + 49.5]);
+    let t = '';
+    lines.forEach((ln, i) => { t += `<text class="nl${small ? ' sm' : ''}" x="${textX.toFixed(1)}" y="${ys[i]}">${esc(ln)}</text>`; });
+    const chipY = n._y + (n._h - 32) / 2;
+    return `<g class="node${n.ext ? ' ext' : ''}" data-n="${n.id}" tabindex="0" role="button" aria-label="${esc(n.label + (n.ext ? ', pihak luar' : ''))}">` +
+      `<rect class="nb" x="${n._x.toFixed(1)}" y="${n._y}" width="${n._w.toFixed(1)}" height="${n._h}" rx="12"/>` +
+      `<rect class="chip" x="${(n._x + 10).toFixed(1)}" y="${chipY}" width="32" height="32" rx="9"/>` +
+      `<use class="ico" href="#i-${n.icon}" x="${(n._x + 16).toFixed(1)}" y="${chipY + 6}" width="20" height="20"/>` +
+      (n.num ? `<text class="nt" x="${(n._x + n._w - 10).toFixed(1)}" y="${n._y + 16}" text-anchor="end">${n.num}</text>` : '') +
+      t + '</g>';
+  }
+
+  function marker(id, color, size) {
+    return `<marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="${size}" markerHeight="${size}" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:${color}"/></marker>`;
+  }
+
+  function findEdge(d, f, t) {
+    return d.edges.find(e => (e.f === f && e.t === t) || (e.f === t && e.t === f));
+  }
+
+  function drawMap() {
+    const d = state.dom;
+    prep(d);
+    const svg = $('#map');
+    svg.setAttribute('viewBox', `0 0 ${d._W} ${d._H}`);
+    svg.setAttribute('aria-label', 'Peta integrasi ' + d.name);
+    let E = '', H = '', N = '';
+    d.edges.forEach(e => {
+      E += `<path class="edge m-${e.m}" d="${e._d}" marker-end="url(#ah)"/>`;
+      H += `<path class="ehit" data-e="${e._i}" d="${e._d}"/>`;
+    });
+    d.nodes.forEach(n => { N += nodeSVG(n); });
+    svg.innerHTML = `<defs>${marker('ah', 'var(--line)', 8)}${marker('ah-on', 'var(--sel)', 10)}${marker('ah-r', 'var(--route)', 14)}${marker('ah-rp', 'var(--route-soft)', 11)}</defs>` +
+      `<g class="edges">${E}</g><g class="hits">${H}</g><g class="nodes">${N}</g><g id="over"></g>`;
+  }
+
+  function elabel(e, cls, withProto) {
+    const [x, y] = e._mid;
+    const txt = withProto ? `${e.l} (${e.p})` : e.l;
+    return `<text class="elabel${cls ? ' ' + cls : ''}" x="${x.toFixed(1)}" y="${(y - 7).toFixed(1)}" text-anchor="middle">${esc(txt)}</text>`;
+  }
+
+  function badge(e, i, now) {
+    const [x, y] = e._mid;
+    return `<g class="badge${now ? ' now' : ''}"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11.5"/><text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle">${i + 1}</text></g>`;
+  }
+
+  /* ---------- paint map state ---------- */
+  function paint() {
+    const d = state.dom;
+    const svg = $('#map');
+    const edges = Array.from(svg.querySelectorAll('.edge'));
+    const hits = Array.from(svg.querySelectorAll('.ehit'));
+    const nodes = Array.from(svg.querySelectorAll('.node'));
+    let over = '';
+    edges.forEach((el, i) => {
+      el.setAttribute('class', 'edge m-' + d.edges[i].m + (state.modes[d.edges[i].m] ? '' : ' off'));
+      el.setAttribute('marker-end', 'url(#ah)');
+      el.removeAttribute('marker-start');
+      hits[i].setAttribute('class', 'ehit' + (state.modes[d.edges[i].m] ? '' : ' off'));
+    });
+    nodes.forEach(el => el.setAttribute('class', 'node' + (d._nodes[el.dataset.n].ext ? ' ext' : '')));
+
+    if (state.route) {
+      const steps = state.route.steps, cur = state.step;
+      const used = new Set();
+      steps.forEach((s, i) => {
+        if (i > cur) return;
+        const e = findEdge(d, s.f, s.t);
+        if (!e) return;
+        const el = edges[e._i];
+        el.classList.remove('off');
+        const rev = e.f !== s.f;
+        if (i === cur) {
+          el.classList.remove('r-past');
+          el.classList.add('r-now');
+          if (rev) { el.classList.add('rev'); el.setAttribute('marker-end', 'none'); el.setAttribute('marker-start', 'url(#ah-r)'); }
+          else { el.classList.remove('rev'); el.removeAttribute('marker-start'); el.setAttribute('marker-end', 'url(#ah-r)'); }
+        } else if (!el.classList.contains('r-now')) {
+          el.classList.add('r-past');
+          if (rev) { el.setAttribute('marker-end', 'none'); el.setAttribute('marker-start', 'url(#ah-rp)'); }
+          else el.setAttribute('marker-end', 'url(#ah-rp)');
+        }
+        used.add(s.f); used.add(s.t);
+      });
+      edges.forEach(el => { if (!el.classList.contains('r-now') && !el.classList.contains('r-past')) el.classList.add('dim'); });
+      const cs = steps[cur];
+      nodes.forEach(el => {
+        const id = el.dataset.n;
+        if (id === cs.f || id === cs.t) el.classList.add('r-now');
+        else if (used.has(id)) el.classList.add('r-node');
+        else el.classList.add('dim');
+      });
+      steps.forEach((s, i) => {
+        if (i >= cur) return;
+        const e = findEdge(d, s.f, s.t);
+        if (e) over += badge(e, i, false);
+      });
+      const ce = findEdge(d, cs.f, cs.t);
+      if (ce) over += badge(ce, cur, true);
+    } else if (state.proto) {
+      const conn = new Set();
+      const list = [];
+      d.edges.forEach(e => {
+        const el = edges[e._i];
+        if (e.p === state.proto) {
+          el.classList.remove('off'); el.classList.add('on'); el.setAttribute('marker-end', 'url(#ah-on)');
+          conn.add(e.f); conn.add(e.t); list.push(e);
+        } else el.classList.add('dim');
+      });
+      nodes.forEach(el => el.classList.add(conn.has(el.dataset.n) ? 'on' : 'dim'));
+      if (state.hotEdge != null) {
+        const he = d.edges[state.hotEdge];
+        const hel = edges[he._i];
+        hel.classList.remove('dim', 'on', 'off');
+        hel.classList.add('hot');
+        hel.setAttribute('marker-end', 'url(#ah-r)');
+        over += elabel(he, 'hot', true);
+      } else if (list.length <= 8) list.forEach(e => { over += elabel(e); });
+    } else {
+      const focus = state.sel || state.hover;
+      if (focus) {
+        const conn = new Set([focus]);
+        const list = [];
+        d.edges.forEach(e => {
+          const el = edges[e._i];
+          if ((e.f === focus || e.t === focus) && state.modes[e.m]) {
+            el.classList.add('on'); el.setAttribute('marker-end', 'url(#ah-on)');
+            conn.add(e.f); conn.add(e.t); list.push(e);
+          } else el.classList.add('dim');
+        });
+        nodes.forEach(el => {
+          const id = el.dataset.n;
+          el.classList.add(id === focus ? 'sel' : (conn.has(id) ? 'on' : 'dim'));
+        });
+        if (list.length <= 5 && state.hotEdge == null) list.forEach(e => { over += elabel(e); });
+      }
+      if (state.hotEdge != null) {
+        const e = d.edges[state.hotEdge];
+        const el = edges[e._i];
+        el.classList.remove('dim', 'on', 'off');
+        el.classList.add('hot');
+        el.setAttribute('marker-end', 'url(#ah-r)');
+        nodes.forEach(n => { if (n.dataset.n === e.f || n.dataset.n === e.t) n.classList.remove('dim'); });
+        over += elabel(e, 'hot', true);
+      }
+    }
+    $('#over').innerHTML = over;
+  }
+
+  function scrollInPanel(el, center) {
+    const p = $('#panel');
+    if (!el || !p) return;
+    if (p.scrollHeight > p.clientHeight + 4) {
+      const top = el.offsetTop - (center ? (p.clientHeight - el.offsetHeight) / 2 : 12);
+      const cur = p.scrollTop;
+      if (center || top < cur || el.offsetTop + el.offsetHeight > cur + p.clientHeight) {
+        p.scrollTo({ top: Math.max(0, top), behavior: reduceMotion ? 'auto' : 'smooth' });
+      }
+    } else if (center) {
+      el.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
+    }
+  }
+
+  /* ---------- panel ---------- */
+  function headHTML(iconName, kind, title, ext) {
+    return `<div class="p-head"><span class="p-chip${ext ? ' ext' : ''}">${ic(iconName, 24)}</span><div><p class="kind">${esc(kind)}</p><h2>${esc(title)}</h2></div></div>`;
+  }
+
+  function nodeListHTML(d) {
+    const own = d.nodes.filter(n => !n.ext).slice().sort((a, b) => (a.num || 0) - (b.num || 0));
+    const ext = d.nodes.filter(n => n.ext);
+    let h = '<ul class="nodelist">';
+    own.forEach(n => {
+      const cnt = n.sys ? n.sys.length : (n.link ? countSys(byId[n.link]) : 0);
+      h += `<li><button type="button" data-goto="${n.id}"><span class="nl-chip">${ic(n.icon, 18)}</span><span class="nl-name">${n.num ? `<span class="nl-num">${n.num}</span>` : ''}${esc(n.label)}</span><span class="nl-cnt">${cnt} sistem</span></button></li>`;
+    });
+    if (ext.length) {
+      h += `</ul><h3>Pihak luar <span class="count">${ext.length}</span></h3><ul class="nodelist">`;
+      ext.forEach(n => {
+        h += `<li><button type="button" data-goto="${n.id}" class="is-ext"><span class="nl-chip ext">${ic(n.icon, 18)}</span><span class="nl-name">${esc(n.label)}</span><span class="nl-cnt"></span></button></li>`;
+      });
+    }
+    return h + '</ul>';
+  }
+
+  function connHTML(e, n, d) {
+    const out = e.f === n.id;
+    const other = d._nodes[out ? e.t : e.f];
+    const dash = e.m === 'bt' ? '5 4' : (e.m === 'ev' ? '1.5 4' : 'none');
+    return `<li><button type="button" class="conn${state.modes[e.m] ? '' : ' muted'}" data-goto="${other.id}" data-edge="${e._i}">` +
+      `<span class="c-chip${other.ext ? ' ext' : ''}">${ic(other.icon, 18)}</span>` +
+      `<span class="c-body"><span class="c-name">${esc(other.label)}</span><span class="c-what">${esc(e.l)}</span>` +
+      `<span class="c-meta"><span class="c-mode" title="${esc(MODE_HINT[e.m])}"><svg width="22" height="8" aria-hidden="true"><path d="M1 4H21" stroke-dasharray="${dash}"/></svg>${MODE[e.m]}</span>` +
+      `<span class="c-proto" title="${esc(PROTO[e.p] || '')}">${ic('code', 13)}${esc(e.p)}</span></span></span></button></li>`;
+  }
+
+  function protoListHTML(d) {
+    const cnt = {};
+    d.edges.forEach(e => { cnt[e.p] = (cnt[e.p] || 0) + 1; });
+    const keys = Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a] || a.localeCompare(b));
+    let h = `<h3>Standar pesan dan protokol <span class="count">${keys.length}</span></h3><p class="hint">Pilih salah satu untuk melihat koneksi mana saja yang memakainya.</p><ul class="protolist">`;
+    keys.forEach(k => {
+      h += `<li><button type="button" data-proto="${esc(k)}"><span class="pl-chip">${ic('code', 16)}</span><span class="pl-name">${esc(k)}</span><span class="nl-cnt">${cnt[k]} koneksi</span></button></li>`;
+    });
+    return h + '</ul>';
+  }
+
+  function protoPanel(d) {
+    const k = state.proto;
+    const list = d.edges.filter(e => e.p === k);
+    let h = `<button type="button" class="back" data-back>${ic('back', 16)}Kembali ke gambaran</button>`;
+    h += headHTML('code', 'Standar pesan dan protokol', k);
+    h += `<p class="lead">${esc(PROTO[k] || '')}</p>`;
+    h += `<h3>Dipakai di ${d.name} <span class="count">${list.length}</span></h3><ul class="conns">`;
+    list.forEach(e => {
+      const a = d._nodes[e.f], b = d._nodes[e.t];
+      h += `<li><button type="button" class="conn" data-goto="${a.id}" data-edge="${e._i}">` +
+        `<span class="c-chip${a.ext ? ' ext' : ''}">${ic(a.icon, 18)}</span>` +
+        `<span class="c-body"><span class="c-name">${esc(a.label)} <span class="c-to">ke</span> ${esc(b.label)}</span><span class="c-what">${esc(e.l)}</span>` +
+        `<span class="c-meta"><span class="c-mode">${MODE[e.m]}</span></span></span></button></li>`;
+    });
+    h += '</ul>';
+    const elsewhere = DOMAINS.filter(x => x !== d && x.edges.some(e => e.p === k));
+    if (elsewhere.length) {
+      h += `<h3>Juga dipakai di</h3><div class="also">`;
+      elsewhere.forEach(x => { h += `<button type="button" class="chip" data-proto-tab="${x.id}">${ic(TAB_ICON[x.id], 15)} ${esc(x.name)}</button>`; });
+      h += '</div>';
+    }
+    return h;
+  }
+
+  function overviewPanel(d) {
+    const own = d.nodes.filter(n => !n.ext).length;
+    return headHTML(TAB_ICON[d.id], d.id === 'antar' ? 'Gambaran besar' : `${own} kelompok, ${countSys(d)} sistem`, d.name) +
+      `<p class="lead">${esc(d.intro)}</p>` +
+      `<ul class="tips">` +
+      `<li>${ic('cursor', 18)}<span>Klik kotak untuk melihat koneksi dan isi sistemnya.</span></li>` +
+      `<li>${ic('route', 18)}<span>Pilih rute di atas peta untuk mengikuti satu alur langkah demi langkah.</span></li>` +
+      `<li>${ic('search', 18)}<span>Cari nama sistem atau protokol di kotak pencarian, misalnya MRP atau OPC UA.</span></li>` +
+      `<li>${ic('code', 18)}<span>Arahkan kursor ke garis untuk melihat data dan protokol yang lewat.</span></li>` +
+      `</ul>` +
+      `<h3>${d.id === 'antar' ? 'Bagian' : 'Kelompok sistem'} <span class="count">${own}</span></h3>` + nodeListHTML(d) + protoListHTML(d);
+  }
+
+  function nodePanel(n) {
+    const d = state.dom;
+    const kind = n.ext ? 'Pihak luar' : (n.num ? 'Kelompok ' + n.num : 'Bagian');
+    let h = `<button type="button" class="back" data-back>${ic('back', 16)}Semua kelompok</button>`;
+    h += headHTML(n.icon, kind, n.label, n.ext);
+    h += `<p class="lead">${esc(n.desc || '')}</p>`;
+    if (n.link) h += `<button type="button" class="btn primary wide" data-tab="${n.link}">${ic('open', 16)}Buka tab ${esc(byId[n.link].name)}</button>`;
+    const outs = d.edges.filter(e => e.f === n.id);
+    const ins = d.edges.filter(e => e.t === n.id);
+    if (outs.length) {
+      h += `<h3>Mengirim ke <span class="count">${outs.length}</span></h3><ul class="conns">`;
+      outs.forEach(e => { h += connHTML(e, n, d); });
+      h += '</ul>';
+    }
+    if (ins.length) {
+      h += `<h3>Menerima dari <span class="count">${ins.length}</span></h3><ul class="conns">`;
+      ins.forEach(e => { h += connHTML(e, n, d); });
+      h += '</ul>';
+    }
+    if (n.sys) {
+      h += `<h3>Sistem di dalamnya <span class="count">${n.sys.length}</span></h3><ol class="sys">`;
+      n.sys.forEach((s, i) => {
+        const no = n.start + i;
+        h += `<li data-no="${no}"><span class="s-no">${no}</span><span class="s-body"><span class="s-name">${esc(s[0])}</span><span class="s-fn">${esc(s[1])}</span></span></li>`;
+      });
+      h += '</ol>';
+    } else if (n.link) {
+      const ld = byId[n.link];
+      h += `<h3>Kelompok di bagian ini <span class="count">${ld.nodes.filter(x => !x.ext).length}</span></h3><ul class="grouplist">`;
+      ld.nodes.filter(x => !x.ext).sort((a, b) => a.num - b.num).forEach(x => {
+        h += `<li><span class="nl-chip">${ic(x.icon, 18)}</span><span class="nl-name"><span class="nl-num">${x.num}</span>${esc(x.label)}</span><span class="nl-cnt">${x.sys.length} sistem</span></li>`;
+      });
+      h += '</ul>';
+    }
+    return h;
+  }
+
+  function routePanel() {
+    const d = state.dom, r = state.route;
+    let h = `<button type="button" class="back" data-act="exit">${ic('close', 16)}Keluar dari rute</button>`;
+    h += headHTML('route', 'Rute alur', r.name);
+    h += `<div class="controls">` +
+      `<button type="button" class="btn icon-only" data-act="prev" aria-label="Langkah sebelumnya">${ic('prev', 18)}</button>` +
+      `<button type="button" class="btn primary" data-act="play"><span class="play-ic">${ic('play', 16)}</span><span class="play-txt">Putar</span></button>` +
+      `<button type="button" class="btn icon-only" data-act="next" aria-label="Langkah berikutnya">${ic('next', 18)}</button>` +
+      `<span class="progress" id="progress"></span></div>`;
+    h += `<div class="bar"><span id="bar-fill"></span></div>`;
+    h += '<ol class="steps">';
+    r.steps.forEach((s, i) => {
+      const a = d._nodes[s.f], b = d._nodes[s.t];
+      h += `<li data-i="${i}"><button type="button" data-step="${i}"><span class="s-num">${i + 1}</span><span class="s-body">` +
+        `<span class="s-who">${ic(a.icon, 14)}${esc(a.label)}<span class="s-to">ke</span>${ic(b.icon, 14)}${esc(b.label)}</span>` +
+        `<span class="s-txt">${esc(s.x)}</span>` +
+        (findEdge(d, s.f, s.t) ? `<span class="s-proto">${ic('code', 13)}${esc(findEdge(d, s.f, s.t).p)}</span>` : '') +
+        `</span></button></li>`;
+    });
+    return h + '</ol>';
+  }
+
+  function renderPanel() {
+    const d = state.dom;
+    const p = $('#panel');
+    if (state.route) p.innerHTML = routePanel();
+    else if (state.sel) p.innerHTML = nodePanel(d._nodes[state.sel]);
+    else if (state.proto) p.innerHTML = protoPanel(d);
+    else p.innerHTML = overviewPanel(d);
+    p.scrollTop = 0;
+    if (state.route) syncRoute();
+    if (state.flash != null) {
+      const li = p.querySelector(`.sys li[data-no="${state.flash}"]`);
+      if (li) {
+        li.classList.add('flash');
+        setTimeout(() => scrollInPanel(li, true), 80);
+      }
+      state.flash = null;
+    }
+  }
+
+  function syncRoute() {
+    const p = $('#panel');
+    const n = state.route.steps.length;
+    p.querySelectorAll('.steps li').forEach(li => {
+      const i = +li.dataset.i;
+      li.className = i < state.step ? 'done' : (i === state.step ? 'now' : 'todo');
+      const b = li.querySelector('button');
+      if (i === state.step) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+    });
+    const prev = p.querySelector('[data-act="prev"]');
+    const next = p.querySelector('[data-act="next"]');
+    const play = p.querySelector('[data-act="play"]');
+    if (prev) prev.disabled = state.step === 0;
+    if (next) next.disabled = state.step === n - 1;
+    if (play) {
+      const playing = !!state.timer;
+      play.querySelector('.play-ic').innerHTML = ic(playing ? 'pause' : 'play', 16);
+      play.querySelector('.play-txt').textContent = playing ? 'Jeda' : (state.step === n - 1 ? 'Putar ulang' : 'Putar');
+    }
+    const prog = $('#progress');
+    if (prog) prog.textContent = `Langkah ${state.step + 1} dari ${n}`;
+    const fill = $('#bar-fill');
+    if (fill) fill.style.width = ((state.step + 1) / n * 100) + '%';
+    const now = p.querySelector('.steps li.now');
+    if (now && p.scrollHeight > p.clientHeight + 4) scrollInPanel(now, false);
+  }
+
+  /* ---------- toolbar ---------- */
+  function renderRoutes() {
+    const d = state.dom;
+    let h = `<span class="tb-label">${ic('route', 16)}Ikuti rute</span>`;
+    d.routes.forEach((r, i) => {
+      const on = state.route === r;
+      h += `<button type="button" class="chip" data-route="${i}" aria-pressed="${on}">${esc(r.name)}</button>`;
+    });
+    $('#routes').innerHTML = h;
+  }
+
+  function renderModes() {
+    let h = '<span class="tb-label">Jenis integrasi</span>';
+    ['rt', 'bt', 'ev'].forEach(m => {
+      const dash = m === 'bt' ? '5 4' : (m === 'ev' ? '1.5 4' : 'none');
+      h += `<button type="button" class="mode" data-mode="${m}" aria-pressed="${state.modes[m]}" title="${esc(MODE_HINT[m])}"><svg width="24" height="8" aria-hidden="true"><path d="M1 4H23" stroke-dasharray="${dash}"/></svg>${MODE[m]}</button>`;
+    });
+    $('#modes').innerHTML = h;
+  }
+
+  /* ---------- actions ---------- */
+  function stopTimer() {
+    if (state.timer) { clearInterval(state.timer); state.timer = null; }
+  }
+
+  function select(id, opts) {
+    stopTimer();
+    state.route = null; state.sel = id; state.hover = null; state.hotEdge = null; state.proto = null;
+    paint(); renderPanel(); renderRoutes();
+    if (!(opts && opts.quiet) && window.matchMedia('(max-width: 1080px)').matches) {
+      $('#panel').scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' });
+    }
+  }
+
+  function clearSel() {
+    stopTimer();
+    state.sel = null; state.route = null; state.hover = null; state.hotEdge = null; state.proto = null;
+    paint(); renderPanel(); renderRoutes();
+  }
+
+  function setProto(k) {
+    stopTimer();
+    state.proto = k; state.sel = null; state.route = null; state.hover = null; state.hotEdge = null;
+    paint(); renderPanel(); renderRoutes();
+  }
+
+  function startRoute(i) {
+    stopTimer();
+    state.route = state.dom.routes[i]; state.step = 0; state.sel = null; state.hover = null; state.hotEdge = null; state.proto = null;
+    paint(); renderPanel(); renderRoutes();
+  }
+
+  function goStep(i) {
+    const n = state.route.steps.length;
+    state.step = Math.max(0, Math.min(n - 1, i));
+    paint(); syncRoute();
+  }
+
+  function togglePlay() {
+    if (state.timer) { stopTimer(); syncRoute(); return; }
+    const n = state.route.steps.length;
+    if (state.step === n - 1) { state.step = 0; paint(); }
+    state.timer = setInterval(() => {
+      if (state.step < n - 1) { state.step++; paint(); syncRoute(); }
+      if (state.step >= n - 1) { stopTimer(); syncRoute(); }
+    }, 1900);
+    syncRoute();
+  }
+
+  function switchTab(id, focusTab) {
+    stopTimer();
+    state.dom = byId[id];
+    state.sel = null; state.route = null; state.hover = null; state.hotEdge = null; state.step = 0; state.proto = null;
+    document.querySelectorAll('.tab').forEach(b => {
+      const on = b.dataset.tab === id;
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.tabIndex = on ? 0 : -1;
+      if (on) {
+        if (focusTab) b.focus();
+        if (b.scrollIntoView) b.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+    });
+    drawMap(); paint(); renderPanel(); renderRoutes();
+    const box = $('.mapbox');
+    if (box) box.scrollLeft = 0;
+    try { localStorage.setItem('peta-retail-manufaktur-tab', id); } catch (e) { /* abaikan */ }
+  }
+
+  function buildTabs() {
+    const nav = $('#tabs');
+    nav.innerHTML = DOMAINS.map(d => {
+      const cnt = d.id === 'antar' ? '' : `<span class="tab-cnt">${countSys(d)}</span>`;
+      return `<button type="button" class="tab" role="tab" data-tab="${d.id}" aria-selected="false" tabindex="-1">${ic(TAB_ICON[d.id], 18)}<span>${esc(d.name)}</span>${cnt}</button>`;
+    }).join('');
+    nav.addEventListener('click', ev => {
+      const b = ev.target.closest('.tab');
+      if (b) switchTab(b.dataset.tab);
+    });
+    nav.addEventListener('keydown', ev => {
+      if (ev.key !== 'ArrowRight' && ev.key !== 'ArrowLeft') return;
+      const ids = DOMAINS.map(d => d.id);
+      const i = ids.indexOf(state.dom.id);
+      const j = (i + (ev.key === 'ArrowRight' ? 1 : -1) + ids.length) % ids.length;
+      ev.preventDefault();
+      switchTab(ids[j], true);
+    });
+  }
+
+  /* ---------- search ---------- */
+  const INDEX = [];
+  function buildIndex() {
+    Object.keys(PROTO).forEach(k => {
+      INDEX.push({ kind: 'proto', name: k, sub: 'Standar pesan dan protokol', hay: (k + ' ' + PROTO[k]).toLowerCase(), icon: 'code' });
+    });
+    DOMAINS.forEach(d => {
+      if (d.id === 'antar') return;
+      d.nodes.forEach(n => {
+        if (n.ext) return;
+        INDEX.push({ kind: 'group', dom: d.id, node: n.id, name: n.label, sub: `Kelompok ${n.num}, ${d.name}`, hay: (n.label + ' ' + (n.desc || '')).toLowerCase(), icon: n.icon });
+        n.sys.forEach((s, i) => {
+          INDEX.push({ kind: 'sys', dom: d.id, node: n.id, no: n.start + i, name: s[0], sub: `${n.label}, ${d.name}`, hay: (s[0] + ' ' + s[1]).toLowerCase(), name_l: s[0].toLowerCase(), icon: n.icon });
+        });
+      });
+    });
+  }
+
+  let results = [], activeIdx = -1;
+  function runSearch(q) {
+    const box = $('#results');
+    const query = q.trim().toLowerCase();
+    if (query.length < 2) { box.hidden = true; results = []; $('#search').setAttribute('aria-expanded', 'false'); return; }
+    results = INDEX.map(it => {
+      let score = -1;
+      const nm = it.name.toLowerCase();
+      if (nm.startsWith(query)) score = 3;
+      else if (nm.includes(query)) score = 2;
+      else if (it.hay.includes(query)) score = 1;
+      return { it, score };
+    }).filter(x => x.score > 0).sort((a, b) => b.score - a.score || (a.it.kind === 'group' ? -1 : 1)).slice(0, 14).map(x => x.it);
+    activeIdx = -1;
+    if (!results.length) {
+      box.innerHTML = `<p class="empty">Tidak ada sistem yang cocok dengan "${esc(q.trim())}". Coba kata lain, misalnya OEE, halal, atau poin.</p>`;
+    } else {
+      box.innerHTML = results.map((it, i) => `<button type="button" class="res" role="option" id="res-${i}" data-i="${i}">` +
+        `<span class="nl-chip">${ic(it.icon, 16)}</span><span class="res-body"><span class="res-name">${it.kind === 'sys' ? `<span class="nl-num">${it.no}</span>` : ''}${esc(it.name)}</span>` +
+        `<span class="res-sub">${it.kind === 'group' ? 'Kelompok sistem, ' + esc(byId[it.dom].name) : esc(it.sub)}</span></span></button>`).join('');
+    }
+    box.hidden = false;
+    $('#search').setAttribute('aria-expanded', 'true');
+  }
+
+  function pickResult(i) {
+    const it = results[i];
+    if (!it) return;
+    $('#results').hidden = true;
+    $('#search').setAttribute('aria-expanded', 'false');
+    $('#search').value = '';
+    if (it.kind === 'proto') {
+      let target = state.dom;
+      if (!target.edges.some(e => e.p === it.name)) target = DOMAINS.find(x => x.edges.some(e => e.p === it.name)) || target;
+      if (target !== state.dom) switchTab(target.id);
+      setProto(it.name);
+      return;
+    }
+    if (state.dom.id !== it.dom) switchTab(it.dom);
+    if (it.kind === 'sys') state.flash = it.no;
+    select(it.node, { quiet: true });
+    const g = $(`#map .node[data-n="${it.node}"]`);
+    const box = $('.mapbox');
+    if (g && box && box.scrollWidth > box.clientWidth) {
+      const r = g.getBoundingClientRect(), br = box.getBoundingClientRect();
+      box.scrollLeft += (r.left + r.width / 2) - (br.left + br.width / 2);
+    }
+    const bar = $('.tabbar');
+    const y = $('.toolbar').getBoundingClientRect().top + window.scrollY - (bar ? bar.offsetHeight : 0) - 4;
+    window.scrollTo({ top: Math.max(0, y), behavior: reduceMotion ? 'auto' : 'smooth' });
+  }
+
+  function bindSearch() {
+    const input = $('#search');
+    input.addEventListener('input', () => runSearch(input.value));
+    input.addEventListener('focus', () => { if (input.value.trim().length >= 2) runSearch(input.value); });
+    input.addEventListener('keydown', ev => {
+      const box = $('#results');
+      if (ev.key === 'Escape') { box.hidden = true; input.setAttribute('aria-expanded', 'false'); return; }
+      if (!results.length) return;
+      if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
+        ev.preventDefault();
+        activeIdx = (activeIdx + (ev.key === 'ArrowDown' ? 1 : -1) + results.length) % results.length;
+        box.querySelectorAll('.res').forEach((b, i) => b.classList.toggle('active', i === activeIdx));
+        const a = box.querySelector('.res.active');
+        if (a) { a.scrollIntoView({ block: 'nearest' }); input.setAttribute('aria-activedescendant', a.id); }
+      } else if (ev.key === 'Enter') {
+        ev.preventDefault();
+        pickResult(activeIdx >= 0 ? activeIdx : 0);
+      }
+    });
+    $('#results').addEventListener('click', ev => {
+      const b = ev.target.closest('.res');
+      if (b) pickResult(+b.dataset.i);
+    });
+    document.addEventListener('click', ev => {
+      if (!ev.target.closest('.search')) { $('#results').hidden = true; input.setAttribute('aria-expanded', 'false'); }
+    });
+  }
+
+  /* ---------- bindings ---------- */
+  function bind() {
+    const svg = $('#map');
+    svg.addEventListener('click', ev => {
+      const g = ev.target.closest('.node');
+      if (g) select(g.dataset.n);
+      else if (state.sel || state.proto) clearSel();
+    });
+    svg.addEventListener('keydown', ev => {
+      const g = ev.target.closest('.node');
+      if (g && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); select(g.dataset.n); }
+    });
+    svg.addEventListener('mouseover', ev => {
+      if (state.route) return;
+      const g = ev.target.closest('.node');
+      const h = ev.target.closest('.ehit');
+      if (g && !state.sel && !state.proto && state.hover !== g.dataset.n) { state.hover = g.dataset.n; paint(); }
+      else if (h && state.hotEdge !== +h.dataset.e) { state.hotEdge = +h.dataset.e; paint(); }
+    });
+    svg.addEventListener('mouseout', ev => {
+      if (state.route) return;
+      const g = ev.target.closest('.node');
+      const h = ev.target.closest('.ehit');
+      const to = ev.relatedTarget;
+      if (g && !(to && g.contains(to)) && state.hover) { state.hover = null; paint(); }
+      if (h && state.hotEdge != null) { state.hotEdge = null; paint(); }
+    });
+
+    const panel = $('#panel');
+    panel.addEventListener('click', ev => {
+      const t = ev.target.closest('button');
+      if (!t) return;
+      if (t.hasAttribute('data-back')) clearSel();
+      else if (t.dataset.proto) setProto(t.dataset.proto);
+      else if (t.dataset.protoTab) { const k = state.proto; switchTab(t.dataset.protoTab); setProto(k); }
+      else if (t.dataset.tab) switchTab(t.dataset.tab);
+      else if (t.dataset.goto) select(t.dataset.goto, { quiet: true });
+      else if (t.dataset.step != null) { stopTimer(); goStep(+t.dataset.step); }
+      else if (t.dataset.act === 'prev') { stopTimer(); goStep(state.step - 1); }
+      else if (t.dataset.act === 'next') { stopTimer(); goStep(state.step + 1); }
+      else if (t.dataset.act === 'play') togglePlay();
+      else if (t.dataset.act === 'exit') clearSel();
+    });
+    panel.addEventListener('mouseover', ev => {
+      const c = ev.target.closest('.conn');
+      if (c && state.hotEdge !== +c.dataset.edge) { state.hotEdge = +c.dataset.edge; paint(); }
+    });
+    panel.addEventListener('mouseout', ev => {
+      const c = ev.target.closest('.conn');
+      const to = ev.relatedTarget;
+      if (c && !(to && c.contains(to)) && state.hotEdge != null) { state.hotEdge = null; paint(); }
+    });
+    panel.addEventListener('focusin', ev => {
+      const c = ev.target.closest('.conn');
+      if (c) { state.hotEdge = +c.dataset.edge; paint(); }
+    });
+    panel.addEventListener('focusout', ev => {
+      const c = ev.target.closest('.conn');
+      if (c && state.hotEdge != null) { state.hotEdge = null; paint(); }
+    });
+
+    $('#routes').addEventListener('click', ev => {
+      const b = ev.target.closest('.chip');
+      if (!b) return;
+      const i = +b.dataset.route;
+      if (state.route === state.dom.routes[i]) clearSel(); else startRoute(i);
+    });
+
+    $('#modes').addEventListener('click', ev => {
+      const b = ev.target.closest('.mode');
+      if (!b) return;
+      const m = b.dataset.mode;
+      const onCount = Object.values(state.modes).filter(Boolean).length;
+      if (state.modes[m] && onCount === 1) return;
+      state.modes[m] = !state.modes[m];
+      renderModes(); paint();
+      if (state.sel) renderPanel();
+    });
+
+    document.addEventListener('keydown', ev => {
+      if (ev.key === 'Escape' && !ev.target.closest('.search') && (state.sel || state.route || state.proto)) clearSel();
+      if (ev.key === '/' && document.activeElement && document.activeElement.tagName !== 'INPUT') { ev.preventDefault(); $('#search').focus(); }
+    });
+  }
+
+  function init() {
+    buildSprite();
+    $('#total').textContent = totalSystems();
+    buildTabs();
+    buildIndex();
+    renderModes();
+    bind();
+    bindSearch();
+    let start = 'antar';
+    try { const s = localStorage.getItem('peta-retail-manufaktur-tab'); if (s && byId[s]) start = s; } catch (e) { /* abaikan */ }
+    switchTab(start);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,18 @@
+:root {
+  --radius-xs: 4px;     /* checkbox, very small tag */
+  --radius-sm: 8px;     /* menu item */
+  --radius-md: 12px;    /* field, system tile */
+  --radius-lg: 16px;    /* grouped list, card */
+  --radius-xl: 24px;    /* panel, dialog, large popover, sidebar */
+  --radius-full: 999px; /* capsule */
+
+  /* iOS app icon corner: about 22.37% of the icon size */
+  --app-icon-radius-ratio: 0.2237;
+
+  --hairline: 1px;
+}
+
+/* Retina screens: half-pixel hairlines, like Apple */
+@media (min-resolution: 2dppx) {
+  :root { --hairline: 0.5px; }
+}

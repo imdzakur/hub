@@ -1,0 +1,78 @@
+/* Card: solid white surface for content on the wallpaper, like an iOS widget */
+.card {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-secondary-system-grouped-background);
+  box-shadow: var(--shadow-card);
+  color: var(--color-label);
+}
+
+a.card {
+  text-decoration: none;
+  transition:
+    background-color var(--duration-instant) var(--ease-out),
+    scale var(--spring-snappy-duration-sm) var(--spring-snappy);
+}
+@media (hover: hover) {
+  a.card:hover {
+    background: color-mix(in srgb, var(--color-secondary-system-grouped-background), var(--color-hover-mix) 3%);
+    text-decoration: none;
+  }
+}
+a.card:active { scale: 0.98; }
+
+/* Stat tile: icon, big number, label. Stacked like an iOS widget so three fit on a phone. */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+@media (width < 48rem) {
+  .stat-grid { gap: var(--space-3); }
+}
+.stat {
+  justify-items: start;
+  gap: 0;
+}
+.stat > .app-icon { margin-bottom: var(--space-3); }
+/* Wider screens: icon beside the number, so the tiles stay compact */
+@media (width >= 48rem) {
+  .stat {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: var(--space-4);
+  }
+  .stat > .app-icon { grid-row: span 2; margin-bottom: 0; }
+}
+.stat-value {
+  font-size: var(--text-title-1-size);
+  line-height: var(--text-title-1-line);
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-size: var(--text-subheadline-size);
+  line-height: var(--text-subheadline-line);
+  color: var(--color-secondary-label);
+}
+
+/* App card: large icon, name, short description */
+.app-card {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-4);
+}
+.app-card-text { display: grid; gap: var(--space-0-5); min-width: 0; }
+.app-card-title {
+  font-size: var(--text-headline-size);
+  line-height: var(--text-headline-line);
+  font-weight: var(--text-headline-weight);
+}
+.app-card-desc {
+  font-size: var(--text-subheadline-size);
+  line-height: var(--text-subheadline-line);
+  color: var(--color-secondary-label);
+}
+.app-card-chevron { color: var(--color-tertiary-label); }

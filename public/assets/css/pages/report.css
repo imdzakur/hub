@@ -1,0 +1,61 @@
+/* Printable finance report: a white A4 sheet on screen, plain pages in print */
+.rp-body { min-height: 100dvh; padding: var(--space-6) var(--space-4); }
+.rp-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); width: min(210mm, 100%); margin: 0 auto var(--space-4); }
+.rp-sheet {
+  display: grid;
+  gap: 7mm;
+  width: min(210mm, 100%);
+  margin: 0 auto;
+  padding: 16mm 15mm;
+  background: #fff;
+  color: #111;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sheet);
+  font-size: 10pt;
+  line-height: 1.4;
+}
+.rp-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6mm; padding-bottom: 4mm; border-bottom: 2px solid #111; }
+.rp-kicker { font-size: 8.5pt; color: #555; text-transform: uppercase; letter-spacing: 0.06em; }
+.rp-head h1 { font-size: 16pt; line-height: 1.25; font-weight: 700; }
+.rp-head dl { display: grid; gap: 1mm; font-size: 8.5pt; }
+.rp-head dl div { display: flex; justify-content: space-between; gap: 6mm; }
+.rp-head dt { color: #555; }
+.rp-head dd { font-weight: 600; font-variant-numeric: tabular-nums; }
+.rp-sheet h2 { margin-bottom: 2mm; font-size: 11pt; font-weight: 700; }
+.rp-sheet section { break-inside: avoid; }
+.rp-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.rp-table th, .rp-table td { padding: 1.3mm 2mm; border-bottom: 0.5px solid #d4d4d4; text-align: start; vertical-align: top; }
+.rp-table th { font-size: 8pt; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid #111; }
+.rp-table .num { text-align: end; white-space: nowrap; }
+.rp-table td:nth-child(2):not(.num) { white-space: nowrap; }
+.rp-table tfoot td { font-weight: 700; border-top: 1px solid #111; border-bottom: 3px double #111; }
+.rp-table tr.rp-sub td { color: #555; font-size: 9pt; }
+.rp-table tr.rp-group td { padding-top: 2.5mm; font-weight: 700; background: #f4f4f5; }
+.rp-table tr.rp-sub td:first-child { padding-inline-start: 6mm; }
+.rp-table small { display: block; color: #666; font-size: 8pt; }
+.rp-empty { color: #777; }
+.rp-check { margin-top: 2mm; font-size: 8.5pt; color: #2b6b2f; }
+.rp-note { margin-bottom: 2mm; font-size: 8.5pt; color: #555; }
+.rp-warn { padding: 2mm 3mm; border: 1px solid #c33; border-radius: 2mm; color: #a11; font-size: 9pt; }
+.rp-foot { padding-top: 3mm; border-top: 0.5px solid #d4d4d4; font-size: 8pt; color: #777; }
+
+/* Always A4. Our own margin boxes replace the browser's date, title, and address lines
+   (Chrome and Edge leave theirs out when a page sets margin boxes). */
+@page {
+  size: A4;
+  margin: 18mm 15mm 18mm;
+  @top-left { content: "Hub · Finance statement"; font: 500 7.5pt Inter, system-ui, sans-serif; color: #888; }
+  @bottom-left { content: "Amounts in rupiah · brackets mean negative"; font: 7.5pt Inter, system-ui, sans-serif; color: #999; }
+  @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 500 7.5pt Inter, system-ui, sans-serif; color: #888; }
+}
+@media print {
+  .rp-body { padding: 0; background: #fff; }
+  .rp-actions { display: none; }
+  .rp-sheet { width: auto; padding: 0; border-radius: 0; box-shadow: none; }
+  .rp-table thead { display: table-header-group; }
+  .rp-table tr { break-inside: avoid; }
+  .rp-sheet { gap: 6mm; }
+  .rp-sheet h2 { break-after: avoid; }
+  .rp-journal, .rp-planned { break-inside: auto; } /* long tables flow on; short sections stay whole */
+  .rp-foot { display: none; }
+}

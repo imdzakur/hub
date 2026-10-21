@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Finance Self - Hub</title>
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script type="module" src="/assets/js/device-gate.js"></script>
+  <script type="module" src="/assets/js/sidebar.js"></script>
+  <script type="module" src="/systems/finance-self/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <svg class="fm-sprite" id="fm-sprite" aria-hidden="true" focusable="false"></svg>
+  <div class="app">
+    <aside class="sidebar material material-thick" id="sidebar"></aside>
+    <main class="app-main" id="main" tabindex="-1">
+      <header class="toolbar material material-thick">
+        <button class="icon-btn nav-toggle" type="button" data-action="toggle-nav"
+                aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">
+          <svg class="icon icon-md" aria-hidden="true"><use href="/assets/icons/sprite.svg#panel-left"></use></svg>
+        </button>
+        <div class="toolbar-title">
+          <h1 class="text-headline">Finance Self</h1>
+          <p class="text-footnote text-secondary" id="fm-total"></p>
+        </div>
+        <div class="toolbar-actions">
+          <search class="search fm-search">
+            <svg class="icon icon-sm search-icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#search"></use></svg>
+            <input class="field-input search-input" id="fm-search" type="search" placeholder="Search"
+                   aria-label="Search systems and protocols" autocomplete="off" spellcheck="false"
+                   role="combobox" aria-autocomplete="list" aria-controls="fm-results" aria-expanded="false">
+            <button class="icon-btn search-clear" type="button" aria-label="Clear search">
+              <svg class="icon icon-sm" aria-hidden="true"><use href="/assets/icons/sprite.svg#x"></use></svg>
+            </button>
+            <div class="fm-results" id="fm-results" role="listbox" aria-label="Search results" hidden></div>
+          </search>
+        </div>
+      </header>
+
+      <div class="page fm-page">
+        <div class="fm-tabs-bar material material-regular">
+          <div class="tabs" id="fm-tabs" role="tablist" aria-label="Personal finance areas"></div>
+        </div>
+
+        <div class="fm-layout">
+          <section class="card fm-map-card" aria-label="Map">
+            <svg class="fm-map" id="fm-map" xmlns="http://www.w3.org/2000/svg" role="img" preserveAspectRatio="xMidYMin meet"></svg>
+            <div class="fm-controls">
+              <div class="fm-group" id="fm-routes"></div>
+              <div class="fm-group" id="fm-modes" role="group" aria-label="Integration kinds"></div>
+            </div>
+            <ul class="fm-legend" role="list">
+              <li><span class="fm-legend-box is-ext" aria-hidden="true"></span>Outside party</li>
+              <li><span class="fm-legend-box is-sel" aria-hidden="true"></span>Selected</li>
+              <li><span class="fm-legend-line" aria-hidden="true"></span>Route</li>
+            </ul>
+          </section>
+          <aside class="card fm-panel" id="fm-panel" aria-label="Details" aria-live="polite"></aside>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

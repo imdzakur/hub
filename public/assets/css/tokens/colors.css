@@ -1,0 +1,104 @@
+/* Semantic colors. Hub uses the light appearance only, in black, white, and gray.
+   System map pages bring their own colors back (see pages/integration-map.css). */
+:root {
+  color-scheme: light;
+
+  /* Text */
+  --color-label: var(--ref-black);
+  /* Raised from Apple's 0.6 so it passes 4.5:1 (5.15 on white, 4.82 on #F2F2F7) */
+  --color-secondary-label: rgb(60 60 67 / 0.75);
+  --color-tertiary-label: rgb(60 60 67 / 0.3);
+  --color-quaternary-label: rgb(60 60 67 / 0.18);
+  /* Apple uses tertiary-label for placeholders, but its contrast is too low for AA */
+  --color-placeholder-text: var(--color-secondary-label);
+
+  /* Backgrounds */
+  --color-system-background: var(--ref-white);
+  --color-secondary-system-background: var(--ref-gray6-light);
+  --color-tertiary-system-background: var(--ref-white);
+
+  /* Elevated: sheets, dialogs, popovers */
+  --color-elevated-background: var(--ref-white);
+  --color-elevated-secondary-background: var(--ref-gray6-light);
+  --color-elevated-tertiary-background: var(--ref-white);
+
+  /* Grouped: Settings-style lists and cards */
+  --color-system-grouped-background: var(--ref-gray6-light);
+  --color-secondary-system-grouped-background: var(--ref-white);
+  --color-tertiary-system-grouped-background: var(--ref-gray6-light);
+
+  /* Separators */
+  --color-separator: rgb(60 60 67 / 0.29);
+  --color-opaque-separator: #C6C6C8;
+
+  /* Control fills */
+  --color-system-fill: rgb(120 120 128 / 0.2);
+  --color-secondary-system-fill: rgb(120 120 128 / 0.16);
+  --color-tertiary-system-fill: rgb(118 118 128 / 0.12);
+  --color-quaternary-system-fill: rgb(116 116 128 / 0.08);
+
+  /* Accent */
+  --color-tint: var(--ref-ink);
+  --color-tint-text: var(--ref-ink);
+  --color-tint-fill: var(--ref-ink);
+  --color-on-tint-fill: var(--ref-white);
+  --color-tint-soft: rgb(0 0 0 / 0.07);
+
+  /* Status */
+  --color-success: var(--ref-green-light);
+  --color-success-text: var(--ref-green-hc-light);
+  --color-warning: var(--ref-orange-light);
+  --color-warning-text: var(--ref-orange-hc-light);
+  --color-error: var(--ref-red-light);
+  --color-error-text: var(--ref-red-deep);
+  --color-error-fill: var(--ref-red-deep);
+  --color-info: var(--ref-cyan-light);
+  --color-info-text: var(--ref-blue-hc-light);
+
+  --color-on-error-fill: var(--ref-white);
+
+  /* Controls */
+  --color-control-border: var(--ref-control-border);
+  --color-focus-ring: var(--color-tint);
+  --color-scrim: rgb(0 0 0 / 0.25);
+  --color-knob: var(--ref-white);
+  --color-hover-mix: var(--ref-black);
+  /* Selected item in glass navigation: a raised white pill, like iOS 26 */
+  --color-selected-glass: rgb(255 255 255 / 0.92);
+
+  /* App icon colors. Each domain has its own color, like apps on an iPhone. */
+  --color-app-mono: var(--ref-ink);
+  --color-app-gray: var(--ref-gray-light);
+  --color-app-blue: var(--ref-blue-light);
+  --color-app-green: var(--ref-green-light);
+  --color-app-indigo: var(--ref-indigo-light);
+  --color-app-orange: var(--ref-orange-light);
+  --color-app-pink: var(--ref-pink-light);
+  --color-app-purple: var(--ref-purple-light);
+  --color-app-red: var(--ref-red-light);
+  --color-app-teal: var(--ref-teal-light);
+  --color-app-yellow: var(--ref-yellow-light);
+  --color-app-cyan: var(--ref-cyan-light);
+  --color-app-mint: var(--ref-mint-light);
+  --color-app-brown: var(--ref-brown-light);
+  --color-on-app-icon: var(--ref-white);
+
+  /* Category colors: connection lines, charts, integration chips */
+  --color-cat-1: var(--ref-blue-light);
+  --color-cat-2: var(--ref-green-light);
+  --color-cat-3: var(--ref-orange-light);
+  --color-cat-4: var(--ref-purple-light);
+  --color-cat-5: var(--ref-teal-light);
+  --color-cat-6: var(--ref-pink-light);
+  --color-cat-7: var(--ref-yellow-light);
+  --color-cat-8: var(--ref-indigo-light);
+}
+
+/* The user asked for more contrast in system settings */
+@media (prefers-contrast: more) {
+  :root {
+    --color-secondary-label: rgb(60 60 67 / 0.85);
+    --color-separator: var(--color-opaque-separator);
+    --color-control-border: var(--ref-gray-strong);
+  }
+}

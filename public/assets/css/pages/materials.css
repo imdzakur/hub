@@ -1,0 +1,26 @@
+/* Materials: topics per subject; repeats from an earlier subject are gray */
+.mt-page { display: grid; gap: var(--space-4); padding-top: var(--space-3); }
+.mt-page > * { min-width: 0; }
+.mt-hero { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+.mt-hero > div:nth-child(2) { flex: 1 1 18rem; display: grid; gap: var(--space-1); }
+.mt-stats { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.mt-stats > div { display: grid; min-width: 5.5rem; padding: var(--space-1-5) var(--space-3); border-radius: var(--radius-sm); background: var(--color-tertiary-system-grouped-background); }
+.mt-stats b { font-size: var(--text-headline-size); font-variant-numeric: tabular-nums; }
+.mt-stats span { font-size: var(--text-caption-1-size); color: var(--color-secondary-label); }
+.mt-stats .is-repeat b { color: var(--color-tertiary-label); }
+.mt-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-5); font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
+.mt-legend { display: inline-flex; align-items: center; gap: var(--space-1-5); }
+.mt-toggle { display: inline-flex; align-items: center; gap: var(--space-1-5); margin-inline-start: auto; cursor: pointer; color: var(--color-label); }
+.mt-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr)); gap: var(--space-4); align-items: start; }
+.mt-group { gap: var(--space-2); }
+.mt-topics { display: grid; }
+.mt-topic { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0 var(--space-2); padding-block: var(--space-1-5); border-bottom: var(--hairline) solid var(--color-separator); font-size: var(--text-subheadline-size); }
+.mt-topic:last-child { border-bottom: 0; }
+.mt-topic[hidden] { display: none; }
+.mt-dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--color-label); }
+.mt-note { grid-column: 2; display: inline-flex; align-items: center; gap: var(--space-1); font-size: var(--text-caption-1-size); color: var(--color-secondary-label); }
+.mt-note .icon { --icon-size: 0.75rem; }
+.mt-note a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.mt-topic.is-repeat .mt-name { color: var(--color-tertiary-label); }
+.mt-topic.is-repeat .mt-dot, .mt-legend.is-repeat .mt-dot { background: var(--color-quaternary-label, #c7c7cc); }
+.mt-topic.is-repeat { background: color-mix(in srgb, var(--color-tertiary-system-fill) 40%, transparent); }

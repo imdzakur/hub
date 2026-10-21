@@ -1,0 +1,36 @@
+/* Raw palette values. Components never use these directly; colors.css maps them to roles. */
+:root {
+  --ref-black: #000000;
+  --ref-white: #FFFFFF;
+  --ref-ink: #1D1D1F;      /* Apple near-black, the accent of the monochrome theme */
+
+  /* Grays */
+  --ref-gray-light: #8E8E93;
+  --ref-gray2-light: #AEAEB2;
+  --ref-gray3-light: #C7C7CC;
+  --ref-gray4-light: #D1D1D6;
+  --ref-gray5-light: #E5E5EA;
+  --ref-gray6-light: #F2F2F7;
+  --ref-gray-strong: #636366;
+
+  /* Apple system colors, light appearance */
+  --ref-blue-light: #007AFF;
+  --ref-green-light: #34C759;
+  --ref-indigo-light: #5856D6;
+  --ref-orange-light: #FF9500;
+  --ref-pink-light: #FF2D55;
+  --ref-purple-light: #AF52DE;
+  --ref-red-light: #FF3B30;
+  --ref-teal-light: #30B0C7;
+  --ref-yellow-light: #FFCC00;
+  --ref-cyan-light: #32ADE6;
+  --ref-mint-light: #00C7BE;
+  --ref-brown-light: #A2845E;
+
+  /* Higher-contrast variants that pass WCAG AA */
+  --ref-blue-hc-light: #0066D6;
+  --ref-red-deep: #D70015;
+  --ref-green-hc-light: #1E7A34;
+  --ref-orange-hc-light: #C93400;
+  --ref-control-border: #7C7C80;
+}

@@ -1,0 +1,68 @@
+/* App icon: a white glyph on a rounded square, like icons on an iPhone. Black by default; colored on system map pages. */
+.app-icon {
+  --app-icon-size: 1.75rem;
+  --app-color: var(--color-app-mono);
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--app-icon-size);
+  height: var(--app-icon-size);
+  border-radius: calc(var(--app-icon-size) * var(--app-icon-radius-ratio));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--app-color), white 18%), var(--app-color));
+  color: var(--color-on-app-icon);
+  box-shadow: var(--shadow-app-icon);
+}
+.app-icon > .icon {
+  --icon-size: calc(var(--app-icon-size) * 0.6);
+  --icon-stroke: 2.1;
+}
+
+.app-icon-sm { --app-icon-size: 1.5rem; }
+.app-icon-lg { --app-icon-size: 3rem; }
+.app-icon-lg > .icon { --icon-stroke: 1.9; }
+.app-icon-xl { --app-icon-size: 4.5rem; }
+.app-icon-xl > .icon { --icon-stroke: 1.7; }
+
+/* Plain variant: no tile, the glyph itself takes the app color (sidebar, tabs) */
+.app-icon-plain {
+  background: none;
+  box-shadow: none;
+  color: var(--app-color);
+}
+.app-icon-plain > .icon {
+  --icon-size: calc(var(--app-icon-size) * 0.8);
+  --icon-stroke: 2;
+}
+
+/* Hub's own app icon (assets/img/app-icon.svg), masked to the iOS icon shape */
+.brand-icon {
+  --app-icon-size: 4.5rem;
+  display: block;
+  flex: none;
+  width: var(--app-icon-size);
+  height: var(--app-icon-size);
+  border-radius: calc(var(--app-icon-size) * var(--app-icon-radius-ratio));
+  box-shadow: var(--shadow-brand-icon);
+}
+
+/* Hub glyph (assets/img/glyph.svg) beside the name */
+.brand-glyph {
+  width: 1.375rem;
+  height: 1.375rem;
+  flex: none;
+}
+
+/* Colored icons only on system map pages; everywhere else Hub is monochrome */
+:is(.fm-page, .mg-colored) [data-color="gray"]   { --app-color: var(--color-app-gray); }
+:is(.fm-page, .mg-colored) [data-color="blue"]   { --app-color: var(--color-app-blue); }
+:is(.fm-page, .mg-colored) [data-color="green"]  { --app-color: var(--color-app-green); }
+:is(.fm-page, .mg-colored) [data-color="indigo"] { --app-color: var(--color-app-indigo); }
+:is(.fm-page, .mg-colored) [data-color="orange"] { --app-color: var(--color-app-orange); }
+:is(.fm-page, .mg-colored) [data-color="pink"]   { --app-color: var(--color-app-pink); }
+:is(.fm-page, .mg-colored) [data-color="purple"] { --app-color: var(--color-app-purple); }
+:is(.fm-page, .mg-colored) [data-color="red"]    { --app-color: var(--color-app-red); }
+:is(.fm-page, .mg-colored) [data-color="teal"]   { --app-color: var(--color-app-teal); }
+:is(.fm-page, .mg-colored) [data-color="yellow"] { --app-color: var(--color-app-yellow); }
+:is(.fm-page, .mg-colored) [data-color="cyan"]   { --app-color: var(--color-app-cyan); }
+:is(.fm-page, .mg-colored) [data-color="mint"]   { --app-color: var(--color-app-mint); }
+:is(.fm-page, .mg-colored) [data-color="brown"]  { --app-color: var(--color-app-brown); }

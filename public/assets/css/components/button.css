@@ -1,0 +1,102 @@
+.btn {
+  --btn-height: var(--control-height-md);
+  --btn-pad-x: var(--space-4);
+  --btn-font-size: var(--text-body-size);
+  --btn-line: var(--text-body-line);
+  --btn-bg: var(--color-tertiary-system-fill);
+  --btn-fg: var(--color-label);
+  --btn-hover: color-mix(in srgb, var(--btn-bg), var(--color-hover-mix) 8%);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--btn-height);
+  padding: 0 var(--btn-pad-x);
+  border-radius: var(--radius-full);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-size: var(--btn-font-size);
+  line-height: var(--btn-line);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;       /* buttons rendered as <a> stay un-underlined on hover */
+  white-space: nowrap;
+  user-select: none;
+  transition:
+    background-color var(--duration-instant) var(--ease-out),
+    scale var(--spring-snappy-duration-sm) var(--spring-snappy);
+}
+
+.btn-sm {
+  --btn-height: var(--control-height-sm);
+  --btn-pad-x: var(--space-3);
+  --btn-font-size: var(--text-subheadline-size);
+  --btn-line: var(--text-subheadline-line);
+}
+.btn-lg { --btn-height: var(--control-height-lg); --btn-pad-x: var(--space-5); }
+
+.btn-filled { --btn-bg: var(--color-tint-fill); --btn-fg: var(--color-on-tint-fill); }
+.btn-tinted { --btn-bg: var(--color-tint-soft); --btn-fg: var(--color-tint-text); }
+.btn-gray   { --btn-bg: var(--color-tertiary-system-fill); --btn-fg: var(--color-label); }
+.btn-plain  { --btn-bg: transparent; --btn-fg: var(--color-tint-text); --btn-pad-x: var(--space-2); }
+/* Monochrome theme: destructive actions are black; the dialog text names the action */
+.btn-destructive { --btn-bg: var(--color-tint-fill); --btn-fg: var(--color-on-tint-fill); }
+
+/* Black buttons lighten slightly on hover; white text keeps its contrast */
+.btn-filled, .btn-destructive {
+  --btn-hover: color-mix(in srgb, var(--btn-bg), white 16%);
+}
+
+@media (hover: hover) {
+  .btn:hover:not(:disabled, [aria-disabled="true"]) { background: var(--btn-hover); }
+}
+
+.btn:active:not(:disabled, [aria-disabled="true"]) { scale: 0.97; }
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  --btn-bg: var(--color-quaternary-system-fill);
+  --btn-fg: var(--color-tertiary-label);
+  cursor: not-allowed;
+}
+.btn-plain:disabled,
+.btn-plain[aria-disabled="true"] { --btn-bg: transparent; }
+
+/* Loading: label hidden, button keeps its width */
+.btn[aria-busy="true"] {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+}
+.btn[aria-busy="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid var(--btn-fg);
+  border-right-color: transparent;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Icon button */
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: var(--control-height-md);
+  height: var(--control-height-md);
+  flex: none;
+  border-radius: var(--radius-full);
+  color: var(--color-secondary-label);
+  transition:
+    background-color var(--duration-instant) var(--ease-out),
+    color var(--duration-instant) var(--ease-out),
+    scale var(--spring-snappy-duration-sm) var(--spring-snappy);
+}
+@media (hover: hover) {
+  .icon-btn:hover { background: var(--color-quaternary-system-fill); color: var(--color-label); }
+}
+.icon-btn:active { scale: 0.94; }
+.icon-btn[aria-pressed="true"] { background: var(--color-tint-soft); color: var(--color-tint); }

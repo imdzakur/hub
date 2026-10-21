@@ -1,0 +1,12 @@
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  max-width: var(--readable-width);
+  margin: 0 auto;
+  padding: var(--space-16) var(--space-6);
+  text-align: center;
+}
+.empty > .icon { color: var(--color-secondary-label); margin-bottom: var(--space-2); }
+.empty > .app-icon { margin-bottom: var(--space-2); }
+.empty > .btn { margin-top: var(--space-3); }

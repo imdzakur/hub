@@ -1,0 +1,296 @@
+/* Integration maps (systems/finance, systems/finance-self) */
+.fm-page {
+  /* System pages keep color: blue accent for selection, app colors per area */
+  --color-tint: var(--ref-blue-light);
+  --color-tint-text: var(--ref-blue-hc-light);
+  --color-tint-fill: var(--ref-blue-hc-light);
+  --color-tint-soft: color-mix(in srgb, var(--ref-blue-light) 12%, transparent);
+  --color-focus-ring: var(--ref-blue-light);
+  --fm-route: var(--color-app-orange);
+  --fm-route-soft: color-mix(in srgb, var(--color-app-orange) 45%, white);
+  --fm-route-bg: color-mix(in srgb, var(--color-app-orange) 12%, transparent);
+  --fm-line: var(--color-tertiary-label);
+  --fm-sticky-top: calc(var(--toolbar-height) + var(--space-4));
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+}
+/* Grid children may shrink below their content; the map scrolls inside its card */
+.fm-page > *, .fm-layout > * { min-width: 0; }
+
+/* Toolbar search */
+.fm-search { width: min(22rem, 46vw); }
+/* Results sit over busy content, so they use a solid elevated surface, not glass */
+.fm-results {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  z-index: calc(var(--z-toolbar) + 1);
+  width: min(26rem, calc(100vw - var(--space-8)));
+  max-height: min(28rem, 70dvh);
+  overflow-y: auto;
+  padding: var(--space-1);
+  border: var(--hairline) solid var(--color-separator);
+  border-radius: var(--radius-lg);
+  background: var(--color-elevated-background);
+  box-shadow: var(--shadow-popover);
+}
+.fm-results-empty { padding: var(--space-3); color: var(--color-secondary-label); font-size: var(--text-subheadline-size); line-height: var(--text-subheadline-line); }
+.fm-result {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  text-align: start;
+}
+.fm-result:hover, .fm-result.is-active { background: var(--color-quaternary-system-fill); }
+.fm-result-text { display: grid; min-width: 0; }
+.fm-result-name { font-size: var(--text-subheadline-size); line-height: var(--text-subheadline-line); font-weight: var(--weight-semibold); }
+.fm-result-sub, .fm-row-sub {
+  font-size: var(--text-footnote-size);
+  line-height: var(--text-footnote-line);
+  color: var(--color-secondary-label);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Tabs float as glass under the toolbar, with the same radius as the cards. Each tab is its own small box;
+   they wrap onto rows (two on a laptop) and stretch to fill each row. */
+.fm-tabs-bar {
+  position: sticky;
+  top: var(--fm-sticky-top);
+  z-index: var(--z-sticky);
+  border-radius: var(--radius-lg);
+  padding: var(--space-1-5);
+}
+.fm-tabs-bar > .tabs {
+  flex-wrap: wrap;
+  gap: var(--space-1-5);
+  overflow: visible;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+.fm-tabs-bar .tab {
+  flex: 1 1 auto;
+  justify-content: center;
+  padding: 0 var(--space-3) 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-secondary-system-grouped-background) 55%, transparent);
+}
+@media (hover: hover) {
+  .fm-tabs-bar .tab:hover { background: var(--color-secondary-system-grouped-background); }
+}
+.fm-tabs-bar .tab[aria-selected="true"] {
+  background: var(--color-selected-glass);
+  box-shadow: var(--shadow-selected);
+}
+.tab > .app-icon { --app-icon-size: 1.5rem; }
+/* Phones: two columns, and not sticky, since the tabs would cover too much of the screen */
+@media (width < 48rem) {
+  .fm-tabs-bar { position: static; }
+  .fm-tabs-bar > .tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fm-tabs-bar .tab { justify-content: flex-start; min-width: 0; }
+  .fm-tabs-bar .tab-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+}
+
+/* Routes and integration kinds, in a bar under the map canvas */
+.fm-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2) var(--space-6);
+  padding: var(--space-3) var(--space-4);
+  border-top: var(--hairline) solid var(--color-separator);
+}
+.fm-group { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+/* Phones: route chips stay on one swipeable line instead of stacking */
+@media (width < 48rem) {
+  .fm-group { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--space-4) * -1); padding-inline: var(--space-4); }
+  .fm-group::-webkit-scrollbar { display: none; }
+  .fm-group > * { flex: none; }
+}
+.fm-group-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-inline-end: var(--space-1);
+  font-size: var(--text-footnote-size);
+  line-height: var(--text-footnote-line);
+  font-weight: var(--weight-semibold);
+  color: var(--color-secondary-label);
+}
+.chip[data-route][aria-pressed="true"] { --badge-fg: var(--color-label); --badge-bg: var(--fm-route-bg); box-shadow: inset 0 0 0 1.5px var(--fm-route); }
+.fm-swatch { width: 1.5rem; height: 0.5rem; flex: none; }
+.fm-swatch path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.chip[data-mode][aria-pressed="false"] { --badge-fg: var(--color-secondary-label); --badge-bg: transparent; box-shadow: inset 0 0 0 1px var(--color-separator); }
+
+/* Map on top at full width, details below it. The page scrolls; nothing scrolls inside. */
+.fm-layout {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.fm-map-card { padding: 0; gap: 0; overflow: hidden; }
+.fm-map { display: block; width: 100%; height: auto; font-family: var(--font-sans); }
+
+.fm-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  padding: var(--space-2) var(--space-4);
+  border-top: var(--hairline) solid var(--color-separator);
+  font-size: var(--text-footnote-size);
+  line-height: var(--text-footnote-line);
+  color: var(--color-secondary-label);
+}
+.fm-legend li { display: inline-flex; align-items: center; gap: var(--space-2); }
+.fm-legend-box { width: 1.5rem; height: 1rem; border-radius: var(--radius-xs); }
+.fm-legend-box.is-ext { border: 1px dashed var(--color-control-border); background: var(--color-secondary-system-background); }
+.fm-legend-box.is-sel { border: 2px solid var(--color-tint); background: var(--color-tint-soft); }
+.fm-legend-line { width: 1.5rem; height: 0.25rem; border-radius: var(--radius-full); background: var(--fm-route); }
+
+/* SVG map */
+.edge { fill: none; stroke: var(--fm-line); stroke-width: 1.1; stroke-linecap: round; transition: opacity var(--duration-fast) var(--ease-out); }
+.edge.m-bt { stroke-dasharray: 4 3; }
+.edge.m-ev { stroke-dasharray: 1 3; stroke-linecap: round; stroke-width: 1.4; }
+.edge.off, .ehit.off { display: none; }
+.edge.dim { opacity: 0.12; }
+.edge.on { stroke: var(--color-tint); stroke-width: 1.5; }
+.edge.hot { stroke: var(--fm-route); stroke-width: 1.8; opacity: 1; }
+.edge.r-past { stroke: var(--fm-route-soft); stroke-width: 1.8; stroke-dasharray: none; }
+.edge.r-now { stroke: var(--fm-route); stroke-width: 2.2; stroke-dasharray: 11 7; stroke-linecap: butt; animation: fm-flow 0.9s linear infinite; }
+.edge.r-now.rev { animation-direction: reverse; }
+@keyframes fm-flow { to { stroke-dashoffset: -18; } }
+.ehit { fill: none; stroke: transparent; stroke-width: 10; pointer-events: stroke; cursor: help; }
+/* Arrowheads: filled darts with a thin same-color stroke to round the corners */
+.mk { stroke-width: 0.9; stroke-linejoin: round; }
+.mk-idle { fill: var(--fm-line); stroke: var(--fm-line); }
+.mk-on { fill: var(--color-tint); stroke: var(--color-tint); }
+.mk-r { fill: var(--fm-route); stroke: var(--fm-route); }
+.mk-rp { fill: var(--fm-route-soft); stroke: var(--fm-route-soft); }
+
+.node { cursor: pointer; outline: none; transition: opacity var(--duration-fast) var(--ease-out); }
+.node .nb { fill: var(--color-secondary-system-grouped-background); stroke: var(--color-opaque-separator); stroke-width: 0.8; transition: stroke var(--duration-instant) var(--ease-out), fill var(--duration-instant) var(--ease-out); }
+.node.ext .nb { fill: var(--color-secondary-system-background); stroke: var(--color-control-border); stroke-dasharray: 3 2.5; }
+.node .chip-bg { fill: var(--app-color); }
+.node .ico {
+  color: var(--color-on-app-icon);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.node .nl { font-size: 10px; font-weight: 600; fill: var(--color-label); pointer-events: none; }
+.node .nl.sm { font-size: 8.5px; }
+.node .nt { font-size: 7.5px; font-weight: 600; fill: var(--color-secondary-label); pointer-events: none; font-variant-numeric: tabular-nums; }
+.node:hover .nb { stroke: var(--color-tint); }
+.node.dim { opacity: 0.3; }
+.node.on .nb { stroke: var(--color-tint); stroke-width: 1.2; }
+.node.sel .nb { stroke: var(--color-tint); stroke-width: 1.8; fill: color-mix(in srgb, var(--color-tint) 8%, white); }
+.node.r-node .nb { stroke: var(--fm-route-soft); stroke-width: 1.5; }
+.node.r-now .nb { stroke: var(--fm-route); stroke-width: 2; fill: color-mix(in srgb, var(--color-app-orange) 8%, white); }
+.node:focus-visible .nb { stroke: var(--color-focus-ring); stroke-width: 2; }
+.elabel { font-size: 9px; font-weight: 600; fill: var(--color-label); paint-order: stroke; stroke: var(--color-secondary-system-grouped-background); stroke-width: 4px; stroke-linejoin: round; pointer-events: none; }
+.elabel.hot { font-size: 10px; }
+.step-badge circle { fill: var(--color-secondary-system-grouped-background); stroke: var(--fm-route-soft); stroke-width: 1.4; }
+.step-badge text { font-size: 8px; font-weight: 700; fill: var(--color-label); font-variant-numeric: tabular-nums; }
+.step-badge.now circle { fill: var(--fm-route); stroke: var(--fm-route); }
+@media (prefers-reduced-motion: reduce) {
+  .edge.r-now { animation: none; stroke-dasharray: none; }
+}
+
+/* Detail panel under the map. Lists sit side by side as columns. */
+.fm-panel {
+  grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
+  align-items: start;
+  gap: var(--space-4) var(--space-5);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+}
+.fm-panel > :not(.list-section),
+.fm-panel > .fm-wide { grid-column: 1 / -1; }
+/* Overview header: name on the left, the numbers on the right, the intro across the full width */
+.fm-overview-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3) var(--space-5); }
+.fm-stats { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.fm-stat {
+  display: grid;
+  min-width: 5.5rem;
+  padding: var(--space-1-5) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--color-tertiary-system-grouped-background);
+}
+.fm-stat b { font-size: var(--text-headline-size); line-height: var(--text-headline-line); font-variant-numeric: tabular-nums; }
+.fm-stat span { font-size: var(--text-caption-1-size); line-height: var(--text-caption-1-line); color: var(--color-secondary-label); }
+.fm-intro { text-wrap: pretty; }
+
+/* Route steps flow across the width as tiles */
+.fm-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(18rem, 100%), 1fr));
+  gap: var(--space-2);
+}
+.fm-panel .list.fm-steps { background: none; }
+.fm-steps > li + li::before { display: none; }
+.fm-steps .fm-step {
+  height: 100%;
+  border-radius: var(--radius-md);
+  background: var(--color-tertiary-system-grouped-background);
+}
+/* Dense rows: smaller type, tighter padding, separators aligned to the small icons */
+.fm-panel .list { --list-inset: var(--space-3); }
+.fm-panel .list-has-icons { --separator-inset: calc(var(--list-inset) + 1.5rem + var(--space-3)); }
+.fm-panel .list-row {
+  min-height: var(--row-height-dense);
+  padding-block: var(--space-1-5);
+  font-size: var(--text-subheadline-size);
+  line-height: var(--text-subheadline-line);
+}
+.fm-panel .list-row > .fm-swatch { color: var(--color-secondary-label); }
+.fm-head { display: flex; align-items: center; gap: var(--space-3); }
+.fm-head h2:focus { outline: none; }
+.fm-back { justify-self: start; margin: calc(var(--space-2) * -1) 0 calc(var(--space-2) * -1) calc(var(--space-2) * -1); }
+.fm-panel .list { background: var(--color-tertiary-system-grouped-background); box-shadow: none; }
+.fm-panel .list-header { display: flex; align-items: center; gap: var(--space-2); padding-inline: var(--space-1); }
+.fm-count { font-weight: var(--weight-regular); font-variant-numeric: tabular-nums; }
+
+button.list-row { width: 100%; text-align: start; transition: background-color var(--duration-instant) var(--ease-out); }
+@media (hover: hover) {
+  button.list-row:hover { background: var(--color-quaternary-system-fill); }
+}
+.list-row.is-muted { opacity: 0.5; }
+.list-row.is-flash { background: var(--fm-route-bg); box-shadow: inset 3px 0 0 var(--fm-route); }
+.fm-row-text { display: grid; flex: 1; min-width: 0; }
+.fm-row-title { overflow: hidden; text-overflow: ellipsis; }
+.fm-num { display: inline-block; min-width: 1.75rem; margin-inline-end: var(--space-1); color: var(--color-secondary-label); font-size: var(--text-footnote-size); font-variant-numeric: tabular-nums; }
+.fm-meta { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: var(--space-1); }
+
+.fm-route-controls { display: flex; align-items: center; gap: var(--space-2); }
+.fm-route-progress { margin-inline-start: auto; font-size: var(--text-footnote-size); color: var(--color-secondary-label); font-variant-numeric: tabular-nums; }
+.fm-panel .progress::-webkit-progress-value { background: var(--fm-route); }
+.fm-panel .progress::-moz-progress-bar { background: var(--fm-route); }
+.fm-step-num {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 1.625rem;
+  height: 1.625rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-separator);
+  font-size: var(--text-caption-1-size);
+  font-weight: var(--weight-bold);
+  color: var(--color-secondary-label);
+  font-variant-numeric: tabular-nums;
+}
+.fm-step.is-done .fm-step-num { border-color: var(--fm-route-soft); color: var(--color-label); }
+.fm-step.is-now { background: var(--fm-route-bg); }
+.fm-step.is-now .fm-step-num { background: var(--fm-route); border-color: var(--fm-route); color: var(--color-label); }
+.fm-step.is-todo .fm-row-title { color: var(--color-secondary-label); }
+
+/* Hidden symbol library for map glyphs */
+.fm-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }

@@ -1,0 +1,33 @@
+.home-page {
+  display: grid;
+  gap: var(--space-8);
+  padding-top: var(--space-8);
+}
+
+.home-hero {
+  display: grid;
+  gap: var(--space-1);
+  padding-inline: var(--space-1);
+}
+.home-date {
+  font-size: var(--text-subheadline-size);
+  line-height: var(--text-subheadline-line);
+  font-weight: var(--weight-semibold);
+  color: var(--color-secondary-label);
+}
+
+.home-block { display: grid; gap: var(--space-3); }
+.home-block-title { padding-inline: var(--space-1); }
+
+.app-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  gap: var(--space-4);
+}
+
+.home-lists {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
+  gap: var(--space-8) var(--space-6);
+  align-items: start;
+}

@@ -1,0 +1,46 @@
+/* Liquid Glass, adapted to the web: translucent white, strong blur and saturation,
+   a bright rim, a specular sheen at the top, and a soft floating shadow.
+   Hub uses the light appearance only. */
+:root {
+  --material-saturate: saturate(190%);
+
+  --material-ultra-thin-bg: rgb(255 255 255 / 0.25);
+  --material-ultra-thin-blur: 16px;
+  --material-thin-bg: rgb(255 255 255 / 0.38);
+  --material-thin-blur: 20px;
+  --material-regular-bg: rgb(255 255 255 / 0.5);
+  --material-regular-blur: 28px;
+  --material-thick-bg: rgb(255 255 255 / 0.62);
+  --material-thick-blur: 36px;
+
+  /* Rim and highlights that make the glass read as a physical edge */
+  --material-edge: rgb(255 255 255 / 0.7);
+  --material-highlight: rgb(255 255 255 / 0.95);
+  --material-lowlight: rgb(255 255 255 / 0.35);
+  --material-sheen: linear-gradient(180deg, rgb(255 255 255 / 0.55) 0%, rgb(255 255 255 / 0) 42%);
+  --material-shadow: 0 10px 32px rgb(0 0 0 / 0.08), 0 1px 3px rgb(0 0 0 / 0.05);
+
+  /* Shadows, only for elements that float */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.08);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 16px rgb(0 0 0 / 0.04);
+  --shadow-selected: 0 1px 3px rgb(0 0 0 / 0.1), 0 0 0 0.5px rgb(0 0 0 / 0.04);
+  --shadow-app-icon: 0 1px 2px rgb(0 0 0 / 0.14), inset 0 0 0 0.5px rgb(0 0 0 / 0.06);
+  /* The Hub icon is white, so it needs a rim and a lift to separate from white glass */
+  --shadow-brand-icon: 0 0 0 0.5px rgb(0 0 0 / 0.1), 0 2px 4px rgb(0 0 0 / 0.06), 0 8px 24px rgb(0 0 0 / 0.1);
+  --shadow-popover: 0 8px 24px rgb(0 0 0 / 0.12);
+  --shadow-sheet: 0 24px 64px rgb(0 0 0 / 0.18);
+
+  /* Soft gray wallpaper behind every page, so the glass has light and shade to refract */
+  --wallpaper:
+    radial-gradient(52rem 40rem at -5% -10%, rgb(255 255 255 / 0.95), transparent 70%),
+    radial-gradient(44rem 34rem at 105% -5%, color-mix(in srgb, var(--ref-gray3-light) 55%, transparent), transparent 70%),
+    radial-gradient(40rem 32rem at 55% 45%, rgb(255 255 255 / 0.6), transparent 70%),
+    radial-gradient(50rem 40rem at 105% 105%, color-mix(in srgb, var(--ref-gray4-light) 70%, transparent), transparent 70%),
+    radial-gradient(48rem 38rem at -5% 105%, color-mix(in srgb, var(--ref-gray3-light) 45%, transparent), transparent 70%),
+    var(--ref-gray6-light);
+
+  /* Stacking order for elements outside the top layer */
+  --z-sticky: 10;
+  --z-sidebar: 20;
+  --z-toolbar: 30;
+}

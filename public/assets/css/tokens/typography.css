@@ -1,0 +1,66 @@
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* 1rem = 16px at the browser's default setting */
+  --text-large-title-size: 2.125rem;
+  --text-large-title-line: 2.5625rem;
+  --text-large-title-weight: var(--weight-regular);
+  --text-large-title-weight-strong: var(--weight-bold);
+
+  --text-title-1-size: 1.75rem;
+  --text-title-1-line: 2.125rem;
+  --text-title-1-weight: var(--weight-regular);
+  --text-title-1-weight-strong: var(--weight-bold);
+
+  --text-title-2-size: 1.375rem;
+  --text-title-2-line: 1.75rem;
+  --text-title-2-weight: var(--weight-regular);
+  --text-title-2-weight-strong: var(--weight-bold);
+
+  --text-title-3-size: 1.25rem;
+  --text-title-3-line: 1.5625rem;
+  --text-title-3-weight: var(--weight-regular);
+  --text-title-3-weight-strong: var(--weight-semibold);
+
+  --text-headline-size: 1.0625rem;
+  --text-headline-line: 1.375rem;
+  --text-headline-weight: var(--weight-semibold);
+  --text-headline-weight-strong: var(--weight-bold);
+
+  --text-body-size: 1.0625rem;
+  --text-body-line: 1.375rem;
+  --text-body-line-relaxed: 1.5;
+  --text-body-weight: var(--weight-regular);
+  --text-body-weight-strong: var(--weight-semibold);
+
+  --text-callout-size: 1rem;
+  --text-callout-line: 1.3125rem;
+  --text-callout-weight: var(--weight-regular);
+  --text-callout-weight-strong: var(--weight-semibold);
+
+  --text-subheadline-size: 0.9375rem;
+  --text-subheadline-line: 1.25rem;
+  --text-subheadline-weight: var(--weight-regular);
+  --text-subheadline-weight-strong: var(--weight-semibold);
+
+  --text-footnote-size: 0.8125rem;
+  --text-footnote-line: 1.125rem;
+  --text-footnote-weight: var(--weight-regular);
+  --text-footnote-weight-strong: var(--weight-semibold);
+
+  --text-caption-1-size: 0.75rem;
+  --text-caption-1-line: 1rem;
+  --text-caption-1-weight: var(--weight-regular);
+  --text-caption-1-weight-strong: var(--weight-medium);
+
+  --text-caption-2-size: 0.6875rem;
+  --text-caption-2-line: 0.8125rem;
+  --text-caption-2-weight: var(--weight-regular);
+  --text-caption-2-weight-strong: var(--weight-semibold);
+}

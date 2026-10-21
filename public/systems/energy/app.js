@@ -1,0 +1,57 @@
+// Energy and utilities integration map: generation, transmission, distribution, smart meters and IoT, billing,
+// markets, water, gas and EV charging, assets and OT security, and data.
+import { initIntegrationMap } from "/assets/js/integration-map.js";
+import { DOMAINS } from "./data.js";
+
+initIntegrationMap({
+  domains: DOMAINS,
+  storageKey: "hub-energy-tab",
+  // Each area gets its own app icon color, like apps on an iPhone
+  tabs: {
+    antar: { icon: "layers", color: "indigo" },
+    gen: { icon: "bolt", color: "yellow" },
+    trans: { icon: "pylon", color: "orange" },
+    dist: { icon: "network", color: "blue" },
+    iot: { icon: "wifi", color: "cyan" },
+    pel: { icon: "receipt", color: "green" },
+    pasar: { icon: "candle", color: "purple" },
+    air: { icon: "drop", color: "teal" },
+    gas: { icon: "flame", color: "red" },
+    aset: { icon: "shield", color: "brown" },
+    data: { icon: "chart", color: "pink" },
+  },
+  modes: { rt: "Real time", bt: "Batch", ev: "Event" },
+  modeHints: {
+    rt: "Called during operations; the answer is awaited",
+    bt: "Sent in bulk on a schedule, usually overnight",
+    ev: "Announced when something happens, no reply awaited",
+  },
+  protocols: {
+    "Internal": "Modules inside the same system or vendor, called directly, like a DCS to its built-in historian.",
+    "IEC 61850": "The substation standard: relays, bay controllers, and digital instrument transformers over Ethernet (GOOSE and Sampled Values for protection, MMS for SCADA).",
+    "IEC 60870-5-104": "Telecontrol over TCP/IP between substations or plants and the control center. Most common in Europe, Asia, and Indonesia.",
+    "ICCP": "ICCP or TASE.2 (IEC 60870-6) for real-time data between control centers, such as transmission, distribution, and neighbors.",
+    "IEEE C37.118": "Synchrophasor data from PMUs, tens to hundreds of GPS-timed samples a second, for oscillations and phase angles.",
+    "Modbus": "A simple old industrial protocol over serial or TCP. Still everywhere: PLCs, pumps, inverters, sensors, and heat meters.",
+    "OPC UA": "Secure industrial data exchange with data models, used between plant control, historians, and IT.",
+    "MQTT": "Light publish and subscribe through a broker. The de facto IoT standard for gateways and sensors.",
+    "DLMS/COSEM": "The meter data standard for power, water, and gas (IEC 62056), with objects like energy, load profile, and relay, and per-meter encryption.",
+    "CoAP / LwM2M": "Low-power protocols for small devices on NB-IoT and LTE-M; LwM2M adds firmware and configuration management.",
+    "IEEE 2030.5": "Controls DER like solar inverters and home batteries, including export limits. Required in California through CSIP, used in Australia.",
+    "OpenADR": "The demand response standard: utilities or aggregators send events and prices, devices and chargers cut load.",
+    "OCPP": "Open Charge Point Protocol between chargers and the central system (1.6, 2.0.1, and 2.1 with V2G) over WebSocket.",
+    "OCPI": "Open Charge Point Interface for roaming between charging operators: locations, tariffs, sessions, and billing.",
+    "CIM (IEC 61968/61970)": "Common Information Model for exchanging grid models and asset data, such as GIS to ADMS or planning to EMS.",
+    "REST API": "HTTP calls with JSON. The usual path for customer apps, partner portals, and modern IT systems.",
+    "Message queue": "Asynchronous events through a queue or stream like Kafka. Nothing is lost when thousands of outage alerts arrive at once.",
+    "Batch file": "Scheduled files (CSV, XML, or market formats), such as monthly usage to billing or settlement data.",
+    "ETL": "Scheduled copy from source systems into the data platform: extract, transform, load.",
+    "Biller API (ISO 8583, SNAP)": "Bill inquiry and payment from banks, e-wallets, and PPOB to billers. Older ISO 8583, more and more Bank Indonesia's SNAP standard.",
+    "Reporting portal": "Uploads to regulator apps, such as SISPEK for emissions, the Ministry of Energy portal, or cyber incident reports.",
+    "Manual": "Documents and decisions handled by people, such as tariff decisions or connection study approvals.",
+    "Passive traffic copy": "OT security sensors read a mirror of network traffic without sending anything to the control network.",
+    "Push notification": "Messages to customers' phones through FCM and APNs, plus SMS and WhatsApp.",
+    "AS4/EDI": "Message formats between European gas and power companies (EDIG@S over AS4) for nominations and allocation.",
+    "Jump host": "A watched, recorded go-between server; the only way vendors reach the control network, with MFA and limited sessions.",
+  },
+});

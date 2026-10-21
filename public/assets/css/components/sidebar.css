@@ -1,0 +1,171 @@
+.sidebar {
+  --radius-outer: var(--radius-xl);
+  --pad: var(--space-2);
+  position: sticky;
+  top: var(--space-2);
+  z-index: var(--z-sidebar);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  height: calc(100dvh - var(--space-4));
+  margin: var(--space-2) 0 var(--space-2) var(--space-2);
+  padding: var(--pad);
+  border-radius: var(--radius-outer);
+  overflow-y: auto;            /* safety net only; the design must never need to scroll */
+  overscroll-behavior: contain;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0 var(--space-3);
+}
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-title-3-size);
+  line-height: var(--text-title-3-line);
+  font-weight: var(--weight-bold);
+  color: var(--color-label);
+  text-decoration: none;
+}
+.sidebar-title:hover { text-decoration: none; }
+
+.nav-primary { padding-bottom: var(--space-2); }
+
+.nav-section > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--nav-section-height);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  list-style: none;
+  font-size: var(--text-footnote-size);
+  line-height: var(--text-footnote-line);
+  font-weight: var(--weight-semibold);
+  color: var(--color-secondary-label);
+  cursor: pointer;
+}
+.nav-section > summary::-webkit-details-marker { display: none; }
+@media (hover: hover) {
+  .nav-section > summary:hover { color: var(--color-label); }
+}
+
+.nav-chevron { transition: rotate var(--spring-snappy-duration-sm) var(--spring-snappy); }
+.nav-section[open] .nav-chevron { rotate: 90deg; }
+
+.nav-list {
+  display: grid;
+  gap: var(--space-0-5);
+  padding-top: var(--space-1);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--nav-item-height);
+  padding: 0 var(--space-2);
+  border-radius: max(var(--radius-xs), calc(var(--radius-outer) - var(--pad)));
+  color: var(--color-label);
+  text-decoration: none;
+  font-size: var(--text-callout-size);
+  line-height: var(--text-callout-line);
+  transition:
+    background-color var(--duration-instant) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+/* Plain glyphs (sign out) stay neutral; app icons carry the color */
+.nav-item > .icon { color: var(--color-secondary-label); margin-inline: var(--space-1); }
+.nav-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: start;
+}
+@media (hover: hover) {
+  .nav-item:hover { background: var(--color-quaternary-system-fill); text-decoration: none; }
+}
+/* Selected item: a raised white pill on the glass */
+/* Icons are gray until their page is open; the open page's icon is black and keeps moving gently */
+.nav-item > .app-icon-plain { color: var(--color-tertiary-label); transition: color var(--duration-fast) var(--ease-out); }
+@media (hover: hover) {
+  .nav-item:hover > .app-icon-plain { color: var(--color-secondary-label); }
+}
+.nav-item[aria-current="page"] > .app-icon-plain { color: var(--color-label); }
+.nav-item[aria-current="page"] > .app-icon-plain > .icon {
+  transform-origin: 50% 80%;
+  animation: nav-icon-alive 3.2s var(--ease-in-out, ease-in-out) infinite;
+}
+/* A small hop, a tilt each way, then rest */
+@keyframes nav-icon-alive {
+  0%, 52%, 100% { translate: 0 0; rotate: 0deg; scale: 1; }
+  10% { translate: 0 -2px; rotate: -8deg; scale: 1.08; }
+  20% { translate: 0 0; rotate: 6deg; scale: 1; }
+  30% { translate: 0 -1px; rotate: -3deg; }
+  40% { translate: 0 0; rotate: 1deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-item[aria-current="page"] > .app-icon-plain > .icon { animation: none; }
+}
+.nav-item[aria-current="page"],
+.nav-item[aria-current="page"]:hover {
+  background: var(--color-selected-glass);
+  box-shadow: var(--shadow-selected);
+  font-weight: var(--weight-semibold);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: var(--space-2);
+  border-top: var(--hairline) solid var(--color-separator);
+}
+
+/* Accordion open and close animation. Chrome and Edge only for now;
+   other browsers open instantly and still work. */
+@supports (interpolate-size: allow-keywords) {
+  .sidebar { interpolate-size: allow-keywords; }
+  .nav-section::details-content {
+    height: 0;
+    overflow: clip;
+    transition:
+      height var(--spring-smooth-duration-sm) var(--spring-smooth),
+      content-visibility var(--spring-smooth-duration-sm) allow-discrete;
+  }
+  .nav-section[open]::details-content { height: auto; }
+}
+
+/* Small screens: drawer from the left */
+@media (width < 48rem) {
+  .sidebar {
+    position: fixed;
+    inset: var(--space-2) auto var(--space-2) var(--space-2);
+    width: min(var(--sidebar-width), calc(100vw - var(--space-8)));
+    height: auto;
+    margin: 0;
+    visibility: hidden;
+    translate: calc(-100% - var(--space-4)) 0;
+    transition:
+      translate var(--spring-smooth-duration) var(--spring-smooth),
+      visibility 0s linear var(--spring-smooth-duration);
+  }
+  .app[data-nav="open"] .sidebar {
+    --material-shadow: var(--shadow-sheet);
+    visibility: visible;
+    translate: 0 0;
+    transition: translate var(--spring-smooth-duration) var(--spring-smooth);
+  }
+  .app[data-nav="open"]::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-sidebar) - 1);
+    background: var(--color-scrim);
+  }
+}

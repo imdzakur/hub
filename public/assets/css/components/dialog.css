@@ -1,0 +1,88 @@
+/* Dialog and alert. Uses the glass material; position is restated because .material sets relative. */
+.dialog {
+  --radius-outer: var(--radius-xl);
+  --pad: var(--space-6);
+  --material-shadow: var(--shadow-sheet);
+  position: fixed;
+  width: min(32rem, calc(100vw - var(--space-8)));
+  max-height: calc(100dvh - var(--space-8));
+  margin: auto;
+  padding: 0;
+  border-radius: var(--radius-outer);
+  color: var(--color-label);
+  opacity: 1;
+  scale: 1;
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    scale var(--spring-smooth-duration-sm) var(--spring-smooth),
+    display var(--duration-fast) allow-discrete,
+    overlay var(--duration-fast) allow-discrete;
+}
+.dialog:not([open]) { opacity: 0; scale: 0.96; }
+@starting-style {
+  .dialog[open] { opacity: 0; scale: 0.96; }
+}
+
+.dialog::backdrop {
+  background: var(--color-scrim);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.dialog-body {
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
+}
+.dialog-header,
+.dialog-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--pad);
+}
+.dialog-header { justify-content: space-between; padding-bottom: var(--space-3); }
+.dialog-footer { justify-content: flex-end; padding-top: var(--space-3); }
+.dialog-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 var(--pad);
+}
+
+/* Alert: short confirmation, centered text, two equal buttons */
+.dialog-alert {
+  --pad: var(--space-5);
+  width: min(20rem, calc(100vw - var(--space-8)));
+}
+.dialog-alert-text {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--pad) 0;
+  text-align: center;
+}
+.dialog-alert-text > .app-icon { margin-bottom: var(--space-1); }
+.dialog-alert-text > p { text-wrap: balance; }
+.dialog-alert .dialog-footer > .btn { flex: 1; }
+
+/* Small screens: sheet from the bottom */
+@media (width < 48rem) {
+  .dialog:not(.dialog-alert) {
+    width: 100%;
+    max-width: none;
+    margin: auto 0 0;
+    border-radius: var(--radius-outer) var(--radius-outer) 0 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    translate: 0 0;
+    transition:
+      translate var(--spring-smooth-duration) var(--spring-smooth),
+      display var(--spring-smooth-duration-sm) allow-discrete,
+      overlay var(--spring-smooth-duration-sm) allow-discrete;
+  }
+  .dialog:not(.dialog-alert):not([open]) { translate: 0 100%; }
+  @starting-style {
+    .dialog:not(.dialog-alert)[open] { translate: 0 100%; }
+  }
+  .dialog-footer > .btn { flex: 1; }
+}
+

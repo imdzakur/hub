@@ -1,0 +1,188 @@
+/* Typography */
+/* Compact scale: every rem-based size (type, spacing, controls, icons) at 87.5%.
+   A percentage, not px, so the user's font size and browser zoom still apply. */
+html { font-size: 87.5%; background: var(--ref-gray6-light); }
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-line);
+  font-weight: var(--text-body-weight);
+  color: var(--color-label);
+  background: var(--wallpaper);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+.text-large-title { font-size: var(--text-large-title-size); line-height: var(--text-large-title-line); font-weight: var(--text-large-title-weight); }
+.text-title-1     { font-size: var(--text-title-1-size);     line-height: var(--text-title-1-line);     font-weight: var(--text-title-1-weight); }
+.text-title-2     { font-size: var(--text-title-2-size);     line-height: var(--text-title-2-line);     font-weight: var(--text-title-2-weight); }
+.text-title-3     { font-size: var(--text-title-3-size);     line-height: var(--text-title-3-line);     font-weight: var(--text-title-3-weight); }
+.text-headline    { font-size: var(--text-headline-size);    line-height: var(--text-headline-line);    font-weight: var(--text-headline-weight); }
+.text-body        { font-size: var(--text-body-size);        line-height: var(--text-body-line);        font-weight: var(--text-body-weight); }
+.text-callout     { font-size: var(--text-callout-size);     line-height: var(--text-callout-line);     font-weight: var(--text-callout-weight); }
+.text-subheadline { font-size: var(--text-subheadline-size); line-height: var(--text-subheadline-line); font-weight: var(--text-subheadline-weight); }
+.text-footnote    { font-size: var(--text-footnote-size);    line-height: var(--text-footnote-line);    font-weight: var(--text-footnote-weight); }
+.text-caption-1   { font-size: var(--text-caption-1-size);   line-height: var(--text-caption-1-line);   font-weight: var(--text-caption-1-weight); }
+.text-caption-2   { font-size: var(--text-caption-2-size);   line-height: var(--text-caption-2-line);   font-weight: var(--text-caption-2-weight); }
+
+/* Emphasized variant: add .strong */
+.text-large-title.strong { font-weight: var(--text-large-title-weight-strong); }
+.text-title-1.strong     { font-weight: var(--text-title-1-weight-strong); }
+.text-title-2.strong     { font-weight: var(--text-title-2-weight-strong); }
+.text-title-3.strong     { font-weight: var(--text-title-3-weight-strong); }
+.text-headline.strong    { font-weight: var(--text-headline-weight-strong); }
+.text-body.strong        { font-weight: var(--text-body-weight-strong); }
+.text-callout.strong     { font-weight: var(--text-callout-weight-strong); }
+.text-subheadline.strong { font-weight: var(--text-subheadline-weight-strong); }
+.text-footnote.strong    { font-weight: var(--text-footnote-weight-strong); }
+.text-caption-1.strong   { font-weight: var(--text-caption-1-weight-strong); }
+.text-caption-2.strong   { font-weight: var(--text-caption-2-weight-strong); }
+
+.text-secondary { color: var(--color-secondary-label); }
+.prose { line-height: var(--text-body-line-relaxed); max-width: var(--readable-width); }
+.num { font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--font-mono); }
+
+h1, h2, h3 { text-wrap: balance; }
+
+a { color: var(--color-tint-text); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::selection { background: color-mix(in srgb, var(--color-tint) 30%, transparent); }
+
+/* Layout */
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  min-height: 100dvh;
+}
+
+.app-main { min-width: 0; }
+.app-main:focus { outline: none; }
+
+/* Pages use the full width beside the sidebar; text blocks cap themselves with --readable-width */
+.page {
+  padding: var(--page-padding);
+  padding-bottom: calc(var(--page-padding) + env(safe-area-inset-bottom));
+}
+
+@media (width >= 80rem) {
+  .app[data-inspector="open"] {
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr) var(--inspector-width);
+  }
+}
+
+@media (width < 48rem) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Liquid Glass material. Only for navigation and floating controls, never for scrolling content. */
+.material {
+  --_bg: var(--material-regular-bg);
+  --_blur: var(--material-regular-blur);
+  position: relative;
+  isolation: isolate;
+  background: var(--_bg);
+  -webkit-backdrop-filter: blur(var(--_blur)) var(--material-saturate);
+  backdrop-filter: blur(var(--_blur)) var(--material-saturate);
+  border: var(--hairline) solid var(--material-edge);
+  box-shadow:
+    var(--material-shadow),
+    inset 0 1px 0 var(--material-highlight),
+    inset 0 -1px 0 var(--material-lowlight);
+}
+/* Specular sheen across the top of the glass */
+.material::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--material-sheen);
+  pointer-events: none;
+}
+.material-ultra-thin { --_bg: var(--material-ultra-thin-bg); --_blur: var(--material-ultra-thin-blur); }
+.material-thin       { --_bg: var(--material-thin-bg);       --_blur: var(--material-thin-blur); }
+.material-regular    { --_bg: var(--material-regular-bg);    --_blur: var(--material-regular-blur); }
+.material-thick      { --_bg: var(--material-thick-bg);      --_blur: var(--material-thick-blur); }
+
+/* Solid fallback: no backdrop-filter support, or Reduce Transparency */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .material { background: var(--color-elevated-background); }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .material {
+    background: var(--color-elevated-background);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .material::before { display: none; }
+}
+
+:root[data-transparency="reduced"] .material {
+  background: var(--color-elevated-background);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+:root[data-transparency="reduced"] .material::before { display: none; }
+
+/* Icons */
+.icon {
+  --icon-size: 1.25rem;
+  --icon-stroke: 1.75;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--icon-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.icon-sm { --icon-size: 1rem;    --icon-stroke: 2; }
+.icon-md { --icon-size: 1.25rem; --icon-stroke: 1.75; }
+.icon-lg { --icon-size: 1.5rem;  --icon-stroke: 1.75; }
+.icon-xl { --icon-size: 3rem;    --icon-stroke: 1.5; }
+
+/* Accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Keep focused elements clear of the sticky toolbar when scrolled into view */
+html { scroll-padding-top: calc(var(--toolbar-height) + var(--space-4)); }
+
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: calc(var(--z-toolbar) + 1);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--color-tint-fill);
+  color: var(--color-on-tint-fill);
+  translate: 0 -200%;
+}
+.skip-link:focus-visible { translate: 0 0; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Continuous corners, where the browser supports them */
+@supports (corner-shape: squircle) {
+  .btn, .field-input, .tile, .panel, .dialog, .card, .app-icon, .login-card, .sidebar, .toolbar {
+    corner-shape: squircle;
+  }
+}

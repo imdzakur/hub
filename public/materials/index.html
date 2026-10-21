@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Materials - Hub</title>
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script type="module" src="/assets/js/device-gate.js"></script>
+  <script type="module" src="/assets/js/sidebar.js"></script>
+  <script type="module" src="/materials/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="app">
+    <aside class="sidebar material material-thick" id="sidebar"></aside>
+    <main class="app-main" id="main" tabindex="-1">
+      <header class="toolbar material material-thick">
+        <button class="icon-btn nav-toggle" type="button" data-action="toggle-nav"
+                aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">
+          <svg class="icon icon-md" aria-hidden="true"><use href="/assets/icons/sprite.svg#panel-left"></use></svg>
+        </button>
+        <div class="toolbar-title">
+          <h1 class="text-headline" id="mt-title">Materials</h1>
+          <p class="text-footnote text-secondary" id="mt-sub"></p>
+        </div>
+      </header>
+      <div class="page mt-page" id="mt-view"></div>
+    </main>
+  </div>
+</body>
+</html>
