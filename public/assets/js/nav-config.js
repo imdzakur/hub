@@ -38,10 +38,10 @@ export const NAV = [
     icon: "graduation-cap",
     color: "teal",
     items: [
-      { label: "Mathematics", href: "/materials/mathematics", icon: "sigma", color: "blue" },
-      { label: "Statistics", href: "/materials/statistics", icon: "chart-column", color: "green" },
-      { label: "Data", href: "/materials/data", icon: "database", color: "orange" },
-      { label: "Artificial Intelligence", href: "/materials/artificial-intelligence", icon: "bot", color: "purple" },
+      { label: "Mathematics", href: "/materials/mathematics/", icon: "sigma", color: "blue" },
+      { label: "Statistics", href: "/materials/statistics/", icon: "chart-column", color: "green" },
+      { label: "Data", href: "/materials/data/", icon: "database", color: "orange" },
+      { label: "Artificial Intelligence", href: "/materials/artificial-intelligence/", icon: "bot", color: "purple" },
     ],
   },
 ];

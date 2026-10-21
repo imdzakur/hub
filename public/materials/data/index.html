@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Materials - Hub</title>
+  <title>Data - Hub</title>
   <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
   <link rel="stylesheet" href="/assets/css/app.css">
@@ -22,7 +22,7 @@
           <svg class="icon icon-md" aria-hidden="true"><use href="/assets/icons/sprite.svg#panel-left"></use></svg>
         </button>
         <div class="toolbar-title">
-          <h1 class="text-headline" id="mt-title">Materials</h1>
+          <h1 class="text-headline" id="mt-title">Data</h1>
           <p class="text-footnote text-secondary" id="mt-sub"></p>
         </div>
         <div class="toolbar-actions mm-actions">
@@ -30,7 +30,6 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.5l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></svg>
             <span>Engineer picks</span>
           </button>
-          <button class="btn btn-gray btn-sm" type="button" id="mm-expand"><span>Open all</span></button>
         </div>
       </header>
       <div class="page mt-page" id="mt-view">
@@ -38,13 +37,12 @@
           <svg class="mm-map" id="mm-map" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Mindmap" preserveAspectRatio="xMidYMin meet"></svg>
           <ul class="mm-legend" role="list">
             <li><svg viewBox="0 0 24 24" class="mm-legend-star" aria-hidden="true"><path d="M12 3.2l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.5l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></svg>Key for software engineers and architects</li>
-            <li><span class="mm-legend-tag">S2 prep</span>Bridge from S1 toward S2</li>
-            <li><span class="mm-legend-more">+3</span>Click a topic to open its subtopics</li>
+            <li><span class="mm-legend-dot"></span>S2 prep: a bridge from S1 toward S2</li>
             <li><span class="mm-legend-badge">Stats</span>Linked to another map</li>
             <li><span class="mm-legend-ref"></span>Reference to a topic owned by another map</li>
+            <li class="mm-legend-hint">Hover a node to read what it is</li>
           </ul>
         </section>
-        <section class="card mm-detail" id="mm-detail" aria-live="polite"></section>
       </div>
     </main>
   </div>

@@ -3,9 +3,6 @@
   "framework": null,
   "outputDirectory": "public",
   "cleanUrls": true,
-  "rewrites": [
-    { "source": "/materials/:subject", "destination": "/materials/index.html" }
-  ],
   "headers": [
     {
       "source": "/(.*)",

@@ -14,11 +14,11 @@
 .mm-wire.is-l3 { stroke-width: 1; }
 .mm-wire.is-dim { opacity: 0.2; }
 
-.mm-node { cursor: pointer; outline: none; transition: opacity var(--duration-fast) var(--ease-out); }
+.mm-node { cursor: default; outline: none; transition: opacity var(--duration-fast) var(--ease-out); }
 .mm-node .mm-box { fill: var(--color-secondary-system-grouped-background); stroke: var(--color-opaque-separator); stroke-width: 0.8; transition: fill var(--duration-instant) var(--ease-out); }
-.mm-node .mm-label { font-size: 12.5px; fill: var(--color-label); pointer-events: none; }
+.mm-node .mm-label { font-size: 10.5px; fill: var(--color-label); pointer-events: none; }
 .mm-node.is-center .mm-box { fill: var(--color-label); stroke: none; }
-.mm-node.is-center .mm-label { fill: var(--color-system-background); font-size: 15px; font-weight: 700; }
+.mm-node.is-center .mm-label { fill: var(--color-system-background); font-size: 13px; font-weight: 700; }
 .mm-node.is-l1 .mm-box { fill: var(--color-tertiary-system-fill); stroke: none; }
 .mm-node.is-l1 .mm-label { font-weight: 700; }
 .mm-node.is-l3 .mm-box { fill: var(--color-tertiary-system-grouped-background); stroke: none; }
@@ -31,11 +31,10 @@
 .mm-node.is-center.is-sel .mm-box { stroke: var(--color-label); stroke-width: 3; stroke-opacity: 0.25; }
 .mm-node:focus-visible .mm-box { stroke: var(--color-focus-ring); stroke-width: 2; }
 .mm-node.is-dim { opacity: 0.28; }
-.mm-more { font-size: 10.5px; font-weight: 600; fill: var(--color-secondary-label); pointer-events: none; font-variant-numeric: tabular-nums; }
 .mm-star { fill: #f2b300; pointer-events: none; }
 .mm-badge { cursor: pointer; }
 .mm-badge rect { fill: var(--color-label); }
-.mm-badge text { font-size: 9.5px; font-weight: 700; fill: var(--color-system-background); pointer-events: none; }
+.mm-badge text { font-size: 8.5px; font-weight: 700; fill: var(--color-system-background); pointer-events: none; }
 
 .mm-legend { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); padding: var(--space-3) var(--space-4); border-top: var(--hairline) solid var(--color-separator); font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
 .mm-legend li { display: inline-flex; align-items: center; gap: var(--space-2); }
@@ -43,41 +42,11 @@
 .mm-legend-more { font-weight: 600; font-variant-numeric: tabular-nums; }
 .mm-legend-badge { padding: 0 var(--space-1-5); border-radius: var(--radius-full); background: var(--color-label); color: var(--color-system-background); font-size: var(--text-caption-2-size); font-weight: 700; }
 .mm-legend-ref { width: 1.5rem; height: 0.9rem; border-radius: 4px; border: 1px dashed var(--color-secondary-label); }
-
-/* Details of the chosen node */
-.mm-detail { gap: var(--space-3); }
-.mm-crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
-.mm-crumbs .icon { --icon-size: 0.7rem; color: var(--color-tertiary-label); }
-.mm-crumb { color: var(--color-secondary-label); }
-.mm-crumb:hover { color: var(--color-label); text-decoration: underline; }
-.mm-head { display: flex; align-items: center; gap: var(--space-3); }
-.mm-id { display: inline-block; min-width: 2.75rem; margin-inline-end: var(--space-2); font-size: var(--text-footnote-size); font-weight: 600; color: var(--color-secondary-label); font-variant-numeric: tabular-nums; }
-.mm-id.is-big { display: grid; place-items: center; min-width: 3rem; height: 3rem; padding: 0 var(--space-2); margin: 0; border-radius: var(--radius-md); background: var(--color-label); color: var(--color-system-background); font-size: var(--text-subheadline-size); }
-.mm-stats { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.mm-stats > div { display: grid; min-width: 5.5rem; padding: var(--space-1-5) var(--space-3); border-radius: var(--radius-sm); background: var(--color-tertiary-system-grouped-background); }
-.mm-stats b { font-size: var(--text-headline-size); font-variant-numeric: tabular-nums; }
-.mm-stats span { font-size: var(--text-caption-1-size); color: var(--color-secondary-label); }
-.mm-detail h3 { margin-bottom: var(--space-1); font-size: var(--text-footnote-size); font-weight: 600; color: var(--color-secondary-label); text-transform: uppercase; letter-spacing: 0.04em; }
-.mm-sections { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr)); gap: var(--space-4) var(--space-6); }
-.mm-sections:empty { display: none; }
-.mm-list { display: grid; }
-.mm-list li { display: grid; gap: 1px; padding-block: var(--space-1-5); border-bottom: var(--hairline) solid var(--color-separator); }
-.mm-detail > section > .mm-list { grid-template-columns: repeat(auto-fill, minmax(min(24rem, 100%), 1fr)); column-gap: var(--space-6); }
-.mm-link { display: inline-flex; align-items: baseline; text-align: start; font-size: var(--text-subheadline-size); color: var(--color-label); }
-.mm-link:hover { text-decoration: underline; }
-.mm-why { font-size: var(--text-footnote-size); line-height: var(--text-footnote-line); color: var(--color-secondary-label); }
-.mm-badge-inline { margin-inline-end: var(--space-1-5); padding: 0 var(--space-1-5); border-radius: var(--radius-full); background: var(--color-label); color: var(--color-system-background); font-size: var(--text-caption-2-size); font-weight: 700; }
-.mm-missing { font-size: var(--text-subheadline-size); color: var(--color-tertiary-label); }
-.mm-owner { font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
-.mm-star-note { display: flex; gap: var(--space-2); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); background: color-mix(in srgb, #f2b300 12%, transparent); font-size: var(--text-subheadline-size); line-height: var(--text-subheadline-line); }
-.mm-star-note svg { flex: none; width: 1rem; height: 1rem; margin-top: 2px; fill: #f2b300; }
-.mm-star-mini { color: #f2b300; }
 .mm-empty { justify-items: center; gap: var(--space-3); padding: var(--space-10) var(--space-6); text-align: center; }
 
-/* Bridge from S1 toward S2: an outlined tag where it starts, and a soft tint on every bridge node */
+/* S2 prep: a small dot where the bridge starts, and a faint tint on its nodes */
 .mm-node.is-bridge:not(.is-l1) .mm-box { fill: color-mix(in srgb, var(--color-app-indigo) 5%, var(--color-secondary-system-grouped-background)); }
 .mm-node.is-bridge.is-l1 .mm-box { fill: color-mix(in srgb, var(--color-app-indigo) 12%, var(--color-tertiary-system-fill)); }
-.mm-tag rect { fill: none; stroke: var(--color-app-indigo); stroke-width: 1; }
-.mm-tag text { font-size: 9px; font-weight: 700; fill: var(--color-app-indigo); pointer-events: none; }
-.mm-legend-tag, .mm-tag-inline { padding: 0 var(--space-1-5); border-radius: var(--radius-full); box-shadow: inset 0 0 0 1px var(--color-app-indigo); color: var(--color-app-indigo); font-size: var(--text-caption-2-size); font-weight: 700; white-space: nowrap; }
-.mm-bridge-note { display: flex; align-items: baseline; gap: var(--space-2); font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
+.mm-dot { fill: var(--color-app-indigo); }
+.mm-legend-dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--color-app-indigo); }
+.mm-legend-hint { margin-inline-start: auto; color: var(--color-tertiary-label); }
