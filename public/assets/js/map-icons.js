@@ -152,5 +152,6 @@ export const ICONS = {
   drone: '<rect x="9" y="10" width="6" height="4" rx="1"/><path d="M9 11L6 8M15 11l3-3M9 13l-3 3M15 13l3 3"/><path d="M3 8h6M15 8h6M3 16h6M15 16h6"/>',
   house: '<path d="M3.5 11L12 4l8.5 7"/><path d="M5.5 9.5v11h13v-11"/><path d="M10 20.5v-6h4v6"/>',
   refresh: '<path d="M20.5 12a8.5 8.5 0 1 1-2.5-6l2.5 2.5"/><path d="M20.5 3.5v5h-5"/>',
-  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>'
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  eyeoff: '<path d="M3 3l18 18"/><path d="M10.6 5.6A10.6 10.6 0 0 1 12 5.5c6.4 0 10 6.5 10 6.5a17.6 17.6 0 0 1-3.2 4M6.6 6.6A17.2 17.2 0 0 0 2 12s3.6 6.5 10 6.5a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>'
 };

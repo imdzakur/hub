@@ -1,4 +1,5 @@
 // Finance Management ledger (CRUD). Needs a session (middleware). GET lists, POST adds, PATCH ?id= edits, DELETE ?id= removes.
+// Saved budget versions use ?type=budget: POST saves a list of versions, DELETE removes them all (reset to defaults).
 import { json } from "../lib/password.js";
 import { rest } from "../lib/supabase-admin.js";
 
@@ -56,18 +57,57 @@ function toRow(body) {
   };
 }
 
+const BUDGET_KEYS = new Set(["rent", "claude", "halo", "indihome", "fees", "pln", "food", "daily"]);
+
+function toBudget(v) {
+  const from = String(v?.from ?? "");
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(from) || Number.isNaN(Date.parse(from))) throw new Error("Pick when the new amounts start.");
+  const amounts = {};
+  for (const [k, n] of Object.entries(v.amounts ?? {})) {
+    if (!BUDGET_KEYS.has(k)) throw new Error(`Unknown budget line: ${k}.`);
+    amounts[k] = money(n, "Every amount", { max: 1e10 });
+  }
+  return { from_date: from, salary: money(v.salary, "Salary", { max: 1e10 }), amounts, parents_help: money(v.parentsHelp, "Parents' help", { max: 1e10 }), updated_at: new Date().toISOString() };
+}
+
+async function budgets(method, request) {
+  if (method === "DELETE") {
+    await rest("fm_budget_versions?from_date=not.is.null", { method: "DELETE", prefer: "return=minimal" });
+    return json(200, { ok: true });
+  }
+  let rows;
+  try {
+    const body = await request.json();
+    rows = (Array.isArray(body) ? body : [body]).map(toBudget);
+  } catch (err) {
+    return json(400, { message: err instanceof SyntaxError ? "Can't read the budget." : err.message });
+  }
+  if (!rows.length || rows.length > 24) return json(400, { message: "Nothing to save." });
+  await rest("fm_budget_versions?on_conflict=from_date", { method: "POST", body: rows, prefer: "resolution=merge-duplicates,return=minimal" });
+  return json(200, { ok: true });
+}
+
 async function list() {
   // Old entries roll into the carry-over balances first, so balances stay right after they are deleted
   await rest("rpc/fm_prune", { method: "POST", body: {} });
-  const [transactions, carryover] = await Promise.all([
+  const [transactions, carryover, saved] = await Promise.all([
     rest(`fm_transactions?select=${COLUMNS}&order=date.asc,seq.asc`),
     rest("fm_carryover?select=node,amount"),
+    // Until sql_update.sql has run there is no budget table; the app then uses the default budgets
+    rest("fm_budget_versions?select=from_date,salary,amounts,parents_help&order=from_date.asc").catch(() => null),
   ]);
-  return json(200, { transactions, carryover, keepMonths: KEEP_MONTHS });
+  return json(200, { transactions, carryover, budgets: saved ?? [], budgetsReady: saved !== null, keepMonths: KEEP_MONTHS });
 }
 
 async function handle(request, method) {
-  const id = new URL(request.url).searchParams.get("id");
+  const query = new URL(request.url).searchParams;
+  if (query.get("type") === "budget" && (method === "POST" || method === "DELETE")) {
+    try { return await budgets(method, request); } catch (err) {
+      console.error(err);
+      return json(500, { message: "Can't save the budget. Run supabase/sql_update.sql in Supabase, then try again." });
+    }
+  }
+  const id = query.get("id");
   if (method !== "GET" && method !== "POST" && !UUID.test(id ?? "")) return json(400, { message: "Unknown entry." });
 
   try {

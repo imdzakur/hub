@@ -1,5 +1,6 @@
 // Transactions from /api/finance, shared by the Finance Management page and the printable report.
 // When the database can't be reached, the page stays empty and nothing can be saved.
+import { useSavedBudgets } from "./model.js";
 
 export const data = { ledger: [], opening: {}, live: false, error: null, keepMonths: 6, loadedAt: null };
 
@@ -27,6 +28,8 @@ export async function load() {
     data.ledger = out.transactions.map(fromRow);
     data.opening = Object.fromEntries(out.carryover.map((r) => [r.node, Number(r.amount)]));
     data.keepMonths = out.keepMonths ?? data.keepMonths;
+    data.budgetsReady = out.budgetsReady !== false;
+    useSavedBudgets((out.budgets ?? []).map((b) => ({ from: b.from_date, salary: Number(b.salary), amounts: b.amounts, parentsHelp: Number(b.parents_help) })));
     data.live = true;
     data.error = null;
     data.loadedAt = new Date();

@@ -27,13 +27,10 @@ export const POCKETS = [
   { id: "bca.ef", name: "Emergency Fund", purpose: "Savings and the bills bridge", fill: null, rule: "Not locked, because it bridges PLN and IndiHome every month." },
   { id: "bca.food", name: "Food", purpose: "A month of meals", fill: 956000, rule: "Every Monday, a week of food moves to Main." },
   { id: "bca.claude", name: "Claude", purpose: "Claude subscription", fill: 405000, rule: "Moves to Main before the bill. Leftover to Bonus." },
-  { id: "bca.daily", name: "Daily Needs", purpose: "Soap, laundry, haircut", fill: 100000, rule: "Leftover at period end goes to Bonus." },
-  { id: "bca.buffer", name: "Buffer", purpose: "Small surprises", fill: 100000, rule: "Builds up to 300,000; anything above goes to the Emergency Fund." },
+  { id: "bca.daily", name: "Daily Needs", purpose: "Soap, laundry, haircut, small surprises, birthdays", fill: 200000, rule: "One pocket for daily needs and small surprises. Leftover at period end goes to Bonus." },
   { id: "bca.bonus", name: "Bonus", purpose: "Budget leftovers", fill: 0, rule: "At period end it moves to the Emergency Fund or a Device Fund." },
-  { id: "bca.birthday", name: "Birthday", purpose: "Birthday, 24 Oct", fill: null, rule: "Leftover to Bonus; the pocket closes after use.", temporary: true },
 ];
 
-export const BUFFER_CAP = 300000;
 export const MAIN_RESERVE = 20000; // left in Main for the monthly admin fee
 
 // Everything money can move between: accounts, pockets, and outside parties
@@ -75,7 +72,6 @@ export const PARTY_STYLE = {
 export const CATEGORIES = {
   food: { label: "Food", icon: "utensils", brand: "food", pick: true, from: "bca.main", to: "merchants" },
   daily: { label: "Daily needs", icon: "box", brand: "ink", pick: true, from: "bca.daily", to: "merchants" },
-  buffer: { label: "Buffer", icon: "shield", brand: "ink", pick: true, from: "bca.buffer", to: "others" },
   utilities: { label: "Utilities", icon: "bolt", brand: "pln", pick: true, from: "bca.ef", to: "pln" }, // PLN or IndiHome, picked in To
   phone: { label: "Telkomsel Halo", icon: "phone", brand: "telkomsel", pick: true, from: "seabank", to: "telkomsel" },
   rent: { label: "Rent", icon: "home", brand: "rent", pick: true, from: "seabank", to: "landlord" },
@@ -105,26 +101,41 @@ export const BUDGET_LINES = [
   { id: "pln", name: "PLN", category: "utilities", payee: "pln", keptIn: "bca.ef", account: "bca", note: "Budgeted at its highest (395,000), usually about 385,000." },
   { id: "food", name: "Food", category: "food", keptIn: "bca.food", account: "bca" },
   { id: "daily", name: "Daily Needs", category: "daily", keptIn: "bca.daily", account: "bca" },
-  { id: "buffer", name: "Buffer", category: "buffer", keptIn: "bca.buffer", account: "bca" },
 ];
 
 // Budget versions. A version applies from the first period that starts on or after "from".
-export const BUDGET_VERSIONS = [
+// These are the defaults; amounts you change in Plan are saved in the database and laid over them
+// (see useSavedBudgets). salary falls back to SALARY when a version has none.
+export const DEFAULT_BUDGET_VERSIONS = [
   {
     id: "2026-10-21",
     label: "From Oct 2026",
     from: "2026-10-21",
-    amounts: { rent: 1800000, claude: 405000, halo: 111000, pln: 395000, indihome: 237000, food: 956000, daily: 100000, buffer: 100000, fees: 22500 },
+    amounts: { rent: 1800000, claude: 405000, halo: 111000, pln: 395000, indihome: 237000, food: 956000, daily: 200000, fees: 22500 },
     parentsHelp: 0,
   },
   {
     id: "2026-11-21",
     label: "From Nov 2026",
     from: "2026-11-21",
-    amounts: { rent: 1800000, claude: 405000, halo: 111000, pln: 245000, indihome: 237000, food: 956000, daily: 100000, buffer: 100000, fees: 22500 },
+    amounts: { rent: 1800000, claude: 405000, halo: 111000, pln: 245000, indihome: 237000, food: 956000, daily: 200000, fees: 22500 },
     parentsHelp: 150000, // goes to PLN: the PLN line is what you pay, 395,000 − 150,000
   },
 ];
+
+// The versions in use: the defaults, with any saved version replacing the default from the same date
+export const BUDGET_VERSIONS = [...DEFAULT_BUDGET_VERSIONS];
+
+const monthYear = new Intl.DateTimeFormat("en-GB", { month: "short", year: "numeric" });
+export function useSavedBudgets(saved) {
+  const custom = saved.map((v) => ({
+    id: v.from, from: v.from, custom: true, salary: v.salary, amounts: v.amounts, parentsHelp: v.parentsHelp,
+    label: `From ${monthYear.format(new Date(`${v.from}T00:00:00`))}`,
+  }));
+  const taken = new Set(custom.map((v) => v.from));
+  const merged = [...DEFAULT_BUDGET_VERSIONS.filter((v) => !taken.has(v.from)), ...custom].sort((a, b) => a.from.localeCompare(b.from));
+  BUDGET_VERSIONS.splice(0, BUDGET_VERSIONS.length, ...merged);
+}
 
 // Food plan (section 5). Budget day counts are fixed; the calendar shows the real ones.
 export const MEAL_PLAN = {
@@ -155,8 +166,8 @@ export const RULES = [
   "Every night, what's left of the day's food money in Main moves to Bonus.",
   "Utilities go to the Emergency Fund in full every payday (632,000, or 482,000 + 150,000 from parents), whatever the real bill. The difference becomes savings.",
   "Bills due before payday (IndiHome, PLN, Telkomsel Halo) are paid from last month's money or bridged by the Emergency Fund.",
-  "The Emergency Fund is only for big emergencies, bridges with a clear amount and return date, and limited planned spending like a birthday.",
-  "Small surprises come from Buffer first, not the Emergency Fund.",
+  "The Emergency Fund is only for big emergencies and bridges with a clear amount and return date.",
+  "Small surprises and birthdays come from Daily Needs first, not the Emergency Fund.",
   "Impulse spending never comes from the Emergency Fund. Cover it from Bonus or save on another day that week.",
   "Pay PLN and IndiHome through Jago, and check its promos for the lowest final total: bill + admin − discount or cashback.",
   "Avoid small transfers out of BCA (2,500 each). Moving between BCA pockets is free.",

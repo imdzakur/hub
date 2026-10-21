@@ -40,7 +40,7 @@ export function budgetVersionOn(iso) {
   return [...BUDGET_VERSIONS].reverse().find((v) => v.from <= iso) ?? BUDGET_VERSIONS[0];
 }
 
-export function budgetSummary(version, salary = SALARY) {
+export function budgetSummary(version, salary = version.salary ?? SALARY) {
   const lines = BUDGET_LINES.map((l) => ({ ...l, amount: version.amounts[l.id] ?? 0 }));
   const spending = lines.reduce((t, l) => t + l.amount, 0);
   const saved = salary - spending;
@@ -48,13 +48,13 @@ export function budgetSummary(version, salary = SALARY) {
 }
 
 /* ---------- payday flow (section 6) ---------- */
-// inputs: salary, rent, halo, claude, pln and indihome (full bills), food, daily, buffer, parentsHelp.
+// inputs: salary, rent, halo, claude, pln and indihome (full bills), food, daily, parentsHelp.
 // The Emergency Fund gets everything left in Main; savings = that deposit minus the utilities you pay yourself.
 export function paydayFlow(inputs) {
   const i = { ...inputs };
   const toSea = i.salary - FEES.biFast;
   const toMain = toSea - i.rent - i.halo;
-  const toEF = toMain - i.food - i.claude - i.daily - i.buffer - MAIN_RESERVE;
+  const toEF = toMain - i.food - i.claude - i.daily - MAIN_RESERVE;
   const ownUtilities = i.pln + i.indihome - i.parentsHelp;
   const saved = toEF - ownUtilities;
   const spending = i.salary - saved;
@@ -66,7 +66,6 @@ export function paydayFlow(inputs) {
     { from: "bca.main", to: "bca.food", amount: i.food },
     { from: "bca.main", to: "bca.claude", amount: i.claude },
     { from: "bca.main", to: "bca.daily", amount: i.daily },
-    { from: "bca.main", to: "bca.buffer", amount: i.buffer },
     { from: "seabank", to: "landlord", amount: i.rent, note: "On the rent bill date" },
     { from: "seabank", to: "telkomsel", amount: i.halo, note: "Kept for next month's Halo" },
   ];
@@ -75,9 +74,9 @@ export function paydayFlow(inputs) {
 }
 
 // The PLN line holds only what you pay; parents' help tops it up to the full bill
-export function flowInputs(version, salary = SALARY) {
+export function flowInputs(version, salary = version.salary ?? SALARY) {
   const a = version.amounts;
-  return { salary, rent: a.rent, halo: a.halo, claude: a.claude, pln: a.pln + version.parentsHelp, indihome: a.indihome, food: a.food, daily: a.daily, buffer: a.buffer, parentsHelp: version.parentsHelp };
+  return { salary, rent: a.rent, halo: a.halo, claude: a.claude, pln: a.pln + version.parentsHelp, indihome: a.indihome, food: a.food, daily: a.daily, parentsHelp: version.parentsHelp };
 }
 
 /* ---------- calendar and food (section 5) ---------- */

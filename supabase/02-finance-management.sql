@@ -30,6 +30,18 @@ create table if not exists public.fm_carryover (
   updated_at timestamptz not null default now()
 );
 
+-- Budget amounts you change in Plan (salary, bills, food, and the rest). Each row starts on from_date and
+-- lasts until the next row; the app's built-in budgets fill in where there is none. Empty = all defaults.
+create table if not exists public.fm_budget_versions (
+  from_date date primary key,
+  salary bigint not null check (salary >= 0),
+  amounts jsonb not null check (jsonb_typeof(amounts) = 'object'),  -- budget line id -> whole rupiah
+  parents_help bigint not null default 0 check (parents_help >= 0),
+  updated_at timestamptz not null default now()
+);
+alter table public.fm_budget_versions enable row level security;
+revoke all on public.fm_budget_versions from anon, authenticated;
+
 -- Deletes entries older than keep_months and carries their posted amounts into fm_carryover.
 -- The API calls it before every read; pg_cron (below) also runs it every night.
 create or replace function public.fm_prune(keep_months int default 6)

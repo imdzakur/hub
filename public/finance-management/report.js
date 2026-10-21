@@ -95,7 +95,7 @@ function render() {
   $("#rp-sheet").innerHTML = `
     <header class="rp-head">
       <div><p class="rp-kicker">Hub · Finance Management</p><h1>${esc(r.title)}</h1></div>
-      <dl><div><dt>Currency</dt><dd>IDR (rupiah)</dd></div><div><dt>Monthly salary</dt><dd>${money(SALARY)}</dd></div><div><dt>Prepared</dt><dd>${c.fmtDate(new Date())}</dd></div></dl>
+      <dl><div><dt>Currency</dt><dd>IDR (rupiah)</dd></div><div><dt>Monthly salary</dt><dd>${money(c.budgetVersionOn(r.startISO).salary ?? SALARY)}</dd></div><div><dt>Prepared</dt><dd>${c.fmtDate(new Date())}</dd></div></dl>
     </header>
     ${data.live ? "" : `<p class="rp-warn">The database isn't connected, so this report uses the starting data.</p>`}
     <section><h2>Summary</h2>

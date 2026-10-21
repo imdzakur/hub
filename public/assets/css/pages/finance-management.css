@@ -433,3 +433,29 @@
 .mg-sk-row .sk-line { width: 40%; }
 .mg-sk-filters { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .mg-kpi .sk + .sk, .mg-bank .sk + .sk, .mg-pocket-card .sk + .sk { margin-top: var(--space-1); }
+
+/* Hide or show the amounts on the top cards: one eye button, on the main card */
+.mg-kpi-label { position: relative; }
+.mg-eye {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: -0.35rem -0.35rem -0.35rem auto;
+  border-radius: 50%;
+  color: inherit;
+  transition: background-color var(--duration-instant) var(--ease-out);
+}
+.mg-eye .icon { --icon-size: 1rem; }
+.mg-kpi.is-hero .mg-eye:hover { background: rgb(255 255 255 / 0.14); }
+.mg-kpi:not(.is-hero) .mg-eye:hover { background: var(--color-quaternary-system-fill); }
+.mg-kpi.is-masked .mg-kpi-value { letter-spacing: 0.08em; }
+
+/* Editing the monthly budget */
+.mg-bud-tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); }
+.mg-bud-tools .btn .icon { --icon-size: 0.85rem; }
+.mg-bud-tools .cluster { margin-inline-start: auto; }
+.mg-bud-from { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
+.mg-bud-from .field-input { width: auto; min-height: 2rem; padding-block: 0; }
+.mg-bud-input { width: 9rem; min-height: 2rem; padding-block: 0; text-align: end; font-variant-numeric: tabular-nums; }
+.table.is-editing td { vertical-align: middle; }
