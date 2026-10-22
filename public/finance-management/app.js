@@ -3,8 +3,8 @@
 // shows up in every tab. Fixed rules and budgets come from model.js.
 import { ICONS } from "/assets/js/map-icons.js";
 import {
-  ACCOUNTS, BILLS, BUDGET_VERSIONS, CATEGORIES, DAILY_LIMIT_CATEGORIES, FEES, FIRST_PERIOD_START, LINE_GROUPS, MEAL_PLAN,
-  NODES, OPEN_QUESTIONS, PARTY_STYLE, POCKETS, RULES, SALARY, TARGETS, WEEKLY_FOOD_MOVE,
+  ACCOUNTS, BILLS, BUDGET_VERSIONS, CATEGORIES, DAILY_LIMIT_CATEGORIES, FEES, FIRST_PERIOD_START, LINE_GROUPS, MAIN_RESERVE, MEAL_PLAN,
+  NODES, OPEN_QUESTIONS, PARTY_STYLE, POCKETS, RULES, SALARY, SAVINGS_TARGET, WEEKLY_FOOD_MOVE,
 } from "./model.js";
 import * as c from "./calc.js";
 import { data, load, request, sortLedger, toBody } from "./data.js";
@@ -33,7 +33,7 @@ const state = {
   day: null,       // the calendar day open in the day panel
   ledger: { account: "all", category: "all", query: "", scope: "period" },
   budgetVersion: c.budgetVersionOn(BASE.startISO).id,
-  flow: null,
+  checks: new Set(), // Plan checklist items ticked this period (read from the cookie at start)
   loading: true,   // shows the skeleton until the data is in
   hideAmounts: readHide(), // the top cards show dots instead of amounts
   budgetEdit: false, // Plan's monthly budget is open for editing
@@ -169,7 +169,6 @@ function viewOverview() {
   const planByAcc = c.plannedByAccount(version);
   const inside = todayISO >= p.startISO && todayISO <= p.endISO;
   const dayNo = c.daysBetween(p.start, midnight) + 1;
-  const target4 = TARGETS[0].months * c.budgetSummary(BUDGET_VERSIONS.at(-1)).spending;
   const periodSub = inside ? `${c.daysBetween(midnight, p.end)} days left · ends ${c.fmtShort(p.end)}` : `${c.fmtShort(p.start)} – ${c.fmtShort(p.end)}`;
 
   const byLine = c.spentByLine(out, sum.lines);
@@ -191,7 +190,7 @@ function viewOverview() {
 
   return `<div class="mg-kpis">
     ${kpi("Total balance", c.rupiah(total), `${ACCOUNTS.length} banks · ${POCKETS.length} BCA pockets`, { hero: true, icon: "wallet", secret: true, toggle: true })}
-    ${kpi("Emergency Fund", c.rupiah(ef), `${c.pct(ef / target4, 0)} of the 4-month target`, { icon: "vault", secret: true })}
+    ${kpi("Emergency Fund", c.rupiah(ef), `${c.pct(ef / SAVINGS_TARGET, 0)} of the ${(SAVINGS_TARGET / 1e6).toFixed(1)}M target`, { icon: "vault", secret: true })}
     ${kpi("Spent this period", c.rupiah(spent), `of ${c.rupiah(sum.spending)} planned`, { icon: "receipt", secret: true })}
     ${kpi("Saved this period", c.rupiah(sum.saved), `${c.pct(sum.rate)} of salary`, { icon: "trend", secret: true })}
     ${kpi("Period", inside ? `Day ${dayNo} of ${p.days}` : `${p.days} days`, periodSub, { icon: "calendar" })}
@@ -293,7 +292,7 @@ function skeleton(tab) {
     return skKpis(3) + `<div class="mg-banks">${Array.from({ length: 4 }, () => `<div class="mg-bank">${sk("sk-label")}${sk("sk-value")}${sk("sk-line")}</div>`).join("")}</div>` +
       skCard(`<div class="mg-pockets">${Array.from({ length: 8 }, () => `<div class="mg-pocket-card">${sk("sk-label")}${sk("sk-value")}${sk("sk-line")}</div>`).join("")}</div>`);
   }
-  return skKpis(4) + skCard(skRows(9)) + skCard(skRows(6));
+  return skCard(skRows(9)) + skCard(skRows(3)) + skCard(skRows(8));
 }
 
 /* ---------- the entry form on a day ---------- */
@@ -536,41 +535,93 @@ function viewAccounts() {
   ${card(`${bankLogo("bca")}BCA pockets`, "Hover a pocket to see its rule", `<div class="mg-pockets">${pockets}</div>`, "mg-pockets-card")}`;
 }
 
-/* ---------- Plan: budget, bills, payday, savings ---------- */
-const FLOW_FIELDS = [
-  ["salary", "Salary"], ["rent", "Rent"], ["halo", "Telkomsel Halo"], ["claude", "Claude"], ["pln", "PLN"], ["indihome", "IndiHome"],
-  ["parentsHelp", "Parents' help"], ["food", "Food"], ["daily", "Daily Needs"],
-];
+/* ---------- Plan: this period's checklist, the budget, savings ---------- */
+// What to do this period, ticked off in a cookie (never the database). The cookie names its period,
+// so a new period starts with nothing ticked.
+const CHECK_COOKIE = "hub-fm-checklist";
 
-function projectionChart(start, monthly, first, targets) {
-  const pts = c.projectFund(start, monthly, first, 12);
-  const all = [{ date: midnight, balance: start }, ...pts];
-  const W = 1100, H = 280, L = 44, R = 12, T = 14, B = 24;
-  const max = Math.max(...targets.map((t) => t.amount), ...all.map((p) => p.balance)) * 1.05;
-  const x = (i) => L + (i / (all.length - 1)) * (W - L - R);
-  const y = (v) => T + (1 - v / max) * (H - T - B);
-  const ticks = [0, 0.25, 0.5, 0.75, 1].map((f) => f * max);
-  const line = all.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(p.balance).toFixed(1)}`).join(" ");
-  const area = `${line} L${x(all.length - 1).toFixed(1)} ${y(0)} L${x(0)} ${y(0)} Z`;
-  const step = (W - L - R) / (all.length - 1);
-  return `<div class="mg-chart" id="mg-chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Emergency Fund projection over the next 12 paydays">
-    <g class="grid">${ticks.map((v) => `<line x1="${L}" x2="${W - R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/>`).join("")}</g>
-    <g class="axis">${ticks.map((v) => `<text x="${L - 8}" y="${(y(v) + 3).toFixed(1)}" text-anchor="end">${(v / 1e6).toFixed(0)}M</text>`).join("")}
-      ${all.map((p, i) => (i % 2 === 0 ? `<text x="${x(i).toFixed(1)}" y="${H - 8}" text-anchor="middle">${c.fmtShort(p.date)}</text>` : "")).join("")}</g>
-    <path class="area" d="${area}"/>
-    <g class="target">${targets.map((t) => `<line x1="${L}" x2="${W - R}" y1="${y(t.amount).toFixed(1)}" y2="${y(t.amount).toFixed(1)}"/><text x="${L + 6}" y="${(y(t.amount) - 5).toFixed(1)}">${esc(t.label)} · ${c.fmtPlain(t.amount)}</text>`).join("")}</g>
-    <path class="line" d="${line}"/>
-    <line class="cross" id="mg-cross" x1="0" x2="0" y1="${T}" y2="${H - B}" visibility="hidden"/>
-    ${all.map((p, i) => `<circle class="dot" cx="${x(i).toFixed(1)}" cy="${y(p.balance).toFixed(1)}" r="3.5"/>`).join("")}
-    ${all.map((p, i) => `<rect class="hit" x="${(x(i) - step / 2).toFixed(1)}" y="${T}" width="${step.toFixed(1)}" height="${H - T - B}" data-x="${(x(i) / W).toFixed(4)}" data-y="${(y(p.balance) / H).toFixed(4)}" data-label="${esc(`${c.fmtDate(p.date)} · ${c.rupiah(p.balance)}`)}"/>`).join("")}
-  </svg><div class="mg-tip" id="mg-tip" hidden></div></div>`;
+function readChecks() {
+  const m = document.cookie.match(new RegExp(`(?:^|; )${CHECK_COOKIE}=([^;]*)`));
+  if (!m) return new Set();
+  const [periodISO, ids = ""] = decodeURIComponent(m[1]).split("|");
+  return periodISO === BASE.startISO ? new Set(ids.split(",").filter(Boolean)) : new Set();
+}
+
+function saveChecks() {
+  const value = encodeURIComponent(`${BASE.startISO}|${[...state.checks].join(",")}`);
+  const expires = c.addDays(BASE.end, 1).toUTCString();
+  document.cookie = `${CHECK_COOKIE}=${value}; path=/finance-management; expires=${expires}; SameSite=Strict${location.protocol === "https:" ? "; Secure" : ""}`;
+}
+
+const billAmount = (b, v) => (b.id === "pln" ? v.amounts.pln + v.parentsHelp : v.amounts[b.id] ?? b.amount);
+
+function checklistGroups() {
+  const p = BASE;
+  const v = c.budgetVersionOn(p.startISO);
+  const f = c.paydayFlow(c.flowInputs(v));
+  const a = v.amounts;
+  const payday = [
+    { id: "pay-seabank", from: "bsi", to: "seabank", amount: f.toSea, sub: `BI-FAST fee ${c.fmtPlain(FEES.biFast)}` },
+    { id: "pay-bca", from: "seabank", to: "bca.main", amount: f.toMain, sub: `Keep ${c.fmtPlain(a.rent + a.halo)} in SeaBank for rent and Telkomsel Halo` },
+    { id: "pay-ef", from: "bca.main", to: "bca.ef", amount: f.toEF, sub: `Savings and utilities. Leave ${c.fmtPlain(MAIN_RESERVE)} in Main for the BCA admin fee` },
+    { id: "pay-food", from: "bca.main", to: "bca.food", amount: a.food, sub: "A month of meals" },
+    { id: "pay-claude", from: "bca.main", to: "bca.claude", amount: a.claude, sub: "Claude subscription" },
+    { id: "pay-daily", from: "bca.main", to: "bca.daily", amount: a.daily, sub: "Daily needs, small surprises, birthdays" },
+    ...(v.parentsHelp ? [{ id: "pay-parents", from: "parents", to: "bca.ef", amount: v.parentsHelp, sub: "Help with PLN" }] : []),
+  ];
+  const bills = BILLS.map((b) => ({ id: `bill-${b.id}`, from: b.from, to: b.to, amount: billAmount(b, v), sub: `${b.window}${b.via ? ` · via ${b.via}` : ""}` }));
+  const mondays = [];
+  for (let d = p.start; d <= p.end; d = c.addDays(d, 1)) {
+    if (d.getDay() === 1) mondays.push({ id: `food-${c.toISO(d)}`, from: "bca.food", to: "bca.main", amount: WEEKLY_FOOD_MOVE, sub: `${c.fmtWeekday(d)}, ${c.fmtShort(d)}` });
+  }
+  const end = [{ id: "end-leftovers", title: "Move Daily Needs and Bonus leftovers", sub: "To the Emergency Fund or a Device Fund" }];
+  return [
+    { label: `Payday · ${c.fmtWeekday(p.start)}, ${c.fmtShort(p.start)}`, items: payday },
+    { label: "Bills", items: bills },
+    { label: "Every Monday · a week of food to Main", items: mondays },
+    { label: `Period end · ${c.fmtWeekday(p.end)}, ${c.fmtShort(p.end)}`, items: end },
+  ];
+}
+
+function checklistCard() {
+  const groups = checklistGroups();
+  const all = groups.flatMap((g) => g.items);
+  const done = all.filter((i) => state.checks.has(i.id)).length;
+  const item = (i) => `<li><label class="mg-todo"><input type="checkbox" data-check="${i.id}"${state.checks.has(i.id) ? " checked" : ""}>
+    <span class="mg-row-text">${i.title ? `<span>${esc(i.title)}</span>` : `<span class="mg-step-flow">${party(i.from)}${gl("next")}${party(i.to)}</span>`}<span class="mg-row-sub">${esc(i.sub)}</span></span>
+    ${i.amount ? `<span class="mg-amount">${c.rupiah(i.amount)}</span>` : ""}</label></li>`;
+  const body = groups.map((g) => `<div class="mg-todo-group"><h3>${esc(g.label)}</h3><ul role="list">${g.items.map(item).join("")}</ul></div>`).join("");
+  return card("Checklist", `${done} of ${all.length} done · starts over on ${c.fmtDate(c.addDays(BASE.end, 1))}`, `<div class="mg-todos">${body}</div>`);
+}
+
+// The Emergency Fund against its target, with what this period added and the last deposit
+function savingsCard() {
+  const ef = currentBalances()["bca.ef"] ?? 0;
+  const moves = data.ledger.filter((t) => isDone(t) && t.kind !== "opening" && t.date <= todayISO && (t.to === "bca.ef" || t.from === "bca.ef"));
+  const net = (list) => list.reduce((s, t) => s + (t.to === "bca.ef" ? t.amount : -(t.amount + (t.fee || 0))), 0);
+  const added = net(moves.filter((t) => c.inPeriod(t.date, BASE)));
+  // The last day money went in, all of that day's deposits together
+  const lastDay = moves.filter((t) => t.to === "bca.ef").map((t) => t.date).sort().at(-1);
+  const lastIn = moves.filter((t) => t.to === "bca.ef" && t.date === lastDay);
+  const share = ef / SAVINGS_TARGET;
+  const stat = (label, value, sub) => `<div><dt>${esc(label)}</dt><dd>${value}${sub ? `<small>${esc(sub)}</small>` : ""}</dd></div>`;
+  return card("Emergency Fund", "BCA pocket", `<div class="mg-save">
+      <div class="mg-save-head"><span class="mg-save-now">${c.rupiah(ef)}</span><span class="mg-save-pct">${c.pct(Math.min(1, share))}</span></div>
+      <div class="mg-progress-track"><div class="mg-progress-fill" data-w="${Math.min(100, share * 100).toFixed(1)}%"></div></div>
+      <div class="mg-progress-meta"><span>Target ${c.rupiah(SAVINGS_TARGET)}</span><span>${ef >= SAVINGS_TARGET ? "Reached" : `${c.rupiah(SAVINGS_TARGET - ef)} to go`}</span></div>
+    </div>
+    <dl class="mg-save-list">
+      ${stat("Before this period", c.rupiah(ef - added), c.fmtDate(BASE.start))}
+      ${stat("Added this period", c.signed(added))}
+      ${stat("Last deposit", lastDay ? c.signed(lastIn.reduce((s, t) => s + t.amount, 0)) : "None yet", lastDay ? `${c.fmtDate(lastDay)} · ${lastIn.map((t) => t.desc).join(", ")}` : "")}
+    </dl>`);
 }
 
 function viewPlan() {
   const version = BUDGET_VERSIONS.find((v) => v.id === state.budgetVersion) ?? BUDGET_VERSIONS[0];
   const sum = c.budgetSummary(version);
-  const vp = c.periodOf(c.toDate(version.from));
-  const meals = c.mealBudget(c.periodDays(vp).counts);
+  const mealNote = Object.values(MEAL_PLAN).map((m) => `${m.budgetDays} ${m.short} × ${c.fmtPlain(m.lunch + m.dinner)}`).join(" · ");
+  sum.lines.forEach((l) => { if (l.id === "food") l.note = mealNote; });
   const chips = BUDGET_VERSIONS.map((v) => `<button type="button" class="chip" data-version="${v.id}" aria-pressed="${v.id === version.id}"${state.budgetEdit ? " disabled" : ""}>${esc(v.label)}${v.custom ? " · edited" : ""}</button>`).join("");
   const editing = state.budgetEdit;
   const moneyInput = (key, value, label) => `<input class="field-input mg-bud-input" data-bud="${key}" inputmode="numeric" data-money aria-label="${esc(label)}" value="${c.fmtPlain(value)}">`;
@@ -597,56 +648,17 @@ function viewPlan() {
     const total = list.reduce((t, l) => t + l.amount, 0);
     return `<tr class="mg-group-row"><td colspan="2">${g.label} <span>${g.sub}</span></td><td class="num">${c.rupiah(total)}</td><td class="num">${c.pct(total / sum.salary)}</td></tr>${list.map(lineRow).join("")}`;
   }).join("");
-  const billAmount = (b) => (b.id === "pln" ? version.amounts.pln + version.parentsHelp : version.amounts[b.id] ?? b.amount);
-  const bills = BILLS.map((b) => `<tr><td>${party(b.to)}</td><td>${party(b.from)}${b.via ? `<span class="table-sub">via ${esc(b.via)}</span>` : ""}</td><td>${esc(b.window)}</td><td class="num">${c.rupiah(billAmount(b))}</td></tr>`).join("");
-  const mealRows = meals.rows.map((r) => `<tr><td>${esc(r.label)}</td><td class="num">${r.budgetDays}</td><td class="num">${r.actualDays}</td><td class="num">${r.lunch ? c.rupiah(r.lunch) : "—"}</td><td class="num">${c.rupiah(r.dinner)}</td><td class="num">${c.rupiah(r.perDay)}</td><td class="num">${c.rupiah(r.budget)}</td></tr>`).join("");
-  const diff = meals.actual - meals.budget;
 
-  // Payday simulation
-  const next = c.nextPayday(today);
-  const defaults = c.flowInputs(c.budgetVersionOn(c.toISO(next)));
-  state.flow ??= { ...defaults };
-  const pf = c.paydayFlow(state.flow);
-  const changed = FLOW_FIELDS.some(([k]) => state.flow[k] !== defaults[k]);
-  const fields = FLOW_FIELDS.map(([k, label]) => `<div class="field"><label class="field-label" for="pf-${k}">${esc(label)}</label><input class="field-input" id="pf-${k}" inputmode="numeric" data-flow="${k}" value="${c.fmtPlain(state.flow[k])}"></div>`).join("");
-  const steps = pf.steps.map((s, i) => `<li class="mg-step"><span class="mg-step-num">${i + 1}</span><span class="mg-row-text"><span class="mg-step-flow">${party(s.from)}${gl("next")}${party(s.to)}</span><span class="mg-row-sub">${esc(s.note ?? (s.fee ? `${s.feeLabel} fee ${c.rupiah(s.fee)}` : "Free"))}</span></span><span class="mg-amount">${c.rupiah(s.amount)}</span></li>`).join("");
-
-  // Savings
-  const ef = currentBalances()["bca.ef"];
-  const latest = c.budgetSummary(BUDGET_VERSIONS.at(-1));
-  const targets = TARGETS.map((t) => ({ ...t, amount: t.months * latest.spending, label: `${t.months} months` }));
-  const progress = targets.map((t) => {
-    const e = c.eta(t.amount, ef, latest.saved, next);
-    return `<div class="mg-progress"><div class="mg-progress-meta"><span><b>${esc(t.name)}</b> · ${esc(t.note)}</span><span>${c.rupiah(ef)} of ${c.rupiah(t.amount)}</span></div>
-      <div class="mg-progress-track"><div class="mg-progress-fill" data-w="${Math.min(100, (ef / t.amount) * 100).toFixed(1)}%"></div></div>
-      <div class="mg-progress-meta"><span>${c.pct(Math.min(1, ef / t.amount), 0)}</span><span>${e.reached ? "Reached" : `Reached at payday ${c.fmtDate(e.date)} · ${e.months} paydays`}</span></div></div>`;
-  }).join("");
-
-  return `<h2 class="mg-section">Budget</h2>
-  <div class="cluster">${chips}</div>
-  <div class="mg-kpis">
-    ${kpi("Salary", c.rupiah(sum.salary), "On the 21st, or the next workday", { icon: "arrowin" })}
-    ${kpi("Planned spending", c.rupiah(sum.spending), `${c.pct(sum.spending / sum.salary)} of salary`, { icon: "receipt" })}
-    ${kpi("To the Emergency Fund", c.rupiah(sum.saved), `${c.pct(sum.rate)} saved`, { hero: true, icon: "vault" })}
-    ${kpi("Fees", c.rupiah(version.amounts.fees), `BI-FAST ${c.fmtPlain(FEES.biFast)} + BCA ${c.fmtPlain(FEES.bcaMonthlyAdmin)}`, { icon: "percent" })}
-    ${version.parentsHelp ? kpi("Parents' help", c.rupiah(version.parentsHelp), "Utilities only", { icon: "users" }) : ""}
-  </div>
-  ${card("Monthly budget", `${esc(version.label)}${version.custom ? " · edited by you" : ""}`, `${budTools}${budMsg}<div class="table-wrap"><table class="table${editing ? " is-editing" : ""}"><thead><tr><th>Line</th><th>Kept in</th><th class="num">Amount</th><th class="num">Share</th></tr></thead><tbody>${incomeRows}${lines}</tbody>
-      <tfoot><tr><td colspan="2">Total spending</td><td class="num">${c.rupiah(sum.spending)}</td><td class="num">${c.pct(sum.spending / sum.salary)}</td></tr><tr><td colspan="2">Left for the Emergency Fund</td><td class="num">${c.rupiah(sum.saved)}</td><td class="num">${c.pct(sum.rate)}</td></tr></tfoot></table></div>`)}
-  ${card("Bills", "Pay any day in the window; the last day is the deadline", `<div class="table-wrap"><table class="table"><thead><tr><th>Bill</th><th>Paid from</th><th>When</th><th class="num">Amount</th></tr></thead><tbody>${bills}</tbody></table></div>`)}
-  ${card("Food plan", `Budget uses ${Object.values(MEAL_PLAN).reduce((t, m) => t + m.budgetDays, 0)} days; ${c.fmtShort(vp.start)} – ${c.fmtShort(vp.end)} has ${vp.days}`, `<div class="table-wrap"><table class="table"><thead><tr><th>Day type</th><th class="num">Budget days</th><th class="num">This period</th><th class="num">Lunch</th><th class="num">Dinner</th><th class="num">Per day</th><th class="num">Month</th></tr></thead><tbody>${mealRows}</tbody>
-    <tfoot><tr><td colspan="6">Food budget</td><td class="num">${c.rupiah(meals.budget)}</td></tr><tr><td colspan="6">At this period's real day count</td><td class="num">${c.rupiah(meals.actual)} <span class="table-sub">${diff ? `${c.signed(-diff)} vs budget, covered from Bonus or Daily Needs` : "Matches the budget"}</span></td></tr></tfoot></table></div>
-    <p class="mg-row-sub">Weekly move Food → Main: about ${c.rupiah(WEEKLY_FOOD_MOVE)}. What's left of each day's food goes to Bonus that night.</p>`)}
-
-  <h2 class="mg-section">Payday · ${c.fmtWeekday(next)}, ${c.fmtDate(next)}</h2>
-  ${card("Simulate", changed ? "Changed from the budget. Not saved." : "Edit any number to see the effect", `<div class="mg-form">${fields}</div>
-      <div class="cluster"><button type="button" class="btn btn-gray btn-sm" data-act="reset-flow"${changed ? "" : " disabled"}>Reset to budget</button>${pf.valid ? "" : `<span class="mg-warn">Not enough left for these amounts.</span>`}<span class="mg-row-sub">To the Emergency Fund: <b>${c.rupiah(pf.toEF)}</b> · saved ${c.rupiah(pf.saved)} (${c.pct(pf.rate)})</span></div>`)}
-  ${card("Transfers on payday", `${pf.steps.length} steps`, `<ol class="mg-steps" role="list">${steps}</ol>`)}
+  return `<h2 class="mg-section">This period · ${c.fmtShort(BASE.start)} – ${c.fmtDate(BASE.end)}</h2>
+  ${checklistCard()}
 
   <h2 class="mg-section">Savings</h2>
-  ${card("Emergency Fund targets", `${c.rupiah(ef)} now · ${(ef / latest.spending).toFixed(1)} months covered`, `<div class="stack">${progress}</div>`)}
-  ${card("Projection", "Emergency Fund after each payday, before Bonus and Daily Needs leftovers", `${projectionChart(ef, latest.saved, next, targets)}
-    <div class="mg-legend"><span><i class="mg-swatch is-actual"></i>Emergency Fund</span><span><i class="mg-swatch is-target"></i>Targets</span></div>`)}
+  ${savingsCard()}
+
+  <h2 class="mg-section">Budget</h2>
+  <div class="cluster">${chips}</div>
+  ${card("Monthly budget", `${esc(version.label)}${version.custom ? " · edited by you" : ""} · salary ${c.rupiah(sum.salary)}`, `${budTools}${budMsg}<div class="table-wrap"><table class="table${editing ? " is-editing" : ""}"><thead><tr><th>Line</th><th>Kept in</th><th class="num">Amount</th><th class="num">Share</th></tr></thead><tbody>${incomeRows}${lines}</tbody>
+      <tfoot><tr><td colspan="2">Total spending</td><td class="num">${c.rupiah(sum.spending)}</td><td class="num">${c.pct(sum.spending / sum.salary)}</td></tr><tr><td colspan="2">Left for the Emergency Fund</td><td class="num">${c.rupiah(sum.saved)}</td><td class="num">${c.pct(sum.rate)}</td></tr></tfoot></table></div>`)}
   ${card("Rules", null, `<ol class="mg-notes is-columns">${RULES.map((r) => `<li>${esc(r)}</li>`).join("")}</ol>`)}
   ${card("Not decided yet", null, `<ol class="mg-notes">${OPEN_QUESTIONS.map((q) => `<li>${esc(q)}</li>`).join("")}</ol>`)}`;
 }
@@ -682,7 +694,6 @@ async function saveBudget() {
     await load();
     state.budgetVersion = c.budgetVersionOn(from).id;
     state.budgetEdit = false;
-    state.flow = null;
     state.budgetMsg = { text: `Saved. The new amounts start ${c.fmtDate(from)}.` };
   } catch (err) {
     state.budgetMsg = { text: err.message, error: true };
@@ -697,7 +708,6 @@ async function resetBudget() {
     await request("DELETE", "?type=budget");
     await load();
     state.budgetVersion = c.budgetVersionOn(BASE.startISO).id;
-    state.flow = null;
     state.budgetMsg = { text: "Back to the default amounts." };
   } catch (err) {
     state.budgetMsg = { text: err.message, error: true };
@@ -753,24 +763,6 @@ function render() {
   if (state.loading) { view.innerHTML = skeleton(state.tab); return; }
   view.innerHTML = VIEWS[state.tab]();
   applyWidths(view);
-  if (state.tab === "plan") bindChart();
-}
-
-function bindChart() {
-  const chart = $("#mg-chart");
-  if (!chart) return;
-  const tip = $("#mg-tip"), cross = $("#mg-cross");
-  const svg = chart.querySelector("svg");
-  const show = (hit) => {
-    tip.textContent = hit.dataset.label;
-    tip.hidden = false;
-    tip.style.left = `${Number(hit.dataset.x) * 100}%`;
-    tip.style.top = `${Number(hit.dataset.y) * 100}%`;
-    const cx = Number(hit.dataset.x) * svg.viewBox.baseVal.width;
-    cross.setAttribute("x1", cx); cross.setAttribute("x2", cx); cross.setAttribute("visibility", "visible");
-  };
-  chart.addEventListener("pointerover", (e) => { const h = e.target.closest(".hit"); if (h) show(h); });
-  chart.addEventListener("pointerleave", () => { tip.hidden = true; cross.setAttribute("visibility", "hidden"); });
 }
 
 function buildSprite() {
@@ -811,13 +803,12 @@ function bind() {
   view.addEventListener("change", (e) => {
     const f = e.target.dataset.filter;
     if (f && f !== "query") { state.ledger[f] = e.target.value; render(); return; }
-    // Payday simulation: numbers are typed with thousands separators
-    const k = e.target.dataset.flow;
-    if (k) {
-      state.flow[k] = Number(e.target.value.replace(/[^\d]/g, "")) || 0;
+    const id = e.target.dataset.check;
+    if (id) {
+      if (e.target.checked) state.checks.add(id); else state.checks.delete(id);
+      saveChecks();
       render();
-      $(`#pf-${k}`)?.focus();
-      return;
+      $(`[data-check="${id}"]`)?.focus();
     }
   });
   view.addEventListener("input", (e) => {
@@ -861,7 +852,6 @@ function bind() {
       return;
     }
     if (b.dataset.version) { state.budgetVersion = b.dataset.version; render(); }
-    if (b.dataset.act === "reset-flow") { state.flow = null; render(); }
     if (b.dataset.act === "edit-budget") { state.budgetEdit = true; state.budgetMsg = null; render(); $(".mg-bud-input")?.focus(); }
     if (b.dataset.act === "cancel-budget") { state.budgetEdit = false; state.budgetMsg = null; render(); }
     if (b.dataset.act === "save-budget") saveBudget();
@@ -925,6 +915,7 @@ function bind() {
   addEventListener("hashchange", () => go(location.hash.slice(1)));
 }
 
+state.checks = readChecks();
 buildSprite();
 buildTabs();
 bind();

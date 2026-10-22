@@ -97,15 +97,6 @@ export function periodDays(period) {
   return { days, counts };
 }
 
-export function mealBudget(counts) {
-  const rows = Object.entries(MEAL_PLAN).map(([type, p]) => ({
-    type, ...p, perDay: p.lunch + p.dinner, actualDays: counts?.[type] ?? null,
-    budget: p.budgetDays * (p.lunch + p.dinner),
-    actual: counts ? counts[type] * (p.lunch + p.dinner) : null,
-  }));
-  return { rows, budget: rows.reduce((t, r) => t + r.budget, 0), actual: counts ? rows.reduce((t, r) => t + r.actual, 0) : null };
-}
-
 /* ---------- ledger ---------- */
 export const isPosted = (t) => (t.status ?? "posted") === "posted";
 
@@ -182,33 +173,6 @@ export function runningBalance(ledger, nodeIds, opening = {}) {
     }
     return { id: t.id, delta, balance: bal };
   });
-}
-
-/* ---------- savings projection (section 10) ---------- */
-// The first payday after a date
-export function nextPayday(from) {
-  const p = paydayIn(from.getFullYear(), from.getMonth());
-  return p > from ? p : paydayIn(from.getFullYear(), from.getMonth() + 1);
-}
-
-// The k-th payday counting from firstPayday (k = 0 is firstPayday itself)
-export const paydayAfter = (firstPayday, k) => paydayIn(firstPayday.getFullYear(), firstPayday.getMonth() + k);
-
-export function projectFund(start, monthly, firstPayday, count = 12) {
-  const points = [];
-  let bal = start;
-  for (let k = 0; k < count; k++) {
-    bal += monthly;
-    points.push({ date: paydayAfter(firstPayday, k), balance: bal });
-  }
-  return points;
-}
-
-export function eta(target, current, monthly, firstPayday) {
-  if (current >= target) return { months: 0, date: null, reached: true };
-  if (monthly <= 0) return { months: Infinity, date: null, reached: false };
-  const months = Math.ceil((target - current) / monthly);
-  return { months, date: paydayAfter(firstPayday, months - 1), reached: false };
 }
 
 /* ---------- formatting ---------- */

@@ -106,7 +106,6 @@
 .mg-swatch { width: 0.875rem; height: 0.5rem; border-radius: var(--radius-full); }
 .mg-swatch.is-plan { background: var(--color-system-fill); }
 .mg-swatch.is-actual { background: var(--color-label); }
-.mg-swatch.is-target { height: 0; border-top: 1.5px dashed var(--color-secondary-label); border-radius: 0; }
 
 /* Rows */
 .mg-row-text { display: grid; flex: 1; min-width: 0; }
@@ -352,33 +351,6 @@
 .mg-progress-fill { height: 100%; border-radius: var(--radius-full); background: var(--color-label); }
 .mg-progress-meta { display: flex; justify-content: space-between; gap: var(--space-3); font-size: var(--text-footnote-size); color: var(--color-secondary-label); font-variant-numeric: tabular-nums; }
 
-/* Projection chart */
-.mg-chart { position: relative; }
-.mg-chart svg { display: block; width: 100%; height: auto; overflow: visible; font-family: var(--font-sans); }
-.mg-chart .grid line { stroke: var(--color-separator); stroke-width: 1; }
-.mg-chart .axis text { font-size: 10px; fill: var(--color-secondary-label); font-variant-numeric: tabular-nums; }
-.mg-chart .area { fill: var(--color-quaternary-system-fill); }
-.mg-chart .line { fill: none; stroke: var(--color-label); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-.mg-chart .target line { stroke: var(--color-secondary-label); stroke-width: 1.2; stroke-dasharray: 4 3; }
-.mg-chart .target text { font-size: 10px; font-weight: 600; fill: var(--color-secondary-label); }
-.mg-chart .dot { fill: var(--color-label); stroke: var(--color-secondary-system-grouped-background); stroke-width: 2; }
-.mg-chart .hit { fill: transparent; cursor: default; }
-.mg-chart .cross { stroke: var(--color-tertiary-label); stroke-width: 1; }
-.mg-tip {
-  position: absolute;
-  z-index: 2;
-  padding: var(--space-1-5) var(--space-2);
-  border-radius: var(--radius-sm);
-  background: var(--color-label);
-  color: var(--color-system-background);
-  font-size: var(--text-caption-1-size);
-  line-height: var(--text-caption-1-line);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  pointer-events: none;
-  translate: -50% calc(-100% - 10px);
-}
-
 .mg-notes { display: grid; gap: var(--space-2); padding-inline-start: var(--space-5); font-size: var(--text-subheadline-size); line-height: var(--text-body-line-relaxed); color: var(--color-secondary-label); }
 .mg-notes li::marker { color: var(--color-tertiary-label); font-variant-numeric: tabular-nums; }
 
@@ -400,8 +372,6 @@
 /* Plan: budget table group headings */
 .mg-group-row td { padding-top: var(--space-3); font-weight: var(--weight-semibold); background: var(--color-tertiary-system-grouped-background); }
 .mg-group-row td span { margin-inline-start: var(--space-2); font-weight: var(--weight-regular); color: var(--color-secondary-label); font-size: var(--text-footnote-size); }
-/* Payday transfers flow across the width */
-.mg-steps { grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr)); }
 .mg-notes.is-columns { columns: 2 22rem; column-gap: var(--space-8); }
 .mg-notes.is-columns li { break-inside: avoid; margin-bottom: var(--space-2); }
 
@@ -457,3 +427,24 @@
 .mg-bud-from .field-input { width: auto; min-height: 2rem; padding-block: 0; }
 .mg-bud-input { width: 9rem; min-height: 2rem; padding-block: 0; text-align: end; font-variant-numeric: tabular-nums; }
 .table.is-editing td { vertical-align: middle; }
+
+/* Plan: this period's checklist (ticks live in a cookie) */
+.mg-todos { display: grid; gap: var(--space-4); }
+.mg-todo-group h3 { margin-bottom: var(--space-2); font-size: var(--text-footnote-size); font-weight: var(--weight-semibold); color: var(--color-secondary-label); }
+.mg-todo-group ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(21rem, 100%), 1fr)); gap: var(--space-2); }
+.mg-todo { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); background: var(--color-tertiary-system-grouped-background); font-size: var(--text-subheadline-size); cursor: pointer; }
+.mg-todo input { width: 1.1rem; height: 1.1rem; margin: 0; accent-color: var(--color-label); cursor: pointer; }
+.mg-todo:has(input:checked) > :not(input) { opacity: 0.45; }
+.mg-todo:has(input:checked) .mg-amount { text-decoration: line-through; }
+.mg-todo:has(input:focus-visible) { box-shadow: inset 0 0 0 2px var(--color-focus-ring); }
+
+/* Plan: Emergency Fund against its target */
+.mg-save { display: grid; gap: var(--space-2); }
+.mg-save-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); font-variant-numeric: tabular-nums; }
+.mg-save-now { font-size: var(--text-title-2-size); font-weight: var(--weight-bold); }
+.mg-save-pct { font-size: var(--text-title-3-size); font-weight: var(--weight-semibold); }
+.mg-save-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr)); gap: var(--space-2); margin: var(--space-2) 0 0; }
+.mg-save-list > div { display: grid; gap: var(--space-1); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); background: var(--color-tertiary-system-grouped-background); }
+.mg-save-list dt { font-size: var(--text-footnote-size); color: var(--color-secondary-label); }
+.mg-save-list dd { margin: 0; font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; }
+.mg-save-list small { display: block; font-size: var(--text-footnote-size); font-weight: var(--weight-regular); color: var(--color-secondary-label); }

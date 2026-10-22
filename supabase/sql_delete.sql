@@ -1,12 +1,14 @@
--- Removals for the live database. Run FIRST, then sql_update.sql. Safe to run again.
--- The budget change in this update adds a table and removes nothing.
+-- Removals for the live database. Run FIRST, then sql_update.sql.
+-- Clears every Finance Management entry, carried-over balance, and saved budget change,
+-- so sql_update.sql can enter the position of 22 Oct 2026 from a clean start.
+-- The budgets go back to the app's defaults (Plan > Edit amounts still works afterwards).
 
--- ===== From the last update: moves between Daily Needs, Buffer, and Birthday =====
--- Those three pockets are one now, so a move between them would go from Daily Needs to itself.
--- Already done if you ran the previous version of this file; running it again deletes nothing more.
-delete from public.fm_transactions
-  where from_node in ('bca.daily', 'bca.buffer', 'bca.birthday')
-    and to_node in ('bca.daily', 'bca.buffer', 'bca.birthday');
+delete from public.fm_transactions;
+delete from public.fm_carryover;
+delete from public.fm_budget_versions;
 
--- Check: how many entries are left
-select count(*) as entries from public.fm_transactions;
+-- Check: all three are 0
+select
+  (select count(*) from public.fm_transactions) as entries,
+  (select count(*) from public.fm_carryover) as carryover,
+  (select count(*) from public.fm_budget_versions) as saved_budgets;

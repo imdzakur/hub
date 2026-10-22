@@ -139,9 +139,9 @@ export function useSavedBudgets(saved) {
 
 // Food plan (section 5). Budget day counts are fixed; the calendar shows the real ones.
 export const MEAL_PLAN = {
-  regular: { label: "Regular workday", budgetDays: 14, lunch: 20000, dinner: 18000 },
-  fasting: { label: "Monday-Thursday fast", budgetDays: 8, lunch: 0, dinner: 23000, weekdays: [1, 4], startsOn: "2026-10-26" },
-  weekend: { label: "Weekend", budgetDays: 8, lunch: 0, dinner: 30000, weekdays: [0, 6] },
+  regular: { label: "Regular workday", short: "workdays", budgetDays: 14, lunch: 20000, dinner: 18000 },
+  fasting: { label: "Monday-Thursday fast", short: "fast days", budgetDays: 8, lunch: 0, dinner: 23000, weekdays: [1, 4], startsOn: "2026-10-26" },
+  weekend: { label: "Weekend", short: "days off", budgetDays: 8, lunch: 0, dinner: 30000, weekdays: [0, 6] },
 };
 export const WEEKLY_FOOD_MOVE = 220000; // 3 regular + 2 fasting + 2 weekend days
 
@@ -155,11 +155,8 @@ export const BILLS = [
   { id: "claude", name: "Claude", amount: 405000, from: "bca.claude", window: "On the Claude bill date", to: "anthropic" },
 ];
 
-// Emergency fund targets in months of spending (spending base from Nov: 3,976,500)
-export const TARGETS = [
-  { id: "ef4", name: "Emergency Fund, 4 months", months: 4, note: "Minimum" },
-  { id: "ef6", name: "Emergency Fund, 6 months", months: 6, note: "Maximum" },
-];
+// What the Emergency Fund is saving toward
+export const SAVINGS_TARGET = 9800000;
 
 export const RULES = [
   "The budget is fixed. Anything spent under budget is a bonus and is saved.",
